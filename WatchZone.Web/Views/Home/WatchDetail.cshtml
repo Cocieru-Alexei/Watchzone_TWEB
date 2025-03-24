@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = ViewBag.Title;
+}
+
+<!-- Watch Detail Header -->
+<header class="product-header py-5 text-center bg-light">
+    <div class="container">
+        <h1>@ViewBag.Title</h1>
+        <p>Detailed Product Information</p>
+    </div>
+</header>
+
+<!-- Watch Detail Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Watch Image -->
+            <div class="col-md-6 mb-4">
+                <div class="card border-0">
+                    <img src="@Url.Content(ViewBag.ImagePath)" class="img-fluid rounded" alt="@ViewBag.Title">
+                </div>
+            </div>
+
+            <!-- Watch Details -->
+            <div class="col-md-6">
+                <h2 class="mb-3">@ViewBag.Title</h2>
+                <p class="lead mb-4">@ViewBag.Description</p>
+
+                <h4 class="mb-3">Features:</h4>
+                <ul class="list-group list-group-flush mb-4">
+                    @foreach (var feature in ViewBag.Features)
+                    {
+                        <li class="list-group-item bg-transparent">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i> @feature
+                        </li>
+                    }
+                </ul>
+
+                <div class="d-flex align-items-center mb-4">
+                    <h3 class="price mb-0 me-4">@ViewBag.Price</h3>
+                    <div class="d-grid gap-2 d-md-block">
+                        <button id="addToCartBtn" class="btn btn-primary visible-btn" data-action="add-to-cart">
+                            <i class="bi bi-cart-plus"></i> Add to Cart
+                        </button>
+                        <a href="@Url.Action(ViewBag.WatchType + "Watch", "Home")" class="btn btn-outline-secondary ms-2 visible-btn">
+                            Back to Collection
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quantity Selector -->
+                <div class="mb-4">
+                    <label for="quantity" class="form-label">Quantity:</label>
+                    <div class="input-group" style="width: 150px;">
+                        <button class="btn btn-outline-secondary visible-btn" type="button" id="decreaseQty">-</button>
+                        <input type="number" class="form-control text-center" id="quantity" value="1" min="1" max="10">
+                        <button class="btn btn-outline-secondary visible-btn" type="button" id="increaseQty">+</button>
+                    </div>
+                </div>
+
+                <!-- Watch Specifications -->
+                <div class="mt-4">
+                    <h4>Specifications</h4>
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Type</th>
+                                <td>@(ViewBag.WatchType.Substring(0, 1).ToUpper() + ViewBag.WatchType.Substring(1)) Watch</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Model</th>
+                                <td>@ViewBag.Title</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Warranty</th>
+                                <td>2 Years International Warranty</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Shipping</th>
+                                <td>Free Shipping Worldwide</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Quantity selector functionality
+        const decreaseBtn = document.getElementById('decreaseQty');
+        const increaseBtn = document.getElementById('increaseQty');
+        const quantityInput = document.getElementById('quantity');
+
+        decreaseBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+
+        increaseBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value < 10) {
+                quantityInput.value = value + 1;
+            }
+        });
+
+        // Add to cart button functionality
+        const addToCartBtn = document.getElementById('addToCartBtn');
+
+        addToCartBtn.addEventListener('click', function() {
+            const quantity = parseInt(quantityInput.value);
+            alert(`${quantity} ${quantity > 1 ? 'items' : 'item'} of ${document.querySelector('h2').textContent} added to cart!`);
+        });
+    });
+    </script>
+} 

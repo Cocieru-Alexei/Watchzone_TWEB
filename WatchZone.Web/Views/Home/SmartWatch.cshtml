@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Smart Watches";
+}
+
+<!-- Smart Watches Header -->
+<header class="product-header py-5 text-center bg-light">
+    <div class="container">
+        <h1>Smart Watches Collection</h1>
+        <p>Advanced technology on your wrist</p>
+    </div>
+</header>
+
+<!-- Smart Watches Products -->
+<section class="products-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 mb-4">
+                <div class="card product-card h-100">
+                    <img src="~/Images/smart apple watch.jpg" class="card-img-top" alt="Apple Watch">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Apple Watch Series 8</h5>
+                        <p class="card-text">The Apple Watch Series 8 features advanced health sensors, Always-On Retina display, and crack-resistant crystal.</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price">$399.99</span>
+                                <div class="button-container">
+                                    <a href="@Url.Action("WatchDetail", "Home", new { id = "1", type = "smart" })" class="btn btn-outline-primary me-2 visible-btn">View Watch</a>
+                                    <button class="btn btn-primary visible-btn" data-action="add-to-cart">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <p>Discover our full range of smart watches with cutting-edge technology and stylish designs.</p>
+            <p>Our smart watches combine fashion with functionality to help you stay connected and track your health.</p>
+        </div>
+    </div>
+</section> 

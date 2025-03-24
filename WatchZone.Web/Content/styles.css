@@ -1,0 +1,457 @@
+﻿/* Basic Styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #343a40;
+    color: white;
+    padding: 60px 0;
+    margin-bottom: 20px;
+}
+
+/* Product Cards */
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .card:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+/* Price Styling */
+.price {
+    color: #0275d8;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Button Styling */
+.btn-solid {
+    opacity: 1 !important;
+    font-weight: bold;
+}
+
+.btn-primary.btn-solid {
+    background-color: #0275d8;
+    border-color: #0275d8;
+}
+
+.btn-secondary.btn-solid {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Image Styling */
+.card-img-top {
+    height: 250px;
+    object-fit: contain;
+    padding: 10px;
+    background-color: #f8f9fa;
+}
+
+/* Footer Styling */
+footer {
+    margin-top: 30px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero {
+        padding: 40px 0;
+    }
+
+        .hero h1 {
+            font-size: 1.8rem;
+        }
+}
+
+/* Watch Cards */
+.watch-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .watch-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+/* Collection Cards */
+.collection-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+    .collection-card.animated {
+        animation: fadeInUp 0.6s forwards;
+    }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.collection-card:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+    .collection-card:hover .btn-outline-dark {
+        color: white;
+        border-color: white;
+    }
+
+        .collection-card:hover .btn-outline-dark:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+.collection-card i {
+    color: var(--secondary-color);
+}
+
+.collection-card:hover i {
+    color: white;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+    .btn-primary:hover {
+        background-color: #2c4660;
+        border-color: #2c4660;
+    }
+
+.btn-outline-success:hover {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+/* Social Icons */
+.social-icons a {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+    .social-icons a:hover {
+        color: var(--secondary-color);
+    }
+
+/* Footer */
+footer a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+    footer a:hover {
+        color: var(--secondary-color) !important;
+        text-decoration: underline;
+    }
+
+/* Custom Button for Newsletter */
+.input-group .btn-primary {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Nav Item Hover Effect */
+.navbar-nav .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+    .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background-color: var(--secondary-color);
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+        width: 100%;
+    }
+
+/* Custom Badge Styling */
+.badge-danger {
+    background-color: var(--danger-color);
+}
+
+/* Contact Form */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(58, 90, 120, 0.25);
+}
+
+/* Back to Top Button */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+    #back-to-top.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    #back-to-top:hover {
+        background-color: var(--secondary-color);
+    }
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 4px;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+    .notification.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+.notification-content {
+    display: flex;
+    align-items: center;
+}
+
+    .notification-content i {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+
+.notification-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.notification-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+/* Product Detail Styles */
+.main-image img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.thumbnail {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+    .thumbnail:hover {
+        opacity: 1;
+    }
+
+    .thumbnail.active {
+        opacity: 1;
+        border-color: var(--primary-color);
+    }
+
+.color-option {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+    .color-option:hover {
+        transform: scale(1.1);
+    }
+
+/* Tab Content Animation */
+.tab-pane {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Sale Badge */
+.sale-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--danger-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* Loading Spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-left-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Fix for transparent buttons */
+.btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s !important;
+    transition-property: background-color, color, border-color !important;
+    transition-duration: 0.3s !important;
+    transition-timing-function: ease !important;
+    transition-delay: 0s !important;
+}
+
+.btn-primary, .btn-outline-primary, .btn-outline-secondary {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+}
+
+.d-flex.justify-content-between, .d-flex.justify-content-between.align-items-center {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+}
+
+/* Remove any hover effects that might cause transparency */
+.card:hover .btn,
+.product-card:hover .btn,
+.collection-card:hover .btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ensure card content is always visible */
+.card-body {
+    display: flex !important;
+    flex-direction: column !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.mt-auto {
+    margin-top: auto !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Override any hover effects on buttons */
+.btn:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Product card hover effect adjustment */
+.product-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+/* Specific class for visible buttons */
+.visible-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    background-color: inherit !important;
+    color: inherit !important;
+    border-color: inherit !important;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s !important;
+}
+
+    .visible-btn.btn-primary {
+        background-color: #0d6efd !important;
+        color: white !important;
+        border-color: #0d6efd !important;
+    }
+
+    .visible-btn.btn-outline-primary {
+        background-color: transparent !important;
+        color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+
+    .visible-btn.btn-outline-secondary {
+        background-color: transparent !important;
+        color: #6c757d !important;
+        border-color: #6c757d !important;
+    }
+
+    .visible-btn:hover {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+.button-container {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

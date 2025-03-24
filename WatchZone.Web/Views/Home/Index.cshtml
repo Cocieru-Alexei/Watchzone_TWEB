@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<!-- Hero Section -->
+<header class="hero py-5 text-center">
+    <div class="container">
+        <h1>Welcome to WatchZone</h1>
+        <p>Your one-stop shop for quality watches</p>
+        <a href="#products" class="btn btn-primary btn-solid visible-btn">View Products</a>
+    </div>
+</header>
+
+<!-- Products Section -->
+<section id="products" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Our Collections</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="~/Images/smart apple watch.jpg" class="card-img-top" alt="Smart Watch">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Smart Watches</h5>
+                        <p class="card-text">Discover our collection of smartwatches with the latest technology.</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("WatchDetail", "Home", new { id = "1", type = "smart" })" class="btn btn-outline-primary visible-btn">View Details</a>
+                                <a href="@Url.Action("SmartWatch", "Home")" class="btn btn-primary visible-btn">View Collection</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="~/Images/sport watch casio.jpg" class="card-img-top" alt="Sport Watch">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Sport Watches</h5>
+                        <p class="card-text">Explore our durable sport watches designed for active lifestyles.</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("WatchDetail", "Home", new { id = "1", type = "sport" })" class="btn btn-outline-primary visible-btn">View Details</a>
+                                <a href="@Url.Action("SportWatch", "Home")" class="btn btn-primary visible-btn">View Collection</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="~/Images/luxury cartier_santos.jpg" class="card-img-top" alt="Luxury Watch">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Luxury Watches</h5>
+                        <p class="card-text">Browse our premium collection of luxury watches for special occasions.</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("WatchDetail", "Home", new { id = "1", type = "luxury" })" class="btn btn-outline-primary visible-btn">View Details</a>
+                                <a href="@Url.Action("LuxuryWatch", "Home")" class="btn btn-primary visible-btn">View Collection</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">About WatchZone</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <p>WatchZone is your premier destination for high-quality timepieces. We offer a wide selection of watches from top brands around the world.</p>
+                <p>Our mission is to provide exceptional watches at competitive prices, all backed by outstanding customer service. Whether you're looking for a classic timepiece, a rugged sports watch, or the latest in smartwatch technology, we have something for everyone.</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Why Choose Us?</h4>
+                <ul>
+                    <li>Wide selection of premium watches</li>
+                    <li>Authentic products from top brands</li>
+                    <li>Excellent customer service</li>
+                    <li>Secure shopping experience</li>
+                    <li>Fast shipping</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Contact Us</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h4>Get in Touch</h4>
+                <form id="contactForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary visible-btn">Send Message</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h4>Store Location</h4>
+                <p>123 Watch Street<br>Timepiece City, TP 12345</p>
+                <h4>Contact Information</h4>
+                <p>Email: info@watchzone.com<br>Phone: (123) 456-7890</p>
+                <h4>Business Hours</h4>
+                <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
+            </div>
+        </div>
+    </div>
+</section> 

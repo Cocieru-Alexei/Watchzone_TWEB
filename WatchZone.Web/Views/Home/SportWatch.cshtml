@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Sport Watches";
+}
+
+<!-- Sport Watches Header -->
+<header class="product-header py-5 text-center bg-light">
+    <div class="container">
+        <h1>Sport Watches Collection</h1>
+        <p>Durable timepieces for active lifestyles</p>
+    </div>
+</header>
+
+<!-- Sport Watches Products -->
+<section class="products-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 mb-4">
+                <div class="card product-card h-100">
+                    <img src="~/Images/sport watch casio.jpg" class="card-img-top" alt="G-Shock Watch">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Casio G-Shock GBD-200</h5>
+                        <p class="card-text">Shock-resistant G-Shock watch with fitness tracking functions, Bluetooth connectivity, and a 2-year battery life.</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price">$149.99</span>
+                                <div class="button-container">
+                                    <a href="@Url.Action("WatchDetail", "Home", new { id = "1", type = "sport" })" class="btn btn-outline-primary me-2 visible-btn">View Watch</a>
+                                    <button class="btn btn-primary visible-btn" data-action="add-to-cart">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <p>Explore our collection of durable sport watches designed for active lifestyles and outdoor adventures.</p>
+            <p>Our sport watches are built to withstand extreme conditions while providing essential timekeeping and tracking features.</p>
+        </div>
+    </div>
+</section> 

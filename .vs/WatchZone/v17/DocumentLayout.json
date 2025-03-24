@@ -1,0 +1,147 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|c:\\users\\admin\\desktop\\utm\\tweb\\watchzone_main\\watchzone\\watchzone.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.web\\content\\bootstrap-grid.css.map||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\content\\bootstrap-grid.css.map||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.domain\\model\\user\\userlogindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\model\\user\\userlogindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.businesslogic\\bl struct\\authbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\bl struct\\authbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.businesslogic\\core\\userapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\core\\userapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.businesslogic\\interface\\iauth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\interface\\iauth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5638708E-3B33-4C54-A2DD-8961CD343984}|WatchZone.Helper\\WatchZone.Helper.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.helper\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5638708E-3B33-4C54-A2DD-8961CD343984}|WatchZone.Helper\\WatchZone.Helper.csproj|solutionrelative:watchzone.helper\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|WatchZone.Helper||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Web\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Web\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "WatchZone.Web\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAADkAAAB2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-24T09:53:39.69Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "bootstrap-grid.css.map",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Web\\Content\\bootstrap-grid.css.map",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Content\\bootstrap-grid.css.map",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Web\\Content\\bootstrap-grid.css.map",
+              "RelativeToolTip": "WatchZone.Web\\Content\\bootstrap-grid.css.map",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAACXeAIAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-03-24T09:54:40.587Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserLoginDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T18:51:02.668Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AuthBL.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T19:02:07.625Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserApi.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\Core\\UserApi.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\Core\\UserApi.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\Core\\UserApi.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\Core\\UserApi.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T18:56:01.347Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IAuth.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\Interface\\IAuth.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\Interface\\IAuth.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\Interface\\IAuth.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\Interface\\IAuth.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T18:51:13.51Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "WatchZone.Helper",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Helper\\WatchZone.Helper.csproj",
+              "RelativeDocumentMoniker": "WatchZone.Helper\\WatchZone.Helper.csproj",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Helper\\WatchZone.Helper.csproj",
+              "RelativeToolTip": "WatchZone.Helper\\WatchZone.Helper.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-03-23T18:39:56.581Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Helper\\Class1.cs",
+              "RelativeDocumentMoniker": "WatchZone.Helper\\Class1.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Helper\\Class1.cs",
+              "RelativeToolTip": "WatchZone.Helper\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T18:27:32.894Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
