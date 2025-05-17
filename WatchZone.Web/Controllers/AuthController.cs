@@ -39,7 +39,9 @@ namespace WatchZone.Controllers
 				Mapper.Initialize(cfg => cfg.CreateMap<UserDataLogin, ULoginData>());
 				var data = Mapper.Map<ULoginData>(login);
 
-				data.LoginIp = Request.UserHostAddress;
+				data.Credential = login.UserName;
+				data.Password = login.Password;
+                data.LoginIp = Request.UserHostAddress;
 				data.LoginDateTime = DateTime.Now;
 
 				var userLogin = _session.UserLogin(data);
@@ -68,7 +70,9 @@ namespace WatchZone.Controllers
 				Mapper.Initialize(cfg => cfg.CreateMap<UserDataRegister, URegisterData>());
 				var data = Mapper.Map<URegisterData>(register);
 
-				data.RegisterIp = Request.UserHostAddress;
+				data.Credential = register.UserName;
+				data.Password = register.Password;
+                data.RegisterIp = Request.UserHostAddress;
 				data.RegisterDateTime = DateTime.Now;
 
 				var userRegister = _session.UserRegister(data);

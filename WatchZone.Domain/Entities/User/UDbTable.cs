@@ -27,7 +27,8 @@ namespace WatchZone.Domain.Entities.User
         public string Email { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime LastLogin { get; set; }
+        [Column(TypeName = "datetime2")]
+        public DateTime LastLogin { get; set; } = DateTime.UtcNow;
 
         [StringLength(30)]
         public string LasIp { get; set; }

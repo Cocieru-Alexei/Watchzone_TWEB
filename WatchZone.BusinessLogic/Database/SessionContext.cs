@@ -7,7 +7,7 @@ namespace WatchZone.BusinessLogic.Database
 {
     public class SessionContext : DbContext
     {
-        public SessionContext() : base("name=CCToolShop")
+        public SessionContext() : base("name=WatchZone")
         {
         }
 

@@ -8,9 +8,9 @@ namespace WatchZone.Web.Models.Auth
 {
 	public class UserDataRegister
 	{
-		public string Password { get; internal set; }
-		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-		public string ConfirmPassword { get; internal set; }
-		public string UserName { get; internal set; }
+		public string Password { get; set; }
+		//[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		public string ConfirmPassword { get; set; }
+		public string UserName { get; set; }
 	}
 }

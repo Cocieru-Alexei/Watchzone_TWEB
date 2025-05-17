@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Web;
 using WatchZone.Domain.Entities.User;
 using WatchZone.Helper;
@@ -18,10 +19,10 @@ namespace WatchZone.BusinessLogic.Core
 			var validate = new EmailAddressAttribute();
 			if (validate.IsValid(data.Credential))
 			{
-				var pass = LoginUtility.GenHash(data.Password);
+				// pass = LoginUtility.GenHash(data.Password);
 				using (var db = new UserContext())
 				{
-					result = db.Users.FirstOrDefault(u => u.Email == data.Credential && u.Password == pass);
+					result = db.Users.FirstOrDefault(u => u.Email == data.Credential && u.Password == data.Password);
 				}
 
 				if (result == null)
@@ -72,19 +73,37 @@ namespace WatchZone.BusinessLogic.Core
 				var pass = LoginUtility.GenHash(data.Password);
 				using (var db = new UserContext())
 				{
-					result.Username = "User";
+					result.Username = data.Credential;
 					result.Password = data.Password;
 					result.Email = data.Credential;
 					result = db.Users.Add(result);
+					db.SaveChanges();
 				}
 
 				using (var todo = new UserContext())
 				{
-					result.LasIp = data.RegisterIp;
+                    result.Username = data.Credential;
+                    result.Password = data.Password;
+                    result.LasIp = data.RegisterIp;
 					result.LastLogin = data.RegisterDateTime;
 					todo.Entry(result).State = EntityState.Modified;
-					todo.SaveChanges();
-				}
+					try
+					{
+						int state = todo.SaveChanges();
+					}
+					catch(DbEntityValidationException e)
+                    {
+                        foreach (var validationErrors in e.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                Console.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                            }
+                        }
+						throw;
+                    }
+
+                }
 
 				return new URegisterResp { Status = true };
 			}
