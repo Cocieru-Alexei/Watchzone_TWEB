@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,6 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\User\Session.cs" />
+    <Compile Include="Entities\User\UDbTable.cs" />
+    <Compile Include="Entities\User\URegisterResp.cs" />
+    <Compile Include="Entities\User\URegisterData.cs" />
+    <Compile Include="Entities\User\ULoginData.cs" />
+    <Compile Include="Entities\User\ULoginResp.cs" />
+    <Compile Include="Entities\User\URole.cs" />
+    <Compile Include="Entities\User\UserMinimal.cs" />
     <Compile Include="Model\User\UserLoginDTO.cs" />
     <Compile Include="Model\Basket\BasketItemDTO.cs" />
     <Compile Include="Model\Product\ProductDTO.cs" />

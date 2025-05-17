@@ -33,6 +33,9 @@
                     <li class="nav-item">
                         <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "LuxuryWatch" ? "active" : "")" href="@Url.Action("LuxuryWatch", "Home")">Luxury Watches</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Login" ? "active" : "")" href="@Url.Action("Login", "Auth")">Login</a>
+                    </li>
                 </ul>
             </div>
         </div>

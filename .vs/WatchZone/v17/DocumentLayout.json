@@ -1,37 +1,138 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\",
+  "WorkspaceRootPath": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|c:\\users\\admin\\desktop\\utm\\tweb\\watchzone_main\\watchzone\\watchzone.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.web\\content\\bootstrap-grid.css.map||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\content\\bootstrap-grid.css.map||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.domain\\model\\user\\userlogindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\model\\user\\userlogindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.businesslogic\\bl struct\\authbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\bl struct\\authbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.businesslogic\\core\\userapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|c:\\users\\liviu\\desktop\\watchzone_tweb-main\\watchzone.businesslogic\\core\\userapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\core\\userapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.businesslogic\\interface\\iauth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\interface\\iauth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5638708E-3B33-4C54-A2DD-8961CD343984}|WatchZone.Helper\\WatchZone.Helper.csproj|C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\watchzone.helper\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5638708E-3B33-4C54-A2DD-8961CD343984}|WatchZone.Helper\\WatchZone.Helper.csproj|solutionrelative:watchzone.helper\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.businesslogic\\sessionbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\sessionbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|WatchZone.Helper||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\entities\\user\\uregisterdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\entities\\user\\uregisterdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\entities\\user\\uregisterresp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\entities\\user\\uregisterresp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\entities\\user\\uloginresp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\entities\\user\\uloginresp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\entities\\user\\ulogindata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\entities\\user\\ulogindata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\models\\userdataregister.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\models\\userdataregister.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\entities\\user\\udbtable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\entities\\user\\udbtable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\views\\auth\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\views\\auth\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.businesslogic\\interface\\isession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\interface\\isession.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\models\\userdatalogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\models\\userdatalogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\app_start\\bundleconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\app_start\\bundleconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.web\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:watchzone.web\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.businesslogic\\bussineslogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\bussineslogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5638708E-3B33-4C54-A2DD-8961CD343984}|WatchZone.Helper\\WatchZone.Helper.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.helper\\loginutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5638708E-3B33-4C54-A2DD-8961CD343984}|WatchZone.Helper\\WatchZone.Helper.csproj|solutionrelative:watchzone.helper\\loginutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5638708E-3B33-4C54-A2DD-8961CD343984}|WatchZone.Helper\\WatchZone.Helper.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.helper\\cookieutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5638708E-3B33-4C54-A2DD-8961CD343984}|WatchZone.Helper\\WatchZone.Helper.csproj|solutionrelative:watchzone.helper\\cookieutility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.businesslogic\\database\\usercontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\database\\usercontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.businesslogic\\database\\sessioncontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\database\\sessioncontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\entities\\user\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\entities\\user\\session.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\entities\\user\\urole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\entities\\user\\urole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\entities\\user\\userminimal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\entities\\user\\userminimal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.domain\\model\\user\\userlogindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48C8D0BE-A728-4E46-A828-349277C90238}|WatchZone.Domain\\WatchZone.Domain.csproj|solutionrelative:watchzone.domain\\model\\user\\userlogindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\watchzone.businesslogic\\bl struct\\authbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0564DFDD-5F86-4AB9-9C28-F605B2F99FCA}|WatchZone.BusinessLogic\\WatchZone.BusinessLogic.csproj|solutionrelative:watchzone.businesslogic\\bl struct\\authbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Content\\bootstrap-grid.css.map||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{C6EE288F-B332-463E-80E3-9799D538B96D}|WatchZone.Web\\WatchZone.Web.csproj|solutionrelative:WatchZone.Web\\Content\\bootstrap-grid.css.map||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Home\\Login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:WatchZone.Web\\Views\\Home\\Login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Home\\Register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:WatchZone.Web\\Views\\Home\\Register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -40,29 +141,377 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "DockedWidth": 124,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Web\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Web\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "WatchZone.Web\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAADkAAAB2AAAAAAAAAA==",
+              "DocumentIndex": 8,
+              "Title": "UDbTable.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\UDbTable.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Entities\\User\\UDbTable.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\UDbTable.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Entities\\User\\UDbTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:03:44.491Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "URegisterData.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\URegisterData.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Entities\\User\\URegisterData.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\URegisterData.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Entities\\User\\URegisterData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T16:53:41.206Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ULoginResp.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\ULoginResp.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Entities\\User\\ULoginResp.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\ULoginResp.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Entities\\User\\ULoginResp.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:02:32.402Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "URegisterResp.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\URegisterResp.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Entities\\User\\URegisterResp.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\URegisterResp.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Entities\\User\\URegisterResp.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T16:55:44.065Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SessionBL.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\SessionBL.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\SessionBL.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\SessionBL.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\SessionBL.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBoAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:59:12.83Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\_ViewStart.cshtml",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\_ViewStart.cshtml",
+              "RelativeToolTip": "WatchZone.Web\\Views\\_ViewStart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-03-24T09:53:39.69Z",
+              "WhenOpened": "2025-04-27T14:53:34.359Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserApi.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\Core\\UserApi.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\Core\\UserApi.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\Core\\UserApi.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\Core\\UserApi.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAwF4AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T13:57:48.692Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserDataRegister.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Models\\UserDataRegister.cs",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Models\\UserDataRegister.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Models\\UserDataRegister.cs",
+              "RelativeToolTip": "WatchZone.Web\\Models\\UserDataRegister.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T16:31:44.377Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ISession.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\Interface\\ISession.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\Interface\\ISession.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\Interface\\ISession.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\Interface\\ISession.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:11:49.416Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ULoginData.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\ULoginData.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Entities\\User\\ULoginData.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\ULoginData.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Entities\\User\\ULoginData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:02:31.097Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "WatchZone.Web\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAAwEMAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T11:48:48.986Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UserDataLogin.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Models\\UserDataLogin.cs",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Models\\UserDataLogin.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Models\\UserDataLogin.cs",
+              "RelativeToolTip": "WatchZone.Web\\Models\\UserDataLogin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T14:51:20.52Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Auth\\Register.cshtml",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\Auth\\Register.cshtml",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Auth\\Register.cshtml",
+              "RelativeToolTip": "WatchZone.Web\\Views\\Auth\\Register.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-27T16:30:32.973Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "RouteConfig.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\App_Start\\RouteConfig.cs",
+              "RelativeDocumentMoniker": "WatchZone.Web\\App_Start\\RouteConfig.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\App_Start\\RouteConfig.cs",
+              "RelativeToolTip": "WatchZone.Web\\App_Start\\RouteConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T11:31:14.701Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Auth\\Login.cshtml",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\Auth\\Login.cshtml",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Auth\\Login.cshtml",
+              "RelativeToolTip": "WatchZone.Web\\Views\\Auth\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-27T16:21:58.102Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Home\\Register.cshtml",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\Home\\Register.cshtml",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Home\\Register.cshtml",
+              "RelativeToolTip": "WatchZone.Web\\Views\\Home\\Register.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-27T14:47:42.141Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "BundleConfig.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\App_Start\\BundleConfig.cs",
+              "RelativeDocumentMoniker": "WatchZone.Web\\App_Start\\BundleConfig.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\App_Start\\BundleConfig.cs",
+              "RelativeToolTip": "WatchZone.Web\\App_Start\\BundleConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T11:31:29.491Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "WatchZone.Web\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAowDAAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-27T11:19:24.273Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "WatchZone.Web\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T11:31:40.187Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Home\\Login.cshtml",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\Home\\Login.cshtml",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Home\\Login.cshtml",
+              "RelativeToolTip": "WatchZone.Web\\Views\\Home\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-27T11:23:34.041Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Global.asax.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Global.asax.cs",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Global.asax.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Global.asax.cs",
+              "RelativeToolTip": "WatchZone.Web\\Global.asax.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T15:47:19.158Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "WatchZone.Web\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "WatchZone.Web\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-27T15:55:48.123Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Session.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\Session.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Entities\\User\\Session.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\Session.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Entities\\User\\Session.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:02:37.098Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "BussinesLogic.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\BussinesLogic.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\BussinesLogic.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\BussinesLogic.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\BussinesLogic.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:58:24.595Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "SessionContext.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\Database\\SessionContext.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\Database\\SessionContext.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\Database\\SessionContext.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\Database\\SessionContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:08:15.752Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "UserContext.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\Database\\UserContext.cs",
+              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\Database\\UserContext.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\Database\\UserContext.cs",
+              "RelativeToolTip": "WatchZone.BusinessLogic\\Database\\UserContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:28:29.904Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "CookieUtility.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Helper\\CookieUtility.cs",
+              "RelativeDocumentMoniker": "WatchZone.Helper\\CookieUtility.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Helper\\CookieUtility.cs",
+              "RelativeToolTip": "WatchZone.Helper\\CookieUtility.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:32:08.534Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "LoginUtility.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Helper\\LoginUtility.cs",
+              "RelativeDocumentMoniker": "WatchZone.Helper\\LoginUtility.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Helper\\LoginUtility.cs",
+              "RelativeToolTip": "WatchZone.Helper\\LoginUtility.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T13:33:27.276Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "UserMinimal.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\UserMinimal.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Entities\\User\\UserMinimal.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\UserMinimal.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Entities\\User\\UserMinimal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:02:33.697Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "URole.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\URole.cs",
+              "RelativeDocumentMoniker": "WatchZone.Domain\\Entities\\User\\URole.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Entities\\User\\URole.cs",
+              "RelativeToolTip": "WatchZone.Domain\\Entities\\User\\URole.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-27T12:07:35.102Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
               "Title": "bootstrap-grid.css.map",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Web\\Content\\bootstrap-grid.css.map",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Content\\bootstrap-grid.css.map",
               "RelativeDocumentMoniker": "WatchZone.Web\\Content\\bootstrap-grid.css.map",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Web\\Content\\bootstrap-grid.css.map",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Web\\Content\\bootstrap-grid.css.map",
               "RelativeToolTip": "WatchZone.Web\\Content\\bootstrap-grid.css.map",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAACXeAIAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
@@ -70,11 +519,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 28,
               "Title": "UserLoginDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
               "RelativeDocumentMoniker": "WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
               "RelativeToolTip": "WatchZone.Domain\\Model\\User\\UserLoginDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -82,62 +531,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 29,
               "Title": "AuthBL.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
+              "DocumentMoniker": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
               "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
+              "ToolTip": "C:\\Users\\liviu\\Desktop\\Watchzone_TWEB-main\\WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
               "RelativeToolTip": "WatchZone.BusinessLogic\\BL Struct\\AuthBL.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-23T19:02:07.625Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "UserApi.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\Core\\UserApi.cs",
-              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\Core\\UserApi.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\Core\\UserApi.cs",
-              "RelativeToolTip": "WatchZone.BusinessLogic\\Core\\UserApi.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T18:56:01.347Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IAuth.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\Interface\\IAuth.cs",
-              "RelativeDocumentMoniker": "WatchZone.BusinessLogic\\Interface\\IAuth.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.BusinessLogic\\Interface\\IAuth.cs",
-              "RelativeToolTip": "WatchZone.BusinessLogic\\Interface\\IAuth.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T18:51:13.51Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "WatchZone.Helper",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Helper\\WatchZone.Helper.csproj",
-              "RelativeDocumentMoniker": "WatchZone.Helper\\WatchZone.Helper.csproj",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Helper\\WatchZone.Helper.csproj",
-              "RelativeToolTip": "WatchZone.Helper\\WatchZone.Helper.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-03-23T18:39:56.581Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Class1.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Helper\\Class1.cs",
-              "RelativeDocumentMoniker": "WatchZone.Helper\\Class1.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\utm\\tweb\\WatchZone_main\\WatchZone\\WatchZone.Helper\\Class1.cs",
-              "RelativeToolTip": "WatchZone.Helper\\Class1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T18:27:32.894Z"
             }
           ]
         }

@@ -4,3 +4,9 @@ C:\Users\Admin\Desktop\utm\tweb\WatchZone_main\WatchZone\WatchZone.Helper\obj\De
 C:\Users\Admin\Desktop\utm\tweb\WatchZone_main\WatchZone\WatchZone.Helper\obj\Debug\WatchZone.Helper.csproj.CoreCompileInputs.cache
 C:\Users\Admin\Desktop\utm\tweb\WatchZone_main\WatchZone\WatchZone.Helper\obj\Debug\WatchZone.Helper.dll
 C:\Users\Admin\Desktop\utm\tweb\WatchZone_main\WatchZone\WatchZone.Helper\obj\Debug\WatchZone.Helper.pdb
+C:\Users\Leo\Desktop\Watchzone_TWEB-main\WatchZone.Helper\bin\Debug\WatchZone.Helper.dll
+C:\Users\Leo\Desktop\Watchzone_TWEB-main\WatchZone.Helper\bin\Debug\WatchZone.Helper.pdb
+C:\Users\Leo\Desktop\Watchzone_TWEB-main\WatchZone.Helper\obj\Debug\WatchZone.Helper.csproj.AssemblyReference.cache
+C:\Users\Leo\Desktop\Watchzone_TWEB-main\WatchZone.Helper\obj\Debug\WatchZone.Helper.csproj.CoreCompileInputs.cache
+C:\Users\Leo\Desktop\Watchzone_TWEB-main\WatchZone.Helper\obj\Debug\WatchZone.Helper.dll
+C:\Users\Leo\Desktop\Watchzone_TWEB-main\WatchZone.Helper\obj\Debug\WatchZone.Helper.pdb

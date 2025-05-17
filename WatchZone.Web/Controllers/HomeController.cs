@@ -32,7 +32,7 @@ namespace WatchZone.Controllers
             return View();
         }
 
-        public ActionResult WatchDetail(string id, string type)
+		public ActionResult WatchDetail(string id, string type)
         {
 
             ViewBag.WatchId = id;
