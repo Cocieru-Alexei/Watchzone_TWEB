@@ -33,9 +33,18 @@
                     <li class="nav-item">
                         <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "LuxuryWatch" ? "active" : "")" href="@Url.Action("LuxuryWatch", "Home")">Luxury Watches</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Login" ? "active" : "")" href="@Url.Action("Login", "Auth")">Login</a>
-                    </li>
+                    @if (Request.Cookies["X-KEY"] == null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Login" ? "active" : "")" href="@Url.Action("Login", "Auth")">Login</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Logout", "Auth")">Logout</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>

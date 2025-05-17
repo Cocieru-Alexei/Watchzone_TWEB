@@ -92,5 +92,19 @@ namespace WatchZone.Controllers
 
 			return View();
 		}
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            if (Request.Cookies["X-KEY"] != null)
+            {
+                var cookie = new HttpCookie("X-KEY")
+                {
+                    Expires = DateTime.Now.AddDays(-1),
+                    Value = ""
+                };
+                Response.Cookies.Add(cookie);
+            }
+            return RedirectToAction("Index", "Home");
+        }
 	}
 }
