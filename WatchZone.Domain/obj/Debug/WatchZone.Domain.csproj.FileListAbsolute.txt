@@ -52,3 +52,12 @@ C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZone.Do
 C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZon.FBD5A40A.Up2Date
 C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZone.Domain.dll
 C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZone.Domain.pdb
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\bin\Debug\WatchZone.Domain.dll
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\bin\Debug\WatchZone.Domain.pdb
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\bin\Debug\WatchZone.Helper.dll
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\bin\Debug\WatchZone.Helper.pdb
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZone.Domain.csproj.AssemblyReference.cache
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZone.Domain.csproj.CoreCompileInputs.cache
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZon.FBD5A40A.Up2Date
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZone.Domain.dll
+C:\Users\liviu\Desktop\21\Watchzone_TWEB\WatchZone.Domain\obj\Debug\WatchZone.Domain.pdb

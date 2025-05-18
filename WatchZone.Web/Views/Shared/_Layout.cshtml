@@ -7,6 +7,8 @@
     <title>@ViewBag.Title - WatchZone</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     @*<link rel="stylesheet" href="~/Content/styles.css">*@
     @Scripts.Render("~/Content/css")
@@ -20,7 +22,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")" href="@Url.Action("Index", "Home")">Home</a>
                     </li>
@@ -36,6 +38,8 @@
                     <li class="nav-item">
                         <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "AdminPanel" ? "active" : "")" href="@Url.Action("AdminPanel", "Home")">Admin Panel</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav">
                     @if (Request.Cookies["X-KEY"] == null)
                     {
                         <li class="nav-item">
@@ -44,6 +48,17 @@
                     }
                     else
                     {
+                        var bl = new WatchZone.BusinessLogic.BussinesLogic();
+                        var session = bl.GetSessionBL();
+                        var user = session.GetUserByCookie(Request.Cookies["X-KEY"].Value);
+                        if (user != null)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-light">
+                                    <i class="fas fa-user"></i> @user.Username (@user.Level)
+                                </span>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("Logout", "Auth")">Logout</a>
                         </li>
