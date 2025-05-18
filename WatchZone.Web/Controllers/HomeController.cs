@@ -32,6 +32,15 @@ namespace WatchZone.Controllers
             return View();
         }
 
+        public ActionResult AdminPanel()
+        {
+            if (Request.Cookies["X-KEY"] == null)
+            {
+                return Content("<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>You must be logged in to access the admin panel.</p><a href='/Auth/Login' class='btn btn-primary'>Go to Login</a></div>");
+            }
+            return View();
+        }
+
 		public ActionResult WatchDetail(string id, string type)
         {
 
