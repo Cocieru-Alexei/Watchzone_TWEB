@@ -5,15 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WatchZone.Domain.Entities.User;
+using WatchZone.Domain.Enums;
+using WatchZone.Helper;
 
 namespace WatchZone.BusinessLogic.Database
 {
-    class UserContext : DbContext
+    public class UserContext : DbContext
     {
         public UserContext() : 
             base("name=WatchZone")
         {
-
+            // Seed admin user if none exists
+            if (!Users.Any())
+            {
+                var adminUser = new UDbTable
+                {
+                    Username = "admin",
+                    Password = LoginUtility.GenHash("admin123"),
+                    Email = "admin@watchzone.com",
+                    Level = URole.Admin,
+                    LastLogin = DateTime.UtcNow,
+                    LasIp = "127.0.0.1"
+                };
+                Users.Add(adminUser);
+                SaveChanges();
+            }
         }
 
         public virtual DbSet<UDbTable> Users { get; set; }

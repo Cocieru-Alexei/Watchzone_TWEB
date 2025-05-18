@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WatchZone.BusinessLogic;
+using WatchZone.BusinessLogic.Database;
+using WatchZone.Domain.Entities.User;
 
 namespace WatchZone.Controllers
 {
@@ -40,6 +43,22 @@ namespace WatchZone.Controllers
                 return accessResult;
             }
 
+            // Fetch user data
+            using (var db = new UserContext())
+            {
+                var users = db.Users.Select(u => new UserMinimal
+                {
+                    Id = u.Id,
+                    Username = u.Username,
+                    Email = u.Email,
+                    LastLogin = u.LastLogin,
+                    LasIp = u.LasIp,
+                    Level = u.Level
+                }).ToList();
+
+                ViewBag.Users = users;
+            }
+
             return View();
         }
 
@@ -61,7 +80,7 @@ namespace WatchZone.Controllers
 
             if (userRole != WatchZone.Domain.Enums.URole.Admin)
             {
-                return Content($"<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>Your role ({userRole}) does not have access to this page.</p><a href='/' class='btn btn-primary'>Go to Home</a></div>");
+                return Content("<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>You must be an administrator to access this page.</p><a href='/Home/Index' class='btn btn-primary'>Go to Home</a></div>");
             }
 
             return null;

@@ -81,3 +81,21 @@ C:\Users\liviu\Desktop\18 05\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\Wa
 C:\Users\liviu\Desktop\18 05\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\WatchZon.F077F56C.Up2Date
 C:\Users\liviu\Desktop\18 05\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\WatchZone.BusinessLogic.dll
 C:\Users\liviu\Desktop\18 05\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\WatchZone.BusinessLogic.pdb
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\WatchZone.BusinessLogic.dll.config
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\WatchZone.BusinessLogic.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\WatchZone.BusinessLogic.pdb
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\AutoMapper.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\EntityFramework.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\WatchZone.Domain.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\WatchZone.Helper.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\WatchZone.Domain.pdb
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\WatchZone.Helper.pdb
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\AutoMapper.xml
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\EntityFramework.xml
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\WatchZone.BusinessLogic.csproj.AssemblyReference.cache
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\WatchZone.BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\WatchZon.F077F56C.Up2Date
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\WatchZone.BusinessLogic.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.BusinessLogic\obj\Debug\WatchZone.BusinessLogic.pdb

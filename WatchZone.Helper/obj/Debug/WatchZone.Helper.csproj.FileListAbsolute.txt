@@ -22,3 +22,9 @@ C:\Users\liviu\Desktop\18 05\Watchzone_TWEB\WatchZone.Helper\obj\Debug\WatchZone
 C:\Users\liviu\Desktop\18 05\Watchzone_TWEB\WatchZone.Helper\obj\Debug\WatchZone.Helper.csproj.CoreCompileInputs.cache
 C:\Users\liviu\Desktop\18 05\Watchzone_TWEB\WatchZone.Helper\obj\Debug\WatchZone.Helper.dll
 C:\Users\liviu\Desktop\18 05\Watchzone_TWEB\WatchZone.Helper\obj\Debug\WatchZone.Helper.pdb
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Helper\bin\Debug\WatchZone.Helper.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Helper\bin\Debug\WatchZone.Helper.pdb
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Helper\obj\Debug\WatchZone.Helper.csproj.AssemblyReference.cache
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Helper\obj\Debug\WatchZone.Helper.csproj.CoreCompileInputs.cache
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Helper\obj\Debug\WatchZone.Helper.dll
+C:\Users\liviu\Desktop\20\Watchzone_TWEB\WatchZone.Helper\obj\Debug\WatchZone.Helper.pdb
