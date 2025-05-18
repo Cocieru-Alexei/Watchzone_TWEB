@@ -111,5 +111,19 @@ namespace WatchZone.Domain.Database
                 }
             }
         }
+
+        public async Task DeleteListingAsync(int listingsId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(
+                    "DELETE FROM Listings WHERE Listings_Id = @Listings_Id", connection))
+                {
+                    command.Parameters.AddWithValue("@Listings_Id", listingsId);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
     }
 } 

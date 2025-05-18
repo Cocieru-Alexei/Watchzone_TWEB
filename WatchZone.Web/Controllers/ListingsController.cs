@@ -210,5 +210,90 @@ namespace WatchZone.Web.Controllers
             }
             return View(model);
         }
+
+        // GET: Listings/Delete/5
+        public async Task<ActionResult> Delete(int id)
+        {
+            if (Request.Cookies["X-KEY"] == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            var db = new DatabaseContext();
+            var listing = await db.GetListingByIdAsync(id);
+            if (listing == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Get current user info
+            int currentUserId = -1;
+            var isAdmin = false;
+            if (Request.Cookies["X-KEY"] != null)
+            {
+                var xKey = Request.Cookies["X-KEY"].Value;
+                var username = WatchZone.Helper.CookieUtility.Validate(xKey);
+                using (var userDb = new WatchZone.BusinessLogic.Database.UserContext())
+                {
+                    var user = userDb.Users.FirstOrDefault(u => u.Username == username || u.Email == username);
+                    if (user != null)
+                    {
+                        currentUserId = user.Id;
+                        isAdmin = user.Level.ToString().ToLower() == "admin" || (int)user.Level == 1; // Adjust if needed
+                    }
+                }
+            }
+
+            // Allow if owner or admin
+            if (listing.UserId != currentUserId && !isAdmin)
+            {
+                return new HttpStatusCodeResult(403); // Forbidden
+            }
+
+            return View(listing);
+        }
+
+        // POST: Listings/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int id)
+        {
+            if (Request.Cookies["X-KEY"] == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            var db = new DatabaseContext();
+            var listing = await db.GetListingByIdAsync(id);
+            if (listing == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Get current user info
+            int currentUserId = -1;
+            var isAdmin = false;
+            if (Request.Cookies["X-KEY"] != null)
+            {
+                var xKey = Request.Cookies["X-KEY"].Value;
+                var username = WatchZone.Helper.CookieUtility.Validate(xKey);
+                using (var userDb = new WatchZone.BusinessLogic.Database.UserContext())
+                {
+                    var user = userDb.Users.FirstOrDefault(u => u.Username == username || u.Email == username);
+                    if (user != null)
+                    {
+                        currentUserId = user.Id;
+                        isAdmin = user.Level.ToString().ToLower() == "admin" || (int)user.Level == 1; // Adjust if needed
+                    }
+                }
+            }
+
+            // Allow if owner or admin
+            if (listing.UserId != currentUserId && !isAdmin)
+            {
+                return new HttpStatusCodeResult(403); // Forbidden
+            }
+
+            await db.DeleteListingAsync(id);
+            return RedirectToAction("Index");
+        }
     }
 } 

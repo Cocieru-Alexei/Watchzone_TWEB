@@ -28,6 +28,7 @@
                         @if (item.UserId == currentUserId)
                         {
                             @Html.ActionLink("Edit", "Edit", new { id = item.Listings_Id }, new { @class = "btn btn-warning ms-2" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Listings_Id }, new { @class = "btn btn-danger ms-2" })
                         }
                     </div>
                 </div>
