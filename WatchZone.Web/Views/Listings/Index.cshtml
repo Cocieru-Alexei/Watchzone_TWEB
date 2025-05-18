@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Watch Listings";
+    var currentUserId = ViewBag.CurrentUserId as int? ?? -1;
 }
 
 <div class="container">
@@ -23,9 +24,10 @@
                     <div class="card-body">
                         <h5 class="card-title">@item.Title</h5>
                         <p class="card-text"><strong>Price: $@item.Price</strong></p>
-                        @Html.ActionLink("View Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-                        @if (item.UserId == 1) { // TODO: Replace 1 with actual user ID from session
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning ms-2" })
+                        @Html.ActionLink("View Details", "Details", new { id = item.Listings_Id }, new { @class = "btn btn-info" })
+                        @if (item.UserId == currentUserId)
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Listings_Id }, new { @class = "btn btn-warning ms-2" })
                         }
                     </div>
                 </div>

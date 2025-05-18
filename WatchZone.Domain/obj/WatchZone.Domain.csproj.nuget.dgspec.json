@@ -1,0 +1,90 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Domain\\WatchZone.Domain.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Domain\\WatchZone.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Domain\\WatchZone.Domain.csproj",
+        "projectName": "WatchZone.Domain",
+        "projectPath": "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Domain\\WatchZone.Domain.csproj",
+        "packagesPath": "C:\\Users\\liviu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "UsingMicrosoftNETSdk": false,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\liviu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj": {
+                "projectPath": "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj"
+              }
+            }
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-arm64": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj",
+        "projectName": "WatchZone.Helper",
+        "projectPath": "C:\\Users\\liviu\\Desktop\\27\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    }
+  }
+}
