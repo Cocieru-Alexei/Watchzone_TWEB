@@ -9,6 +9,9 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using WatchZone.App_Start;
+using AutoMapper;
+using WatchZone.Domain.Entities.User;
+using WatchZone.Web.Models.Auth;
 
 namespace WatchZone.Web
 {
@@ -20,6 +23,13 @@ namespace WatchZone.Web
            AreaRegistration.RegisterAllAreas();
            RouteConfig.RegisterRoutes(RouteTable.Routes);
            BundleConfig.RegisterBundles(BundleTable.Bundles);
-		}
+
+           Mapper.Initialize(cfg =>
+           {
+               cfg.CreateMap<UDbTable, UserMinimal>();
+               cfg.CreateMap<UserDataLogin, ULoginData>();
+               cfg.CreateMap<UserDataRegister, URegisterData>();
+           });
+        }
     }
 }

@@ -8,8 +8,8 @@ namespace WatchZone.Domain.Enums
 {
     public enum URole
     {
-        User,
-        Moderator,
-        Admin
+        User = 0,
+        Admin = 1,
+        Moderator = 2
     }
 }

@@ -36,7 +36,6 @@ namespace WatchZone.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				Mapper.Initialize(cfg => cfg.CreateMap<UserDataLogin, ULoginData>());
 				var data = Mapper.Map<ULoginData>(login);
 
 				data.Credential = login.UserName;
@@ -67,7 +66,6 @@ namespace WatchZone.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				Mapper.Initialize(cfg => cfg.CreateMap<UserDataRegister, URegisterData>());
 				var data = Mapper.Map<URegisterData>(register);
 
 				data.Credential = register.UserName;

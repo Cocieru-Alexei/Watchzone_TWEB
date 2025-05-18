@@ -9,5 +9,6 @@ namespace WatchZone.BusinessLogic.Interface.Repositories
 		URegisterResp UserRegister(URegisterData data);
 		HttpCookie GenCookie(string loginCredential);
 		UserMinimal GetUserByCookie(string apiCookieValue);
+		WatchZone.Domain.Enums.URole? GetUserRoleByCookie(string apiCookieValue);
 	}
 }

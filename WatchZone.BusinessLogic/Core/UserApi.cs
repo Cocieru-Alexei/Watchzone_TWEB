@@ -8,6 +8,7 @@ using System.Web;
 using WatchZone.Domain.Entities.User;
 using WatchZone.Helper;
 using WatchZone.BusinessLogic.Database;
+using WatchZone.Domain.Enums;
 
 namespace WatchZone.BusinessLogic.Core
 {
@@ -154,6 +155,36 @@ namespace WatchZone.BusinessLogic.Core
 			return apiCookie;
 		}
 
+		internal URole? GetUserRoleByCookie(string cookie)
+		{
+			Session session;
+			UDbTable currentUser;
+
+			using (var db = new SessionContext())
+			{
+				session = db.Sessions.FirstOrDefault(s => s.CookieString == cookie && s.ExpireTime > DateTime.Now);
+			}
+
+			if (session == null) return null;
+
+			using (var db = new UserContext())
+			{
+				var validate = new EmailAddressAttribute();
+				if (validate.IsValid(session.Username))
+				{
+					currentUser = db.Users.FirstOrDefault(u => u.Email == session.Username);
+				}
+				else
+				{
+					currentUser = db.Users.FirstOrDefault(u => u.Username == session.Username);
+				}
+			}
+
+			if (currentUser == null) return null;
+
+			return currentUser.Level;
+		}
+
 		internal UserMinimal UserCookie(string cookie)
 		{
 			Session session;
@@ -179,7 +210,6 @@ namespace WatchZone.BusinessLogic.Core
 			}
 
 			if (curentUser == null) return null;
-			Mapper.Initialize(cfg => cfg.CreateMap<UDbTable, UserMinimal>());
 			var userminimal = Mapper.Map<UserMinimal>(curentUser);
 
 			return userminimal;

@@ -34,11 +34,37 @@ namespace WatchZone.Controllers
 
         public ActionResult AdminPanel()
         {
+            var accessResult = CheckAdminAccess();
+            if (accessResult != null)
+            {
+                return accessResult;
+            }
+
+            return View();
+        }
+
+        private ActionResult CheckAdminAccess()
+        {
             if (Request.Cookies["X-KEY"] == null)
             {
                 return Content("<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>You must be logged in to access the admin panel.</p><a href='/Auth/Login' class='btn btn-primary'>Go to Login</a></div>");
             }
-            return View();
+
+            var bl = new WatchZone.BusinessLogic.BussinesLogic();
+            var session = bl.GetSessionBL();
+            var userRole = session.GetUserRoleByCookie(Request.Cookies["X-KEY"].Value);
+
+            if (userRole == null)
+            {
+                return Content("<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>User session not found or invalid.</p><a href='/Auth/Login' class='btn btn-primary'>Go to Login</a></div>");
+            }
+
+            if (userRole != WatchZone.Domain.Enums.URole.Admin)
+            {
+                return Content($"<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>Your role ({userRole}) does not have access to this page.</p><a href='/' class='btn btn-primary'>Go to Home</a></div>");
+            }
+
+            return null;
         }
 
 		public ActionResult WatchDetail(string id, string type)

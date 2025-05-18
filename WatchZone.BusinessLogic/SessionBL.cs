@@ -26,5 +26,10 @@ namespace WatchZone.BusinessLogic
 		{
             return UserRegisterAction(data);
 		}
+
+        public new WatchZone.Domain.Enums.URole? GetUserRoleByCookie(string apiCookieValue)
+        {
+            return base.GetUserRoleByCookie(apiCookieValue);
+        }
 	}
 }
