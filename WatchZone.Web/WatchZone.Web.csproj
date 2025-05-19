@@ -212,11 +212,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListingsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\UserDataLogin.cs" />
     <Compile Include="Models\UserDataRegister.cs" />
     <Compile Include="Models\CreateListingViewModel.cs" />

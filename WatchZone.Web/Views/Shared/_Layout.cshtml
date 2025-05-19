@@ -1,4 +1,6 @@
 ﻿@using System.Web.Optimization
+@using WatchZone.Web.Models
+@using WatchZone.BusinessLogic
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,6 +45,28 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    @if (Request.Cookies["X-KEY"] != null)
+                    {
+                        var bl = new BussinesLogic();
+                        var session = bl.GetSessionBL();
+                        var user = session.GetUserByCookie(Request.Cookies["X-KEY"].Value);
+                        if (user != null)
+                        {
+                            var cartKey = $"Cart_{user.Id}";
+                            var cart = Session[cartKey] as Cart;
+                            var itemCount = cart?.Items.Sum(i => i.Quantity) ?? 0;
+                            
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Cart")">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    @if (itemCount > 0)
+                                    {
+                                        <span class="badge bg-danger">@itemCount</span>
+                                    }
+                                </a>
+                            </li>
+                        }
+                    }
                     @if (Request.Cookies["X-KEY"] == null)
                     {
                         <li class="nav-item">

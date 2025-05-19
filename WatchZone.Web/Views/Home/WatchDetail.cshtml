@@ -39,9 +39,17 @@
                 <div class="d-flex align-items-center mb-4">
                     <h3 class="price mb-0 me-4">@ViewBag.Price</h3>
                     <div class="d-grid gap-2 d-md-block">
-                        <button id="addToCartBtn" class="btn btn-primary visible-btn" data-action="add-to-cart">
-                            <i class="bi bi-cart-plus"></i> Add to Cart
-                        </button>
+                        @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                        {
+                            <input type="hidden" name="WatchId" value="@ViewBag.WatchId" />
+                            <input type="hidden" name="WatchName" value="@ViewBag.Title" />
+                            <input type="hidden" name="Price" value="@ViewBag.Price" />
+                            <input type="hidden" name="ImageUrl" value="@ViewBag.ImagePath" />
+                            <input type="hidden" name="Quantity" id="cartQuantity" value="1" />
+                            <button type="submit" class="btn btn-primary visible-btn">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                        }
                         <a href="@Url.Action(ViewBag.WatchType + "Watch", "Home")" class="btn btn-outline-secondary ms-2 visible-btn">
                             Back to Collection
                         </a>
@@ -94,11 +102,17 @@
         const decreaseBtn = document.getElementById('decreaseQty');
         const increaseBtn = document.getElementById('increaseQty');
         const quantityInput = document.getElementById('quantity');
+        const cartQuantity = document.getElementById('cartQuantity');
+
+        function updateCartQuantity() {
+            cartQuantity.value = quantityInput.value;
+        }
 
         decreaseBtn.addEventListener('click', function() {
             let value = parseInt(quantityInput.value);
             if (value > 1) {
                 quantityInput.value = value - 1;
+                updateCartQuantity();
             }
         });
 
@@ -106,15 +120,15 @@
             let value = parseInt(quantityInput.value);
             if (value < 10) {
                 quantityInput.value = value + 1;
+                updateCartQuantity();
             }
         });
 
-        // Add to cart button functionality
-        const addToCartBtn = document.getElementById('addToCartBtn');
-
-        addToCartBtn.addEventListener('click', function() {
-            const quantity = parseInt(quantityInput.value);
-            alert(`${quantity} ${quantity > 1 ? 'items' : 'item'} of ${document.querySelector('h2').textContent} added to cart!`);
+        quantityInput.addEventListener('change', function() {
+            let value = parseInt(this.value);
+            if (value < 1) this.value = 1;
+            if (value > 10) this.value = 10;
+            updateCartQuantity();
         });
     });
     </script>

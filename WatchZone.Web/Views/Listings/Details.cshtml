@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = Model.Title;
+    var isLoggedIn = Request.Cookies["X-KEY"] != null;
 }
 
 <div class="container">
@@ -19,10 +20,84 @@
             <hr />
             <h5>Description</h5>
             <p>@Model.Description</p>
+
+            <!-- Add to Cart Section -->
+            <div class="mt-4">
+                @if (isLoggedIn)
+                {
+                    using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                    {
+                        <input type="hidden" name="WatchId" value="@Model.Listings_Id" />
+                        <input type="hidden" name="WatchName" value="@Model.Title" />
+                        <input type="hidden" name="Price" value="@Model.Price" />
+                        <input type="hidden" name="ImageUrl" value="@Model.ImageUrl" />
+                        <input type="hidden" name="Quantity" id="cartQuantity" value="1" />
+
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity:</label>
+                            <div class="input-group" style="width: 150px;">
+                                <button class="btn btn-outline-secondary" type="button" id="decreaseQty">-</button>
+                                <input type="number" class="form-control text-center" id="quantity" value="1" min="1" max="10">
+                                <button class="btn btn-outline-secondary" type="button" id="increaseQty">+</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> Please <a href="@Url.Action("Login", "Auth")" class="alert-link">login</a> to add items to your cart.
+                    </div>
+                }
+            </div>
         </div>
     </div>
 
     <div class="mt-4">
         @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
     </div>
-</div> 
+</div>
+
+@section scripts {
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const decreaseBtn = document.getElementById('decreaseQty');
+        const increaseBtn = document.getElementById('increaseQty');
+        const quantityInput = document.getElementById('quantity');
+        const cartQuantity = document.getElementById('cartQuantity');
+
+        if (decreaseBtn && increaseBtn && quantityInput && cartQuantity) {
+            function updateCartQuantity() {
+                cartQuantity.value = quantityInput.value;
+            }
+
+            decreaseBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value > 1) {
+                    quantityInput.value = value - 1;
+                    updateCartQuantity();
+                }
+            });
+
+            increaseBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value < 10) {
+                    quantityInput.value = value + 1;
+                    updateCartQuantity();
+                }
+            });
+
+            quantityInput.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                if (value < 1) this.value = 1;
+                if (value > 10) this.value = 10;
+                updateCartQuantity();
+            });
+        }
+    });
+    </script>
+} 
