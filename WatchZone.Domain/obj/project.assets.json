@@ -5150,11 +5150,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\liviu\\Desktop\\29\\Watchzone_TWEB\\WatchZone.Domain\\WatchZone.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\liviu\\Desktop\\22\\Watchzone_TWEB\\WatchZone.Domain\\WatchZone.Domain.csproj",
       "projectName": "WatchZone.Domain",
-      "projectPath": "C:\\Users\\liviu\\Desktop\\29\\Watchzone_TWEB\\WatchZone.Domain\\WatchZone.Domain.csproj",
+      "projectPath": "C:\\Users\\liviu\\Desktop\\22\\Watchzone_TWEB\\WatchZone.Domain\\WatchZone.Domain.csproj",
       "packagesPath": "C:\\Users\\liviu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\liviu\\Desktop\\29\\Watchzone_TWEB\\WatchZone.Domain\\obj\\",
+      "outputPath": "C:\\Users\\liviu\\Desktop\\22\\Watchzone_TWEB\\WatchZone.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "UsingMicrosoftNETSdk": false,
@@ -5176,8 +5176,8 @@
       "frameworks": {
         "net472": {
           "projectReferences": {
-            "C:\\Users\\liviu\\Desktop\\29\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj": {
-              "projectPath": "C:\\Users\\liviu\\Desktop\\29\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj"
+            "C:\\Users\\liviu\\Desktop\\22\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj": {
+              "projectPath": "C:\\Users\\liviu\\Desktop\\22\\Watchzone_TWEB\\WatchZone.Helper\\WatchZone.Helper.csproj"
             }
           }
         }

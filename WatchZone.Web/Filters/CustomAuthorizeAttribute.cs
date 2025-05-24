@@ -13,8 +13,8 @@ namespace WatchZone.Web.Filters
                 return false;
 
             var bl = new BussinesLogic();
-            var session = bl.GetSessionBL();
-            var user = session.GetUserByCookie(cookie.Value);
+            var authService = bl.GetAuthService();
+            var user = authService.GetUserByCookie(cookie.Value);
             return user != null;
         }
 

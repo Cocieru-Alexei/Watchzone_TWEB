@@ -48,8 +48,8 @@
                     @if (Request.Cookies["X-KEY"] != null)
                     {
                         var bl = new BussinesLogic();
-                        var session = bl.GetSessionBL();
-                        var user = session.GetUserByCookie(Request.Cookies["X-KEY"].Value);
+                        var authService = bl.GetAuthService();
+                        var user = authService.GetUserByCookie(Request.Cookies["X-KEY"].Value);
                         if (user != null)
                         {
                             var cartKey = $"Cart_{user.Id}";
@@ -76,8 +76,8 @@
                     else
                     {
                         var bl = new WatchZone.BusinessLogic.BussinesLogic();
-                        var session = bl.GetSessionBL();
-                        var user = session.GetUserByCookie(Request.Cookies["X-KEY"].Value);
+                        var authService = bl.GetAuthService();
+                        var user = authService.GetUserByCookie(Request.Cookies["X-KEY"].Value);
                         if (user != null)
                         {
                             <li class="nav-item">

@@ -9,6 +9,8 @@ using WatchZone.Domain.Entities.User;
 using WatchZone.Helper;
 using WatchZone.BusinessLogic.Database;
 using WatchZone.Domain.Enums;
+using WatchZone.Domain.Model.User;
+using WatchZone.BusinessLogic.Interface;
 
 namespace WatchZone.BusinessLogic.Core
 {
@@ -213,6 +215,33 @@ namespace WatchZone.BusinessLogic.Core
 			var userminimal = Mapper.Map<UserMinimal>(curentUser);
 
 			return userminimal;
+		}
+
+		internal string UserAuthLogicAction(UserLoginDTO data, IErrorHandler errorHandler = null)
+		{
+			try
+			{
+				using (var context = new UserContext())
+				{
+					var user = context.Users.FirstOrDefault(u => 
+						(u.Username == data.UserName || u.Email == data.UserName) &&
+						u.Password == data.Password);
+
+					if (user != null)
+					{
+						errorHandler?.LogInfo($"User {data.UserName} authenticated successfully");
+						return "Authentication successful";
+					}
+
+					errorHandler?.LogWarning($"Failed authentication attempt for {data.UserName}");
+					return "Invalid credentials";
+				}
+			}
+			catch (Exception ex)
+			{
+				errorHandler?.LogError(ex, $"Error during authentication for {data.UserName}");
+				return "Authentication error occurred";
+			}
 		}
 	}
 } 

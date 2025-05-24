@@ -66,10 +66,16 @@
     <Compile Include="Interface\IAuth.cs" />
     <Compile Include="Interface\IBasketService.cs" />
     <Compile Include="Interface\ISession.cs" />
+    <Compile Include="Interface\IErrorHandler.cs" />
+    <Compile Include="Interface\IListingService.cs" />
+    <Compile Include="Interface\IUserService.cs" />
     <Compile Include="Interface\Repositories\IBasketRepository.cs" />
     <Compile Include="Interface\Repositories\IProductRepository.cs" />
     <Compile Include="Core\UserApi.cs" />
     <Compile Include="BL Struct\AuthBL.cs" />
+    <Compile Include="BL Struct\ErrorHandlerBL.cs" />
+    <Compile Include="BL Struct\ListingServiceBL.cs" />
+    <Compile Include="BL Struct\UserServiceBL.cs" />
     <Compile Include="BL Struct\Basket\BasketService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionBL.cs" />

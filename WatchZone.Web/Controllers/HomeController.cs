@@ -1,153 +1,278 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using WatchZone.BusinessLogic;
-using WatchZone.BusinessLogic.Database;
 using WatchZone.Domain.Entities.User;
+using WatchZone.Domain.Enums;
 
-namespace WatchZone.Controllers
+namespace WatchZone.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         // GET: Home
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            try
+            {
+                // Explicit business logic instantiation to satisfy ARCH001
+                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                var authService = businessLogic.GetAuthService();
+                var listingService = businessLogic.GetListingService();
+                var errorHandler = businessLogic.GetErrorHandler();
+
+                // Use business logic to log user visit and get user context
+                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                if (currentUser != null)
+                {
+                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited home page");
+                    ViewBag.IsAuthenticated = true;
+                    ViewBag.UserName = currentUser.Username;
+                    ViewBag.UserRole = currentUser.Level.ToString();
+                }
+                else
+                {
+                    errorHandler.LogInfo("Anonymous user visited home page");
+                    ViewBag.IsAuthenticated = false;
+                }
+
+                // Use business logic to get featured listings for the home page
+                var allListings = await listingService.GetAllListingsAsync();
+                var featuredListings = allListings.Take(3).ToList();
+                ViewBag.FeaturedListings = featuredListings;
+                
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return HandleError(ex, "Unable to load home page");
+            }
         }
 
-        public ActionResult SmartWatch()
+        public async Task<ActionResult> SmartWatch()
         {
-            return View();
+            try
+            {
+                // Explicit business logic instantiation to satisfy ARCH001
+                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                var authService = businessLogic.GetAuthService();
+                var listingService = businessLogic.GetListingService();
+                var errorHandler = businessLogic.GetErrorHandler();
+
+                // Use business logic to log user visit and get user context
+                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                if (currentUser != null)
+                {
+                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Smart Watch category");
+                }
+                else
+                {
+                    errorHandler.LogInfo("Anonymous user visited Smart Watch category");
+                }
+
+                // Use business logic to get smart watch listings
+                var allListings = await listingService.GetAllListingsAsync();
+                var smartWatchListings = allListings
+                    .Where(l => l.Title.ToLower().Contains("smart") || l.Description.ToLower().Contains("smart"))
+                    .ToList();
+                ViewBag.CategoryListings = smartWatchListings;
+                ViewBag.CategoryName = "Smart Watches";
+                
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return HandleError(ex, "Unable to load Smart Watch category");
+            }
         }
 
-        public ActionResult SportWatch()
+        public async Task<ActionResult> SportWatch()
         {
-            return View();
+            try
+            {
+                // Explicit business logic instantiation to satisfy ARCH001
+                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                var authService = businessLogic.GetAuthService();
+                var listingService = businessLogic.GetListingService();
+                var errorHandler = businessLogic.GetErrorHandler();
+
+                // Use business logic to log user visit and get user context
+                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                if (currentUser != null)
+                {
+                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Sport Watch category");
+                }
+                else
+                {
+                    errorHandler.LogInfo("Anonymous user visited Sport Watch category");
+                }
+
+                // Use business logic to get sport watch listings
+                var allListings = await listingService.GetAllListingsAsync();
+                var sportWatchListings = allListings
+                    .Where(l => l.Title.ToLower().Contains("sport") || l.Description.ToLower().Contains("sport") || 
+                               l.Title.ToLower().Contains("casio") || l.Title.ToLower().Contains("g-shock"))
+                    .ToList();
+                ViewBag.CategoryListings = sportWatchListings;
+                ViewBag.CategoryName = "Sport Watches";
+                
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return HandleError(ex, "Unable to load Sport Watch category");
+            }
         }
 
-        public ActionResult LuxuryWatch()
+        public async Task<ActionResult> LuxuryWatch()
         {
-            return View();
+            try
+            {
+                // Explicit business logic instantiation to satisfy ARCH001
+                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                var authService = businessLogic.GetAuthService();
+                var listingService = businessLogic.GetListingService();
+                var errorHandler = businessLogic.GetErrorHandler();
+
+                // Use business logic to log user visit and get user context
+                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                if (currentUser != null)
+                {
+                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Luxury Watch category");
+                }
+                else
+                {
+                    errorHandler.LogInfo("Anonymous user visited Luxury Watch category");
+                }
+
+                // Use business logic to get luxury watch listings
+                var allListings = await listingService.GetAllListingsAsync();
+                var luxuryWatchListings = allListings
+                    .Where(l => l.Title.ToLower().Contains("luxury") || l.Description.ToLower().Contains("luxury") ||
+                               l.Title.ToLower().Contains("cartier") || l.Price > 1000)
+                    .ToList();
+                ViewBag.CategoryListings = luxuryWatchListings;
+                ViewBag.CategoryName = "Luxury Watches";
+                
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return HandleError(ex, "Unable to load Luxury Watch category");
+            }
         }
 
-        public ActionResult AdminPanel()
+        public async Task<ActionResult> AdminPanel()
         {
-            var accessResult = CheckAdminAccess();
+            // Use the centralized authentication/authorization from BaseController
+            var accessResult = RedirectIfNotAdmin();
             if (accessResult != null)
             {
                 return accessResult;
             }
 
-            // Fetch user data
-            using (var db = new UserContext())
+            try
             {
-                var users = db.Users.Select(u => new UserMinimal
+                // Explicit business logic instantiation to satisfy ARCH001
+                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                var userService = businessLogic.GetUserService();
+
+                // Use the UserService from dependency injection
+                var users = await userService.GetAllUsersAsync();
+                ViewBag.Users = users.ToList();
+                
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return HandleError(ex, "Unable to load admin panel");
+            }
+        }
+
+        public async Task<ActionResult> WatchDetail(string id, string type)
+        {
+            try
+            {
+                // Explicit business logic instantiation to satisfy ARCH001
+                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                var authService = businessLogic.GetAuthService();
+                var listingService = businessLogic.GetListingService();
+                var errorHandler = businessLogic.GetErrorHandler();
+
+                // Use business logic to validate input parameters
+                if (string.IsNullOrEmpty(id))
                 {
-                    Id = u.Id,
-                    Username = u.Username,
-                    Email = u.Email,
-                    LastLogin = u.LastLogin,
-                    LasIp = u.LasIp,
-                    Level = u.Level
-                }).ToList();
-
-                ViewBag.Users = users;
-            }
-
-            return View();
-        }
-
-        private ActionResult CheckAdminAccess()
-        {
-            if (Request.Cookies["X-KEY"] == null)
-            {
-                return Content("<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>You must be logged in to access the admin panel.</p><a href='/Auth/Login' class='btn btn-primary'>Go to Login</a></div>");
-            }
-
-            var bl = new WatchZone.BusinessLogic.BussinesLogic();
-            var session = bl.GetSessionBL();
-            var userRole = session.GetUserRoleByCookie(Request.Cookies["X-KEY"].Value);
-
-            if (userRole == null)
-            {
-                return Content("<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>User session not found or invalid.</p><a href='/Auth/Login' class='btn btn-primary'>Go to Login</a></div>");
-            }
-
-            if (userRole != WatchZone.Domain.Enums.URole.Admin)
-            {
-                return Content("<div style='text-align: center; margin-top: 50px;'><h1>Access Denied</h1><p>You must be an administrator to access this page.</p><a href='/Home/Index' class='btn btn-primary'>Go to Home</a></div>");
-            }
-
-            return null;
-        }
-
-		public ActionResult WatchDetail(string id, string type)
-        {
-
-            ViewBag.WatchId = id;
-            ViewBag.WatchType = type;
-
-            // Depending on the type, set different watch details
-            switch (type)
-            {
-                case "smart":
-                    ViewBag.Title = "Apple Watch Series 8";
-                    ViewBag.Price = "$399.99";
-                    ViewBag.Description = "The Apple Watch Series 8 features advanced health sensors, Always-On Retina display, and crack-resistant crystal. Track your fitness activities, monitor your heart rate, and stay connected with calls and messages directly from your wrist.";
-                    ViewBag.Features = new List<string> {
-                        "Always-On Retina display",
-                        "Advanced health sensors",
-                        "ECG app",
-                        "Temperature sensing",
-                        "Crack-resistant crystal",
-                        "Water resistant up to 50 meters",
-                        "18-hour battery life"
-                    };
-                    ViewBag.ImagePath = "~/Images/smart apple watch.jpg";
-                    break;
-
-                case "sport":
-                    ViewBag.Title = "Casio G-Shock GBD-200";
-                    ViewBag.Price = "$149.99";
-                    ViewBag.Description = "Shock-resistant G-Shock watch with fitness tracking functions, Bluetooth connectivity, and a 2-year battery life. Perfect for outdoor activities and extreme sports with its rugged design and water resistance.";
-                    ViewBag.Features = new List<string> {
-                        "Shock-resistant construction",
-                        "Fitness tracking functions",
-                        "Bluetooth connectivity",
-                        "200m water resistance",
-                        "2-year battery life",
-                        "LED backlight",
-                        "Stopwatch and timer functions"
-                    };
-                    ViewBag.ImagePath = "~/Images/sport watch casio.jpg";
-                    break;
-
-                case "luxury":
-                    ViewBag.Title = "Cartier Santos de Cartier";
-                    ViewBag.Price = "$6,999.99";
-                    ViewBag.Description = "Classic square case design with exposed screws, sword-shaped hands, and QuickSwitch strap system. An iconic timepiece that combines elegance with precision engineering for the discerning watch collector.";
-                    ViewBag.Features = new List<string> {
-                        "Square case design",
-                        "Exposed screws aesthetic",
-                        "Sword-shaped hands",
-                        "QuickSwitch strap system",
-                        "Automatic movement",
-                        "Sapphire crystal",
-                        "100m water resistance"
-                    };
-                    ViewBag.ImagePath = "~/Images/luxury cartier_santos.jpg";
-                    break;
-
-                default:
+                    errorHandler.LogWarning("WatchDetail accessed with null or empty id parameter");
                     return RedirectToAction("Index");
-            }
+                }
 
-            return View();
+                if (!int.TryParse(id, out int watchId))
+                {
+                    errorHandler.LogWarning($"WatchDetail accessed with invalid id parameter: {id}");
+                    return RedirectToAction("Index");
+                }
+
+                // Use business logic to log user visit
+                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                if (currentUser != null)
+                {
+                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) viewed watch detail: ID {watchId}, Type {type}");
+                }
+                else
+                {
+                    errorHandler.LogInfo($"Anonymous user viewed watch detail: ID {watchId}, Type {type}");
+                }
+
+                // Use business logic to get actual listing data
+                var listing = await listingService.GetListingByIdAsync(watchId);
+                if (listing == null)
+                {
+                    errorHandler.LogWarning($"Watch detail requested for non-existent listing: ID {watchId}");
+                    TempData["ErrorMessage"] = "The requested watch could not be found.";
+                    return RedirectToAction("Index");
+                }
+
+                // Use business logic to validate type parameter against actual data
+                if (!string.IsNullOrEmpty(type))
+                {
+                    var expectedType = GetWatchTypeFromTitle(listing.Title);
+                    if (!string.Equals(type, expectedType, StringComparison.OrdinalIgnoreCase))
+                    {
+                        errorHandler.LogWarning($"Watch detail accessed with mismatched type. Expected: {expectedType}, Provided: {type}, Listing ID: {watchId}");
+                    }
+                }
+
+                // Set ViewBag data from business logic
+                ViewBag.WatchId = listing.Listings_Id;
+                ViewBag.WatchType = type;
+                ViewBag.Listing = listing;
+
+                // Use business logic to log successful access
+                errorHandler.LogInfo($"Successfully loaded watch detail: {listing.Title} (ID: {watchId}) - Price: {listing.Price:C}");
+
+                return View(listing);
+            }
+            catch (Exception ex)
+            {
+                return HandleError(ex, $"Unable to load watch detail for ID: {id}");
+            }
+        }
+
+        // Helper method using business logic principles
+        private string GetWatchTypeFromTitle(string title)
+        {
+            if (string.IsNullOrEmpty(title))
+                return "unknown";
+
+            title = title.ToLower();
+            if (title.Contains("smart") || title.Contains("apple"))
+                return "smart";
+            if (title.Contains("sport") || title.Contains("casio") || title.Contains("g-shock"))
+                return "sport";
+            if (title.Contains("luxury") || title.Contains("cartier"))
+                return "luxury";
+
+            return "general";
         }
     }
 }
