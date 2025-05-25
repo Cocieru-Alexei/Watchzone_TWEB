@@ -1,0 +1,143 @@
+@model WatchZone.Web.Models.Profile.ProfileViewModel
+
+@{
+    ViewBag.Title = "My Profile";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><i class="fas fa-user"></i> My Profile</h2>
+            
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- User Details Section -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-user-circle"></i> User Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Username:</strong>
+                        <p class="text-muted">@Model.User.Username</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Email:</strong>
+                        <p class="text-muted">@Model.User.Email</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Account Level:</strong>
+                        <span class="badge bg-primary">@Model.User.Level</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Last Login:</strong>
+                        <p class="text-muted">@Model.User.LastLogin.ToString("MMM dd, yyyy HH:mm")</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Last IP:</strong>
+                        <p class="text-muted">@Model.User.LasIp</p>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <a href="@Url.Action("ChangePassword", "Profile")" class="btn btn-warning">
+                            <i class="fas fa-key"></i> Change Password
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Listings Section -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5><i class="fas fa-list"></i> My Listings (@Model.UserListings.Count)</h5>
+                    <a href="@Url.Action("Create", "Listings")" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Add New Listing
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.UserListings.Any())
+                    {
+                        <div class="row">
+                            @foreach (var listing in Model.UserListings)
+                            {
+                                var primaryPhoto = listing.Photos?.FirstOrDefault(p => p.IsPrimary);
+                                var displayImage = primaryPhoto?.FilePath ?? listing.ImageUrl;
+                                
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        @if (!string.IsNullOrEmpty(displayImage))
+                                        {
+                                            <img src="@displayImage" class="card-img-top" alt="@listing.Title" style="height: 150px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                                                <i class="fas fa-image fa-2x text-muted"></i>
+                                            </div>
+                                        }
+                                        
+                                        @if (listing.Photos != null && listing.Photos.Any())
+                                        {
+                                            <div class="position-absolute" style="top: 10px; right: 10px;">
+                                                <span class="badge bg-primary">@listing.Photos.Count() photos</span>
+                                            </div>
+                                        }
+                                        
+                                        <div class="card-body">
+                                            <h6 class="card-title">@listing.Title</h6>
+                                            <p class="card-text text-muted small">
+                                                @(listing.Description.Length > 80 ? listing.Description.Substring(0, 80) + "..." : listing.Description)
+                                            </p>
+                                            <p class="card-text">
+                                                <strong class="text-success">$@listing.Price.ToString("N2")</strong>
+                                            </p>
+                                            <p class="card-text">
+                                                <small class="text-muted">Created: @listing.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                            </p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="btn-group w-100" role="group">
+                                                <a href="@Url.Action("Details", "Listings", new { id = listing.Listings_Id })" class="btn btn-outline-primary btn-sm">
+                                                    <i class="fas fa-eye"></i> View
+                                                </a>
+                                                <a href="@Url.Action("Edit", "Listings", new { id = listing.Listings_Id })" class="btn btn-outline-secondary btn-sm">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <a href="@Url.Action("Delete", "Listings", new { id = listing.Listings_Id })" class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No listings yet</h5>
+                            <p class="text-muted">You haven't created any listings yet. Start by creating your first listing!</p>
+                            <a href="@Url.Action("Create", "Listings")" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Create Your First Listing
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

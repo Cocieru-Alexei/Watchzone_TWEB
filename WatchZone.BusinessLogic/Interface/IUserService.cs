@@ -12,5 +12,7 @@ namespace WatchZone.BusinessLogic.Interface
         Task<bool> UpdateUserAsync(UserMinimal user);
         Task<bool> DeleteUserAsync(int id);
         Task<bool> UserExistsAsync(string username, string email);
+        bool VerifyPassword(int userId, string plainPassword);
+        bool UpdatePassword(int userId, string newPlainPassword);
     }
 } 

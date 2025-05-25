@@ -177,5 +177,77 @@ namespace WatchZone.BusinessLogic.BL_Struct
                 return true; // Assume exists to be safe
             }
         }
+
+        public bool VerifyPassword(int userId, string plainPassword)
+        {
+            try
+            {
+                using (var context = new UserContext())
+                {
+                    var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                    if (user != null)
+                    {
+                        // Check if the user credential is an email (stored as plain text) or username (stored as hashed)
+                        var validate = new System.ComponentModel.DataAnnotations.EmailAddressAttribute();
+                        if (validate.IsValid(user.Email) && user.Username == user.Email)
+                        {
+                            // Email login - password stored as plain text
+                            return user.Password == plainPassword;
+                        }
+                        else
+                        {
+                            // Username login - password stored as hashed
+                            var hashedPassword = WatchZone.Helper.LoginUtility.GenHash(plainPassword);
+                            return user.Password == hashedPassword;
+                        }
+                    }
+                    _errorHandler.LogWarning($"User not found for password verification: ID {userId}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error verifying password for user ID: {userId}");
+                return false;
+            }
+        }
+
+        public bool UpdatePassword(int userId, string newPlainPassword)
+        {
+            try
+            {
+                using (var context = new UserContext())
+                {
+                    var user = context.Users.FirstOrDefault(u => u.Id == userId);
+                    if (user != null)
+                    {
+                        // Check if the user credential is an email (stored as plain text) or username (stored as hashed)
+                        var validate = new System.ComponentModel.DataAnnotations.EmailAddressAttribute();
+                        if (validate.IsValid(user.Email) && user.Username == user.Email)
+                        {
+                            // Email login - store password as plain text
+                            user.Password = newPlainPassword;
+                        }
+                        else
+                        {
+                            // Username login - store password as hashed
+                            user.Password = WatchZone.Helper.LoginUtility.GenHash(newPlainPassword);
+                        }
+                        
+                        var result = context.SaveChanges();
+                        _errorHandler.LogInfo($"Password updated for user ID: {userId}");
+                        return result > 0;
+                    }
+                    
+                    _errorHandler.LogWarning($"User not found for password update: ID {userId}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error updating password for user ID: {userId}");
+                return false;
+            }
+        }
     }
 } 
