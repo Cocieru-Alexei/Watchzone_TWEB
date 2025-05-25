@@ -1,0 +1,305 @@
+@{
+    ViewBag.Title = "My Reviews";
+    var reviewsIWrote = ViewBag.ReviewsIWrote as List<WatchZone.Domain.Model.Review>;
+    var reviewsAboutMe = ViewBag.ReviewsAboutMe as List<WatchZone.Domain.Model.Review>;
+    var myReviewSummary = ViewBag.MyReviewSummary as WatchZone.Domain.Model.ReviewSummary;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>My Reviews</h2>
+                <a href="@Url.Action("ReviewableItems", "Review")" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Write New Review
+                </a>
+            </div>
+            
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs" id="reviewTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="my-reviews-tab" data-bs-toggle="tab" data-bs-target="#my-reviews" type="button" role="tab">
+                        <i class="fas fa-edit me-2"></i>Reviews I Wrote (@(reviewsIWrote?.Count ?? 0))
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="about-me-tab" data-bs-toggle="tab" data-bs-target="#about-me" type="button" role="tab">
+                        <i class="fas fa-star me-2"></i>Reviews About Me (@(reviewsAboutMe?.Count ?? 0))
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="reviewTabsContent">
+                <!-- Reviews I Wrote Tab -->
+                <div class="tab-pane fade show active" id="my-reviews" role="tabpanel">
+                    <div class="mt-4">
+                        @if (reviewsIWrote != null && reviewsIWrote.Count > 0)
+                        {
+                            <div class="row">
+                                @foreach (var review in reviewsIWrote)
+                                {
+                                    <div class="col-12 mb-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <div class="star-display me-3">
+                                                                @for (int i = 1; i <= 5; i++)
+                                                                {
+                                                                    if (i <= review.Rating)
+                                                                    {
+                                                                        <i class="fas fa-star text-warning"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="far fa-star text-muted"></i>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                            <span class="badge bg-primary">@review.Rating/5</span>
+                                                        </div>
+                                                        
+                                                        @if (!string.IsNullOrEmpty(review.Comment))
+                                                        {
+                                                            <p class="card-text">@review.Comment</p>
+                                                        }
+                                                        
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-calendar me-1"></i>
+                                                            Reviewed on @review.CreatedAt.ToString("MMM dd, yyyy")
+                                                            @if (review.UpdatedAt.HasValue)
+                                                            {
+                                                                <span class="ms-2">
+                                                                    <i class="fas fa-edit me-1"></i>
+                                                                    Updated @review.UpdatedAt.Value.ToString("MMM dd, yyyy")
+                                                                </span>
+                                                            }
+                                                        </small>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4 text-md-end">
+                                                        <div class="btn-group" role="group">
+                                                            <a href="@Url.Action("Edit", "Review", new { id = review.ReviewId })" 
+                                                               class="btn btn-outline-primary btn-sm">
+                                                                <i class="fas fa-edit me-1"></i>Edit
+                                                            </a>
+                                                            
+                                                            <button type="button" class="btn btn-outline-danger btn-sm" 
+                                                                    data-bs-toggle="modal" data-bs-target="#deleteModal@(review.ReviewId)">
+                                                                <i class="fas fa-trash me-1"></i>Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Delete Confirmation Modal -->
+                                        <div class="modal fade" id="deleteModal@(review.ReviewId)" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Confirm Delete</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete this review? This action cannot be undone.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <form action="@Url.Action("Delete", "Review")" method="post" class="d-inline">
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" name="id" value="@review.ReviewId" />
+                                                            <button type="submit" class="btn btn-danger">Delete Review</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <i class="fas fa-star fa-4x text-muted mb-3"></i>
+                                <h4>No Reviews Yet</h4>
+                                <p class="text-muted">You haven't written any reviews yet. Purchase items to start reviewing sellers.</p>
+                                <a href="@Url.Action("ReviewableItems", "Review")" class="btn btn-primary me-2">
+                                    <i class="fas fa-plus me-2"></i>Write Review
+                                </a>
+                                <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary">
+                                    <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Reviews About Me Tab -->
+                <div class="tab-pane fade" id="about-me" role="tabpanel">
+                    <div class="mt-4">
+                        @if (myReviewSummary != null && myReviewSummary.TotalReviews > 0)
+                        {
+                            <!-- Review Summary -->
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-chart-bar me-2"></i>My Seller Rating Summary</h5>
+                                    <div class="row">
+                                        <div class="col-md-4 text-center">
+                                            <div class="display-4 text-warning">@myReviewSummary.AverageRating.ToString("F1")</div>
+                                            <div class="star-display mb-2">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    if (i <= Math.Round(myReviewSummary.AverageRating))
+                                                    {
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="far fa-star text-muted"></i>
+                                                    }
+                                                }
+                                            </div>
+                                            <p class="text-muted">@myReviewSummary.TotalReviews total reviews</p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="rating-breakdown">
+                                                @for (int star = 5; star >= 1; star--)
+                                                {
+                                                    var count = star == 5 ? myReviewSummary.FiveStarCount :
+                                                               star == 4 ? myReviewSummary.FourStarCount :
+                                                               star == 3 ? myReviewSummary.ThreeStarCount :
+                                                               star == 2 ? myReviewSummary.TwoStarCount :
+                                                               myReviewSummary.OneStarCount;
+                                                    var percentage = myReviewSummary.TotalReviews > 0 ? (count * 100.0 / myReviewSummary.TotalReviews) : 0;
+                                                    
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="me-2">@star <i class="fas fa-star text-warning"></i></span>
+                                                        <div class="progress flex-grow-1 me-2" style="height: 20px;">
+                                                            <div class="progress-bar bg-warning" style="width: @percentage%"></div>
+                                                        </div>
+                                                        <span class="text-muted">@count</span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (reviewsAboutMe != null && reviewsAboutMe.Count > 0)
+                        {
+                            <div class="row">
+                                @foreach (var review in reviewsAboutMe)
+                                {
+                                    <div class="col-12 mb-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <div class="star-display me-3">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            if (i <= review.Rating)
+                                                            {
+                                                                <i class="fas fa-star text-warning"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="far fa-star text-muted"></i>
+                                                            }
+                                                        }
+                                                    </div>
+                                                    <span class="badge bg-success">@review.Rating/5</span>
+                                                    <span class="ms-auto text-muted">
+                                                        <i class="fas fa-user me-1"></i>Reviewer ID: @review.ReviewerId
+                                                    </span>
+                                                </div>
+                                                
+                                                @if (!string.IsNullOrEmpty(review.Comment))
+                                                {
+                                                    <p class="card-text">@review.Comment</p>
+                                                }
+                                                
+                                                <small class="text-muted">
+                                                    <i class="fas fa-calendar me-1"></i>
+                                                    Reviewed on @review.CreatedAt.ToString("MMM dd, yyyy")
+                                                    <span class="ms-3">
+                                                        <i class="fas fa-box me-1"></i>
+                                                        Listing ID: @review.ListingId
+                                                    </span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <i class="fas fa-store fa-4x text-muted mb-3"></i>
+                                <h4>No Reviews About You Yet</h4>
+                                <p class="text-muted">You haven't received any reviews as a seller yet. Start selling items to receive reviews from buyers.</p>
+                                <a href="@Url.Action("Create", "Listings")" class="btn btn-primary me-2">
+                                    <i class="fas fa-plus me-2"></i>Create Listing
+                                </a>
+                                <a href="@Url.Action("Index", "Listings")" class="btn btn-outline-primary">
+                                    <i class="fas fa-list me-2"></i>View My Listings
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.star-display {
+    font-size: 1.2rem;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rating-breakdown .progress {
+    height: 20px;
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0d6efd;
+    font-weight: 500;
+}
+</style> 

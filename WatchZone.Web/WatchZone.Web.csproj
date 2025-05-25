@@ -214,6 +214,11 @@
     <Content Include="Views\Order\OrderConfirmation.cshtml" />
     <Content Include="Views\Order\MyOrders.cshtml" />
     <Content Include="Views\Order\OrderDetails.cshtml" />
+    <Content Include="Views\Review\Create.cshtml" />
+    <Content Include="Views\Review\Edit.cshtml" />
+    <Content Include="Views\Review\MyReviews.cshtml" />
+    <Content Include="Views\Review\ReviewableItems.cshtml" />
+    <Content Include="Views\Review\SellerReviews.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -227,6 +232,7 @@
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

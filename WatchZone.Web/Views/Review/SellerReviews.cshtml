@@ -1,0 +1,144 @@
+@model List<WatchZone.Domain.Model.Review>
+@{
+    ViewBag.Title = "Seller Reviews";
+    var reviewSummary = ViewBag.ReviewSummary as WatchZone.Domain.Model.ReviewSummary;
+    var sellerId = ViewBag.SellerId;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Seller Reviews</h2>
+            
+            @if (reviewSummary != null && reviewSummary.TotalReviews > 0)
+            {
+                <!-- Review Summary -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-center">
+                                <div class="display-4 text-primary mb-2">@reviewSummary.AverageRating.ToString("F1")</div>
+                                <div class="star-display mb-2">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Math.Round(reviewSummary.AverageRating))
+                                        {
+                                            <i class="fas fa-star text-warning"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-star text-muted"></i>
+                                        }
+                                    }
+                                </div>
+                                <p class="text-muted">Based on @reviewSummary.TotalReviews review@(reviewSummary.TotalReviews != 1 ? "s" : "")</p>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="rating-breakdown">
+                                    @for (int star = 5; star >= 1; star--)
+                                    {
+                                        var count = star == 5 ? reviewSummary.FiveStarCount :
+                                                   star == 4 ? reviewSummary.FourStarCount :
+                                                   star == 3 ? reviewSummary.ThreeStarCount :
+                                                   star == 2 ? reviewSummary.TwoStarCount :
+                                                   reviewSummary.OneStarCount;
+                                        var percentage = reviewSummary.TotalReviews > 0 ? (count * 100.0 / reviewSummary.TotalReviews) : 0;
+                                        
+                                        <div class="d-flex align-items-center mb-2">
+                                            <span class="me-2" style="width: 60px;">@star star@(star != 1 ? "s" : "")</span>
+                                            <div class="progress flex-grow-1 me-2" style="height: 20px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" 
+                                                     style="width: @percentage%" 
+                                                     aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <span class="text-muted" style="width: 40px;">@count</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            <!-- Individual Reviews -->
+            @if (Model != null && Model.Count > 0)
+            {
+                <h4 class="mb-3">Customer Reviews</h4>
+                
+                <div class="row">
+                    @foreach (var review in Model)
+                    {
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <div class="star-display me-3">
+                                                    @for (int i = 1; i <= 5; i++)
+                                                    {
+                                                        if (i <= review.Rating)
+                                                        {
+                                                            <i class="fas fa-star text-warning"></i>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="far fa-star text-muted"></i>
+                                                        }
+                                                    }
+                                                </div>
+                                                <span class="badge bg-primary me-2">@review.Rating/5</span>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-calendar me-1"></i>
+                                                    @review.CreatedAt.ToString("MMM dd, yyyy")
+                                                </small>
+                                            </div>
+                                            
+                                            @if (!string.IsNullOrEmpty(review.Comment))
+                                            {
+                                                <p class="card-text mb-0">@review.Comment</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="card-text text-muted mb-0"><em>No comment provided</em></p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-star fa-4x text-muted mb-3"></i>
+                    <h4>No Reviews Yet</h4>
+                    <p class="text-muted">This seller hasn't received any reviews yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+.star-display {
+    font-size: 1.2rem;
+}
+
+.rating-breakdown .progress {
+    background-color: #e9ecef;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+</style> 

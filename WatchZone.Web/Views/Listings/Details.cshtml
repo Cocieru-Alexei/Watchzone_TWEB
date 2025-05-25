@@ -105,6 +105,15 @@
             <h5>Description</h5>
             <p>@Model.Description</p>
 
+            <!-- Seller Reviews Section -->
+            <hr />
+            <div class="mb-3">
+                <h5>Seller Reviews</h5>
+                <a href="@Url.Action("SellerReviews", "Review", new { sellerId = Model.UserId })" class="btn btn-outline-info btn-sm">
+                    <i class="fas fa-star me-1"></i>View Seller Reviews
+                </a>
+            </div>
+
             <!-- Add to Cart Section -->
             <div class="mt-4">
                 @if (isSold)

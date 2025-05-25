@@ -559,5 +559,382 @@ namespace WatchZone.Domain.Database
 
             return availableListings;
         }
+
+        // Review-related methods
+        public async Task<bool> CanUserReviewOrderItemAsync(int userId, int orderItemId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT COUNT(1) 
+                    FROM OrderItems oi
+                    INNER JOIN Orders o ON oi.OrderId = o.OrderId
+                    WHERE oi.OrderItemId = @OrderItemId 
+                    AND o.UserId = @UserId 
+                    AND NOT EXISTS (
+                        SELECT 1 FROM Reviews r WHERE r.OrderItemId = @OrderItemId
+                    )";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@OrderItemId", orderItemId);
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    
+                    var result = await command.ExecuteScalarAsync();
+                    return Convert.ToInt32(result) > 0;
+                }
+            }
+        }
+
+        public async Task<Review> CreateReviewAsync(Review review)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    INSERT INTO Reviews (OrderItemId, ReviewerId, SellerId, ListingId, Rating, Comment, CreatedAt)
+                    OUTPUT INSERTED.ReviewId
+                    VALUES (@OrderItemId, @ReviewerId, @SellerId, @ListingId, @Rating, @Comment, @CreatedAt)";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@OrderItemId", review.OrderItemId);
+                    command.Parameters.AddWithValue("@ReviewerId", review.ReviewerId);
+                    command.Parameters.AddWithValue("@SellerId", review.SellerId);
+                    command.Parameters.AddWithValue("@ListingId", review.ListingId);
+                    command.Parameters.AddWithValue("@Rating", review.Rating);
+                    command.Parameters.AddWithValue("@Comment", review.Comment ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@CreatedAt", DateTime.UtcNow);
+                    
+                    var reviewId = await command.ExecuteScalarAsync();
+                    review.ReviewId = Convert.ToInt32(reviewId);
+                    review.CreatedAt = DateTime.UtcNow;
+                    
+                    return review;
+                }
+            }
+        }
+
+        public async Task<Review> UpdateReviewAsync(Review review)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    UPDATE Reviews 
+                    SET Rating = @Rating, Comment = @Comment, UpdatedAt = @UpdatedAt
+                    WHERE ReviewId = @ReviewId AND ReviewerId = @ReviewerId";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ReviewId", review.ReviewId);
+                    command.Parameters.AddWithValue("@ReviewerId", review.ReviewerId);
+                    command.Parameters.AddWithValue("@Rating", review.Rating);
+                    command.Parameters.AddWithValue("@Comment", review.Comment ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@UpdatedAt", DateTime.UtcNow);
+                    
+                    await command.ExecuteNonQueryAsync();
+                    review.UpdatedAt = DateTime.UtcNow;
+                    
+                    return review;
+                }
+            }
+        }
+
+        public async Task<bool> DeleteReviewAsync(int reviewId, int userId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = "DELETE FROM Reviews WHERE ReviewId = @ReviewId AND ReviewerId = @UserId";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ReviewId", reviewId);
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    
+                    var rowsAffected = await command.ExecuteNonQueryAsync();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+        public async Task<Review> GetReviewByIdAsync(int reviewId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT ReviewId, OrderItemId, ReviewerId, SellerId, ListingId, Rating, Comment, CreatedAt, UpdatedAt
+                    FROM Reviews 
+                    WHERE ReviewId = @ReviewId";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ReviewId", reviewId);
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return MapReviewFromReader(reader);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public async Task<Review> GetReviewByOrderItemIdAsync(int orderItemId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT ReviewId, OrderItemId, ReviewerId, SellerId, ListingId, Rating, Comment, CreatedAt, UpdatedAt
+                    FROM Reviews 
+                    WHERE OrderItemId = @OrderItemId";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@OrderItemId", orderItemId);
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return MapReviewFromReader(reader);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public async Task<List<Review>> GetReviewsBySellerIdAsync(int sellerId)
+        {
+            var reviews = new List<Review>();
+            
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT r.ReviewId, r.OrderItemId, r.ReviewerId, r.SellerId, r.ListingId, r.Rating, r.Comment, r.CreatedAt, r.UpdatedAt,
+                           u.Username as ReviewerName, l.Title as ListingTitle
+                    FROM Reviews r
+                    INNER JOIN UDbTable u ON r.ReviewerId = u.Id
+                    INNER JOIN Listings l ON r.ListingId = l.Listings_Id
+                    WHERE r.SellerId = @SellerId
+                    ORDER BY r.CreatedAt DESC";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@SellerId", sellerId);
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var review = MapReviewFromReader(reader);
+                            review.ReviewerName = reader.GetString(9);
+                            review.ListingTitle = reader.GetString(10);
+                            reviews.Add(review);
+                        }
+                    }
+                }
+            }
+            
+            return reviews;
+        }
+
+        public async Task<List<Review>> GetReviewsByReviewerIdAsync(int reviewerId)
+        {
+            var reviews = new List<Review>();
+            
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT r.ReviewId, r.OrderItemId, r.ReviewerId, r.SellerId, r.ListingId, r.Rating, r.Comment, r.CreatedAt, r.UpdatedAt,
+                           u.Username as SellerName, l.Title as ListingTitle
+                    FROM Reviews r
+                    INNER JOIN UDbTable u ON r.SellerId = u.Id
+                    INNER JOIN Listings l ON r.ListingId = l.Listings_Id
+                    WHERE r.ReviewerId = @ReviewerId
+                    ORDER BY r.CreatedAt DESC";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ReviewerId", reviewerId);
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var review = MapReviewFromReader(reader);
+                            review.SellerName = reader.GetString(9);
+                            review.ListingTitle = reader.GetString(10);
+                            reviews.Add(review);
+                        }
+                    }
+                }
+            }
+            
+            return reviews;
+        }
+
+        public async Task<List<Review>> GetReviewsAboutSellerAsync(int sellerId)
+        {
+            var reviews = new List<Review>();
+            
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT r.ReviewId, r.OrderItemId, r.ReviewerId, r.SellerId, r.ListingId, r.Rating, r.Comment, r.CreatedAt, r.UpdatedAt,
+                           u.Username as ReviewerName, l.Title as ListingTitle
+                    FROM Reviews r
+                    INNER JOIN UDbTable u ON r.ReviewerId = u.Id
+                    INNER JOIN Listings l ON r.ListingId = l.Listings_Id
+                    WHERE r.SellerId = @SellerId
+                    ORDER BY r.CreatedAt DESC";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@SellerId", sellerId);
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var review = MapReviewFromReader(reader);
+                            review.ReviewerName = reader.GetString(9);
+                            review.ListingTitle = reader.GetString(10);
+                            reviews.Add(review);
+                        }
+                    }
+                }
+            }
+            
+            return reviews;
+        }
+
+        public async Task<ReviewSummary> GetReviewSummaryBySellerIdAsync(int sellerId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT 
+                        COUNT(*) as TotalReviews,
+                        AVG(CAST(Rating as FLOAT)) as AverageRating,
+                        SUM(CASE WHEN Rating = 5 THEN 1 ELSE 0 END) as FiveStars,
+                        SUM(CASE WHEN Rating = 4 THEN 1 ELSE 0 END) as FourStars,
+                        SUM(CASE WHEN Rating = 3 THEN 1 ELSE 0 END) as ThreeStars,
+                        SUM(CASE WHEN Rating = 2 THEN 1 ELSE 0 END) as TwoStars,
+                        SUM(CASE WHEN Rating = 1 THEN 1 ELSE 0 END) as OneStar
+                    FROM Reviews 
+                    WHERE SellerId = @SellerId";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@SellerId", sellerId);
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new ReviewSummary
+                            {
+                                SellerId = sellerId,
+                                TotalReviews = reader.GetInt32(0),
+                                AverageRating = reader.IsDBNull(1) ? 0.0 : reader.GetDouble(1),
+                                FiveStarCount = reader.GetInt32(2),
+                                FourStarCount = reader.GetInt32(3),
+                                ThreeStarCount = reader.GetInt32(4),
+                                TwoStarCount = reader.GetInt32(5),
+                                OneStarCount = reader.GetInt32(6)
+                            };
+                        }
+                    }
+                }
+            }
+            
+            return new ReviewSummary { SellerId = sellerId };
+        }
+
+        public async Task<List<OrderItem>> GetReviewableOrderItemsAsync(int userId)
+        {
+            var orderItems = new List<OrderItem>();
+            
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT oi.OrderItemId, oi.OrderId, oi.ListingId, oi.ProductName, oi.UnitPrice, oi.Quantity, oi.TotalPrice, oi.ProductImageUrl,
+                           o.OrderDate, l.UserId as SellerId
+                    FROM OrderItems oi
+                    INNER JOIN Orders o ON oi.OrderId = o.OrderId
+                    INNER JOIN Listings l ON oi.ListingId = l.Listings_Id
+                    WHERE o.UserId = @UserId 
+                    AND NOT EXISTS (
+                        SELECT 1 FROM Reviews r WHERE r.OrderItemId = oi.OrderItemId
+                    )
+                    ORDER BY o.OrderDate DESC";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            orderItems.Add(new OrderItem
+                            {
+                                OrderItemId = reader.GetInt32(0),
+                                OrderId = reader.GetInt32(1),
+                                ListingId = reader.GetInt32(2),
+                                ProductName = reader.GetString(3),
+                                UnitPrice = reader.GetDecimal(4),
+                                Quantity = reader.GetInt32(5),
+                                TotalPrice = reader.GetDecimal(6),
+                                ProductImageUrl = reader.IsDBNull(7) ? null : reader.GetString(7)
+                            });
+                        }
+                    }
+                }
+            }
+            
+            return orderItems;
+        }
+
+        private Review MapReviewFromReader(SqlDataReader reader)
+        {
+            return new Review
+            {
+                ReviewId = reader.GetInt32(0),
+                OrderItemId = reader.GetInt32(1),
+                ReviewerId = reader.GetInt32(2),
+                SellerId = reader.GetInt32(3),
+                ListingId = reader.GetInt32(4),
+                Rating = reader.GetInt32(5),
+                Comment = reader.IsDBNull(6) ? null : reader.GetString(6),
+                CreatedAt = reader.GetDateTime(7),
+                UpdatedAt = reader.IsDBNull(8) ? (DateTime?)null : reader.GetDateTime(8)
+            };
+        }
     }
 } 

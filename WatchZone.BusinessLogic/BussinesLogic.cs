@@ -15,6 +15,7 @@ namespace WatchZone.BusinessLogic
         private readonly IUserService _userService;
         private readonly IBasketService _basketService;
         private readonly OrderService _orderService;
+        private readonly IReviewService _reviewService;
 
         public BussinesLogic()
         {
@@ -25,6 +26,7 @@ namespace WatchZone.BusinessLogic
             _listingService = new ListingServiceBL(_errorHandler);
             _userService = new UserServiceBL(_errorHandler);
             _orderService = new OrderService();
+            _reviewService = new ReviewServiceBL(_errorHandler);
             // _basketService would be initialized here when repositories are implemented
         }
 
@@ -61,6 +63,11 @@ namespace WatchZone.BusinessLogic
         public OrderService GetOrderService()
         {
             return _orderService;
+        }
+
+        public IReviewService GetReviewService()
+        {
+            return _reviewService;
         }
     }
 }
