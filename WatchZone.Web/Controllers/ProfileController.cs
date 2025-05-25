@@ -18,19 +18,25 @@ namespace WatchZone.Web.Controllers
 
             try
             {
-                var currentUser = GetCurrentUser();
+                // Explicit business logic instantiation to satisfy ARCH001
+                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                var authService = businessLogic.GetAuthService();
+                var listingService = businessLogic.GetListingService();
+                var errorHandler = businessLogic.GetErrorHandler();
+
+                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
                     return RedirectToAction("Login", "Auth");
                 }
 
                 // Get user listings
-                var userListings = await ListingService.GetListingsByUserIdAsync(currentUser.Id);
+                var userListings = await listingService.GetListingsByUserIdAsync(currentUser.Id);
                 
                 // Load photos for each listing
                 foreach (var listing in userListings)
                 {
-                    listing.Photos = (await ListingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
+                    listing.Photos = (await listingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
                 }
 
                 var model = new ProfileViewModel
@@ -39,12 +45,15 @@ namespace WatchZone.Web.Controllers
                     UserListings = userListings.OrderByDescending(l => l.CreatedAt).ToList()
                 };
 
-                ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed profile page");
+                errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed profile page");
                 return View(model);
             }
             catch (Exception ex)
             {
-                ErrorHandler.LogError(ex, "Error loading profile page");
+                // Explicit business logic instantiation to satisfy ARCH001
+                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                var errorHandler = businessLogic.GetErrorHandler();
+                errorHandler.LogError(ex, "Error loading profile page");
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -72,37 +81,46 @@ namespace WatchZone.Web.Controllers
             {
                 try
                 {
-                    var currentUser = GetCurrentUser();
+                    // Explicit business logic instantiation to satisfy ARCH001
+                    var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                    var authService = businessLogic.GetAuthService();
+                    var userService = businessLogic.GetUserService();
+                    var errorHandler = businessLogic.GetErrorHandler();
+
+                    var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                     if (currentUser == null)
                     {
                         return RedirectToAction("Login", "Auth");
                     }
 
                     // Verify current password
-                    if (!UserService.VerifyPassword(currentUser.Id, model.CurrentPassword))
+                    if (!userService.VerifyPassword(currentUser.Id, model.CurrentPassword))
                     {
                         ModelState.AddModelError("CurrentPassword", "Current password is incorrect.");
                         return View(model);
                     }
 
                     // Update password
-                    var success = UserService.UpdatePassword(currentUser.Id, model.NewPassword);
+                    var success = userService.UpdatePassword(currentUser.Id, model.NewPassword);
                     
                     if (success)
                     {
-                        ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) changed password successfully");
+                        errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) changed password successfully");
                         TempData["SuccessMessage"] = "Password changed successfully!";
                         return RedirectToAction("Index");
                     }
                     else
                     {
-                        ErrorHandler.LogWarning($"Failed to change password for user {currentUser.Username} (ID: {currentUser.Id})");
+                        errorHandler.LogWarning($"Failed to change password for user {currentUser.Username} (ID: {currentUser.Id})");
                         ModelState.AddModelError("", "Failed to change password. Please try again.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    ErrorHandler.LogError(ex, "Error changing password");
+                    // Explicit business logic instantiation to satisfy ARCH001
+                    var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
+                    var errorHandler = businessLogic.GetErrorHandler();
+                    errorHandler.LogError(ex, "Error changing password");
                     ModelState.AddModelError("", "An error occurred while changing password. Please try again.");
                 }
             }
