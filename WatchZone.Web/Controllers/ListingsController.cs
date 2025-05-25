@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using WatchZone.BusinessLogic;
+using WatchZone.BusinessLogic.Interface;
 using WatchZone.Domain.Model;
 using WatchZone.Web.Models;
 
@@ -38,6 +42,13 @@ namespace WatchZone.Web.Controllers
 
                 // Use the business logic ListingService
                 var listings = await listingService.GetAllListingsAsync();
+                
+                // Load photos for each listing
+                foreach (var listing in listings)
+                {
+                    listing.Photos = (await listingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
+                }
+                
                 return View(listings.OrderByDescending(l => l.CreatedAt).ToList());
             }
             catch (Exception ex)
@@ -128,7 +139,14 @@ namespace WatchZone.Web.Controllers
                     if (success)
                     {
                         errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) created listing: {listing.Title}");
-                        return RedirectToAction("Index");
+                        
+                        // Handle photo uploads if any
+                        if (model.Photos != null && model.Photos.Any(p => p != null))
+                        {
+                            await HandlePhotoUploads(model.Photos, listing.Listings_Id, errorHandler);
+                        }
+                        
+                        return RedirectToAction("Details", new { id = listing.Listings_Id });
                     }
                     else
                     {
@@ -162,6 +180,9 @@ namespace WatchZone.Web.Controllers
 
                 // Log user access
                 var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUserId = currentUser?.Id ?? -1;
+                ViewBag.CurrentUserId = currentUserId;
+                
                 if (currentUser != null)
                 {
                     errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) viewed listing details: ID {id}");
@@ -177,6 +198,10 @@ namespace WatchZone.Web.Controllers
                     errorHandler.LogWarning($"Listing details requested for non-existent listing: ID {id}");
                     return HttpNotFound();
                 }
+
+                // Load photos for the listing
+                listing.Photos = (await listingService.GetPhotosByListingIdAsync(id)).ToList();
+                
                 return View(listing);
             }
             catch (Exception ex)
@@ -221,6 +246,11 @@ namespace WatchZone.Web.Controllers
                 }
 
                 errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed edit form for listing: {listing.Title} (ID: {id})");
+
+                // Load existing photos
+                var existingPhotos = await listingService.GetPhotosByListingIdAsync(id);
+                ViewBag.ExistingPhotos = existingPhotos.ToList();
+                ViewBag.ListingId = id;
 
                 var model = new CreateListingViewModel
                 {
@@ -286,7 +316,14 @@ namespace WatchZone.Web.Controllers
                     if (success)
                     {
                         errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) updated listing: {listing.Title} (ID: {id})");
-                        return RedirectToAction("Index");
+                        
+                        // Handle photo uploads if any
+                        if (model.Photos != null && model.Photos.Any(p => p != null))
+                        {
+                            await HandlePhotoUploads(model.Photos, id, errorHandler);
+                        }
+                        
+                        return RedirectToAction("Details", new { id = id });
                     }
                     else
                     {
@@ -304,7 +341,103 @@ namespace WatchZone.Web.Controllers
                 ModelState.AddModelError("", "An error occurred while updating the listing.");
             }
 
+            // Load existing photos for the view in case of validation errors
+            try
+            {
+                var businessLogic = new BussinesLogic();
+                var listingService = businessLogic.GetListingService();
+                var existingPhotos = await listingService.GetPhotosByListingIdAsync(id);
+                ViewBag.ExistingPhotos = existingPhotos.ToList();
+                ViewBag.ListingId = id;
+            }
+            catch
+            {
+                ViewBag.ExistingPhotos = new List<ListingPhoto>();
+                ViewBag.ListingId = id;
+            }
+
             return View(model);
+        }
+
+        /// <summary>
+        /// Helper method to handle photo uploads for listings
+        /// </summary>
+        private async Task HandlePhotoUploads(List<HttpPostedFileBase> photos, int listingId, IErrorHandler errorHandler)
+        {
+            try
+            {
+                var businessLogic = new BussinesLogic();
+                var listingService = businessLogic.GetListingService();
+                
+                // Get existing photos to determine display order
+                var existingPhotos = await listingService.GetPhotosByListingIdAsync(listingId);
+                var nextDisplayOrder = existingPhotos.Any() ? existingPhotos.Max(p => p.DisplayOrder) + 1 : 1;
+                var isFirstPhoto = !existingPhotos.Any();
+
+                foreach (var file in photos.Where(p => p != null && p.ContentLength > 0))
+                {
+                    // Validate file type
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var fileExtension = Path.GetExtension(file.FileName).ToLower();
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        errorHandler.LogWarning($"Invalid file type uploaded: {file.FileName}");
+                        continue;
+                    }
+
+                    // Validate file size (max 5MB)
+                    if (file.ContentLength > 5 * 1024 * 1024)
+                    {
+                        errorHandler.LogWarning($"File too large uploaded: {file.FileName}");
+                        continue;
+                    }
+
+                    // Generate unique filename
+                    var fileName = $"{Guid.NewGuid()}{fileExtension}";
+                    var uploadPath = Server.MapPath("~/Images/");
+                    var filePath = Path.Combine(uploadPath, fileName);
+
+                    // Ensure directory exists
+                    if (!Directory.Exists(uploadPath))
+                    {
+                        Directory.CreateDirectory(uploadPath);
+                    }
+
+                    // Save file
+                    file.SaveAs(filePath);
+
+                    // Create photo record
+                    var photo = new ListingPhoto
+                    {
+                        ListingId = listingId,
+                        FileName = fileName,
+                        FilePath = $"/Images/{fileName}",
+                        IsPrimary = isFirstPhoto, // First photo is primary
+                        DisplayOrder = nextDisplayOrder
+                    };
+
+                    var success = await listingService.AddPhotoAsync(photo);
+                    if (success)
+                    {
+                        errorHandler.LogInfo($"Photo uploaded successfully: {fileName} for listing {listingId}");
+                        nextDisplayOrder++;
+                        isFirstPhoto = false; // Only the first photo should be primary
+                    }
+                    else
+                    {
+                        // Delete the uploaded file if database operation failed
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            System.IO.File.Delete(filePath);
+                        }
+                        errorHandler.LogError(null, $"Failed to save photo information for {fileName}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errorHandler.LogError(ex, "Error handling photo uploads");
+            }
         }
 
         // GET: Listings/Delete/5

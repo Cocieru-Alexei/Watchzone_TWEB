@@ -8,36 +8,75 @@
 <div class="container">
     <h2>Create New Listing</h2>
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Create", "Listings", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.Title)
-            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+        <div class="row">
+            <!-- Listing Details Section -->
+            <div class="col-md-6">
+                <h4>Listing Details</h4>
+                
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Title)
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Description)
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "4" })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Price)
+                    @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "0.01" })
+                    @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ImageUrl, "Image URL (Optional)")
+                    @Html.TextBoxFor(m => m.ImageUrl, new { @class = "form-control", placeholder = "Enter image URL (optional if uploading photos)" })
+                    @Html.ValidationMessageFor(m => m.ImageUrl, "", new { @class = "text-danger" })
+                    <small class="form-text text-muted">You can enter an image URL here OR upload photos using the section on the right.</small>
+                </div>
+            </div>
+
+            <!-- Photo Upload Section -->
+            <div class="col-md-6">
+                <h4>Upload Photos</h4>
+                
+                <div class="form-group">
+                    <label for="photoUpload">Select Photos</label>
+                    <div id="dropZone" class="border border-dashed rounded p-4 text-center" style="min-height: 200px; background-color: #f8f9fa;">
+                        <div id="dropZoneContent">
+                            <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Drag and drop photos here or click to select</p>
+                            <input type="file" id="photoUpload" name="Photos" class="form-control-file" accept="image/*" multiple style="display: none;">
+                            <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('photoUpload').click()">
+                                <i class="fas fa-plus"></i> Select Photos
+                            </button>
+                        </div>
+                    </div>
+                    <small class="form-text text-muted">
+                        Select multiple images (JPG, PNG, GIF). Max 5MB per file. First photo will be set as primary.
+                    </small>
+                </div>
+
+                <!-- Photo Preview Section -->
+                <div id="photoPreview" class="mt-3" style="display: none;">
+                    <h6>Selected Photos:</h6>
+                    <div id="photoThumbnails" class="row"></div>
+                    <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="clearPhotos()">
+                        <i class="fas fa-trash"></i> Clear All Photos
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.Description)
-            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "4" })
-            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.Price)
-            @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "0.01" })
-            @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.ImageUrl)
-            @Html.TextBoxFor(m => m.ImageUrl, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.ImageUrl, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
+        <div class="form-group mt-4">
+            <input type="submit" value="Create Listing" class="btn btn-primary btn-lg" />
             @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
         </div>
     }
@@ -45,4 +84,142 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropZone = document.getElementById('dropZone');
+        const photoUpload = document.getElementById('photoUpload');
+        const photoPreview = document.getElementById('photoPreview');
+        const photoThumbnails = document.getElementById('photoThumbnails');
+        let selectedFiles = [];
+
+        // Drag and drop functionality
+        dropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropZone.classList.add('border-primary');
+            dropZone.style.backgroundColor = '#e3f2fd';
+        });
+
+        dropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            dropZone.classList.remove('border-primary');
+            dropZone.style.backgroundColor = '#f8f9fa';
+        });
+
+        dropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dropZone.classList.remove('border-primary');
+            dropZone.style.backgroundColor = '#f8f9fa';
+            
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        });
+
+        // File input change
+        photoUpload.addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            // Filter for image files only
+            const imageFiles = files.filter(file => file.type.startsWith('image/'));
+            
+            if (imageFiles.length !== files.length) {
+                alert('Only image files are allowed.');
+            }
+
+            // Check file sizes
+            const oversizedFiles = imageFiles.filter(file => file.size > 5 * 1024 * 1024);
+            if (oversizedFiles.length > 0) {
+                alert('Some files are larger than 5MB and will be skipped.');
+            }
+
+            const validFiles = imageFiles.filter(file => file.size <= 5 * 1024 * 1024);
+            
+            // Add to selected files
+            selectedFiles = selectedFiles.concat(validFiles);
+            
+            // Update file input
+            updateFileInput();
+            
+            // Show previews
+            showPreviews();
+        }
+
+        function updateFileInput() {
+            // Create a new DataTransfer object to update the file input
+            const dt = new DataTransfer();
+            selectedFiles.forEach(file => dt.items.add(file));
+            photoUpload.files = dt.files;
+        }
+
+        function showPreviews() {
+            if (selectedFiles.length === 0) {
+                photoPreview.style.display = 'none';
+                return;
+            }
+
+            photoPreview.style.display = 'block';
+            photoThumbnails.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const col = document.createElement('div');
+                    col.className = 'col-4 mb-2';
+                    
+                    col.innerHTML = `
+                        <div class="card">
+                            <img src="${e.target.result}" class="card-img-top" style="height: 100px; object-fit: cover;">
+                            <div class="card-body p-2">
+                                <small class="text-muted">${file.name}</small>
+                                ${index === 0 ? '<small class="text-primary d-block">Primary Photo</small>' : ''}
+                                <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removePhoto(${index})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    photoThumbnails.appendChild(col);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Make functions global so they can be called from onclick
+        window.removePhoto = function(index) {
+            selectedFiles.splice(index, 1);
+            updateFileInput();
+            showPreviews();
+        };
+
+        window.clearPhotos = function() {
+            selectedFiles = [];
+            photoUpload.value = '';
+            photoPreview.style.display = 'none';
+        };
+    });
+    </script>
+
+    <style>
+    #dropZone {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    #dropZone:hover {
+        border-color: #007bff !important;
+        background-color: #e3f2fd !important;
+    }
+    
+    .photo-thumbnail {
+        transition: transform 0.2s ease;
+    }
+    
+    .photo-thumbnail:hover {
+        transform: scale(1.05);
+    }
+    </style>
 } 

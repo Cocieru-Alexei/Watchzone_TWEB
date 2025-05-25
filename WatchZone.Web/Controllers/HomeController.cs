@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using WatchZone.BusinessLogic;
 using WatchZone.Domain.Entities.User;
 using WatchZone.Domain.Enums;
+using WatchZone.Domain.Model;
 
 namespace WatchZone.Web.Controllers
 {
@@ -39,6 +41,13 @@ namespace WatchZone.Web.Controllers
                 // Use business logic to get featured listings for the home page
                 var allListings = await listingService.GetAllListingsAsync();
                 var featuredListings = allListings.Take(3).ToList();
+                
+                // Load photos for each featured listing
+                foreach (var listing in featuredListings)
+                {
+                    listing.Photos = (await listingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
+                }
+                
                 ViewBag.FeaturedListings = featuredListings;
                 
                 return View();
@@ -256,6 +265,42 @@ namespace WatchZone.Web.Controllers
             {
                 return HandleError(ex, $"Unable to load watch detail for ID: {id}");
             }
+        }
+
+        public ActionResult FeaturedWatches()
+        {
+            ViewBag.CategoryName = "Featured Watches";
+            return View();
+        }
+
+        public ActionResult SmartWatchDetail()
+        {
+            return View();
+        }
+
+        public ActionResult SportWatchDetail()
+        {
+            return View();
+        }
+
+        public ActionResult LuxuryWatchDetail()
+        {
+            return View();
+        }
+
+        public ActionResult SeikoSKX007Detail()
+        {
+            return View();
+        }
+
+        public ActionResult SpeedmasterDetail()
+        {
+            return View();
+        }
+
+        public ActionResult TissotPRXDetail()
+        {
+            return View();
         }
 
         // Helper method using business logic principles

@@ -1,0 +1,117 @@
+@{
+    ViewBag.Title = "Featured Watches";
+}
+
+<!-- Featured Watches Header -->
+<header class="product-header py-5 text-center bg-light">
+    <div class="container">
+        <h1>Featured Watches Collection</h1>
+        <p>Discover the most popular watches from our collection!</p>
+    </div>
+</header>
+
+<!-- Featured Watches Section -->
+<section class="products-section py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Apple Watch Series 8 -->
+            <div class="col-md-4 mb-4">
+                <div class="card product-card h-100">
+                    <img src="~/Images/smart apple watch.jpg" class="card-img-top" alt="Apple Watch Series 8">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Apple Watch Series 8</h5>
+                        <p class="card-text">
+                            The Apple Watch Series 8 features advanced health sensors, an Always-On Retina display, and a shock-resistant design.
+                        </p>
+                        <span class="price mb-2">$399.99</span>
+                        <a href="@Url.Action("SmartWatchDetail", "Home")" class="btn btn-outline-primary mt-auto">View Watch</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Casio G-Shock GBD-200 -->
+            <div class="col-md-4 mb-4">
+                <div class="card product-card h-100">
+                    <img src="~/Images/sport watch casio.jpg" class="card-img-top" alt="Casio G-Shock GBD-200">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Casio G-Shock GBD-200</h5>
+                        <p class="card-text">
+                            Shock resistance, fitness tracking features, Bluetooth connectivity, and a 2-year battery life.
+                        </p>
+                        <span class="price mb-2">$149.99</span>
+                        <a href="@Url.Action("SportWatchDetail", "Home")" class="btn btn-outline-primary mt-auto">View Watch</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Cartier Santos de Cartier -->
+            <div class="col-md-4 mb-4">
+                <div class="card product-card h-100">
+                    <img src="~/Images/luxury cartier_santos.jpg" class="card-img-top" alt="Cartier Santos de Cartier">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Cartier Santos de Cartier</h5>
+                        <p class="card-text">
+                            Classic design, square case, exposed screws, and QuickSwitch strap system.
+                        </p>
+                        <span class="price mb-2">$6,999.99</span>
+                        <a href="@Url.Action("LuxuryWatchDetail", "Home")" class="btn btn-outline-primary mt-auto">View Watch</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Seiko SKX007 -->
+            <div class="col-md-4 mb-4">
+                <div class="card product-card h-100">
+                    <img src="~/Images/seiko.jpg" class="card-img-top" alt="Seiko SKX007">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Seiko SKX007</h5>
+                        <p class="card-text">
+                            A legendary automatic dive watch known for its durability and timeless design.
+                        </p>
+                        <span class="price mb-2">$399.99</span>
+                        <a href="@Url.Action("SeikoSKX007Detail", "Home")" class="btn btn-outline-primary mt-auto">View Watch</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Omega Speedmaster Professional Moonwatch -->
+            <div class="col-md-4 mb-4">
+                <div class="card product-card h-100">
+                    <img src="~/Images/speedmaster.jpg" class="card-img-top" alt="Omega Speedmaster Professional Moonwatch">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Omega Speedmaster Professional Moonwatch</h5>
+                        <p class="card-text">
+                            A historic chronograph famously worn during NASA's Apollo missions.
+                        </p>
+                        <span class="price mb-2">$6,400.00</span>
+                        <a href="@Url.Action("SpeedmasterDetail", "Home")" class="btn btn-outline-primary mt-auto">View Watch</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Tissot PRX Powermatic 80 -->
+            <div class="col-md-4 mb-4">
+                <div class="card product-card h-100">
+                    <img src="~/Images/tissot.jpg" class="card-img-top" alt="Tissot PRX Powermatic 80">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Tissot PRX Powermatic 80</h5>
+                        <p class="card-text">
+                            A stylish automatic watch with retro 1970s-inspired design and an integrated steel bracelet.
+                        </p>
+                        <span class="price mb-2">$695.00</span>
+                        <a href="@Url.Action("TissotPRXDetail", "Home")" class="btn btn-outline-primary mt-auto">View Watch</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <p>Explore our premium watch collection, from cutting-edge smartwatches to classic luxury pieces.</p>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize the carousel
+            $('#watchesCarousel').carousel({
+                interval: 5000 // Change slide every 5 seconds
+            });
+        });
+    </script>
+} 

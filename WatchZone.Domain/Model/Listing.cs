@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace WatchZone.Domain.Model
 {
@@ -10,6 +11,7 @@ namespace WatchZone.Domain.Model
         public decimal Price { get; set; }
         public DateTime CreatedAt { get; set; }
         public int UserId { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } // Keep for backward compatibility
+        public List<ListingPhoto> Photos { get; set; } = new List<ListingPhoto>();
     }
 } 

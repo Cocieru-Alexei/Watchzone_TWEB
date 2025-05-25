@@ -139,5 +139,91 @@ namespace WatchZone.BusinessLogic.BL_Struct
                 return false;
             }
         }
+
+        // Photo management methods
+        public async Task<IEnumerable<ListingPhoto>> GetPhotosByListingIdAsync(int listingId)
+        {
+            try
+            {
+                var context = new DatabaseContext();
+                return await context.GetPhotosByListingIdAsync(listingId);
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error getting photos for listing ID: {listingId}");
+                return Enumerable.Empty<ListingPhoto>();
+            }
+        }
+
+        public async Task<ListingPhoto> GetPhotoByIdAsync(int photoId)
+        {
+            try
+            {
+                var context = new DatabaseContext();
+                return await context.GetPhotoByIdAsync(photoId);
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error getting photo with ID: {photoId}");
+                return null;
+            }
+        }
+
+        public async Task<bool> AddPhotoAsync(ListingPhoto photo)
+        {
+            try
+            {
+                if (photo == null)
+                {
+                    _errorHandler.LogWarning("Attempted to add null photo");
+                    return false;
+                }
+
+                photo.UploadedAt = DateTime.UtcNow;
+                
+                var context = new DatabaseContext();
+                var newId = await context.AddPhotoAsync(photo);
+                photo.PhotoId = newId;
+                _errorHandler.LogInfo($"Added photo: {photo.FileName} for listing {photo.ListingId}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error adding photo: {photo?.FileName}");
+                return false;
+            }
+        }
+
+        public async Task<bool> DeletePhotoAsync(int photoId)
+        {
+            try
+            {
+                var context = new DatabaseContext();
+                await context.DeletePhotoAsync(photoId);
+                _errorHandler.LogInfo($"Deleted photo with ID: {photoId}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error deleting photo with ID: {photoId}");
+                return false;
+            }
+        }
+
+        public async Task<bool> SetPrimaryPhotoAsync(int listingId, int photoId)
+        {
+            try
+            {
+                var context = new DatabaseContext();
+                await context.SetPrimaryPhotoAsync(listingId, photoId);
+                _errorHandler.LogInfo($"Set photo {photoId} as primary for listing {listingId}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error setting primary photo {photoId} for listing {listingId}");
+                return false;
+            }
+        }
     }
 } 

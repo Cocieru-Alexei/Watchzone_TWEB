@@ -29,13 +29,7 @@
                         <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")" href="@Url.Action("Index", "Home")">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "SmartWatch" ? "active" : "")" href="@Url.Action("SmartWatch", "Home")">Smart Watches</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "SportWatch" ? "active" : "")" href="@Url.Action("SportWatch", "Home")">Sport Watches</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "LuxuryWatch" ? "active" : "")" href="@Url.Action("LuxuryWatch", "Home")">Luxury Watches</a>
+                        <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "FeaturedWatches" ? "active" : "")" href="@Url.Action("FeaturedWatches", "Home")">Featured</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Index" && ViewContext.RouteData.Values["Controller"].ToString() == "Listings" ? "active" : "")" href="@Url.Action("Index", "Listings")">Listings</a>
@@ -109,9 +103,8 @@
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="@Url.Action("Index", "Home")" class="text-white">Home</a></li>
-                        <li><a href="@Url.Action("SmartWatch", "Home")" class="text-white">Smart Watches</a></li>
-                        <li><a href="@Url.Action("SportWatch", "Home")" class="text-white">Sport Watches</a></li>
-                        <li><a href="@Url.Action("LuxuryWatch", "Home")" class="text-white">Luxury Watches</a></li>
+                        <li><a href="@Url.Action("FeaturedWatches", "Home")" class="text-white">Featured Watches</a></li>
+                        <li><a href="@Url.Action("Index", "Listings")" class="text-white">Listings</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">

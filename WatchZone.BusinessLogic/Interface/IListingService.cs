@@ -13,5 +13,12 @@ namespace WatchZone.BusinessLogic.Interface
         Task<bool> DeleteListingAsync(int id);
         Task<IEnumerable<Listing>> GetListingsByUserIdAsync(int userId);
         Task<bool> UserCanEditListing(int listingId, int userId, bool isAdmin);
+        
+        // Photo management methods
+        Task<IEnumerable<ListingPhoto>> GetPhotosByListingIdAsync(int listingId);
+        Task<ListingPhoto> GetPhotoByIdAsync(int photoId);
+        Task<bool> AddPhotoAsync(ListingPhoto photo);
+        Task<bool> DeletePhotoAsync(int photoId);
+        Task<bool> SetPrimaryPhotoAsync(int listingId, int photoId);
     }
 } 
