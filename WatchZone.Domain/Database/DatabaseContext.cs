@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using WatchZone.Domain.Model;
 
 namespace WatchZone.Domain.Database
@@ -272,6 +273,291 @@ namespace WatchZone.Domain.Database
                     }
                 }
             }
+        }
+
+        // Order-related methods
+        public async Task<int> CreateOrderAsync(Order order)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // Insert order
+                        int orderId;
+                        using (var command = new SqlCommand(
+                            @"INSERT INTO Orders (UserId, OrderDate, TotalAmount, OrderStatus, ShippingAddress, BillingAddress, PaymentMethod, PaymentStatus, Notes) 
+                              VALUES (@UserId, @OrderDate, @TotalAmount, @OrderStatus, @ShippingAddress, @BillingAddress, @PaymentMethod, @PaymentStatus, @Notes);
+                              SELECT SCOPE_IDENTITY();", connection, transaction))
+                        {
+                            command.Parameters.AddWithValue("@UserId", order.UserId);
+                            command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+                            command.Parameters.AddWithValue("@TotalAmount", order.TotalAmount);
+                            command.Parameters.AddWithValue("@OrderStatus", order.OrderStatus);
+                            command.Parameters.AddWithValue("@ShippingAddress", order.ShippingAddress);
+                            command.Parameters.AddWithValue("@BillingAddress", order.BillingAddress);
+                            command.Parameters.AddWithValue("@PaymentMethod", order.PaymentMethod);
+                            command.Parameters.AddWithValue("@PaymentStatus", order.PaymentStatus);
+                            command.Parameters.AddWithValue("@Notes", (object)order.Notes ?? DBNull.Value);
+
+                            orderId = Convert.ToInt32(await command.ExecuteScalarAsync());
+                        }
+
+                        // Insert order items
+                        foreach (var item in order.OrderItems)
+                        {
+                            using (var command = new SqlCommand(
+                                @"INSERT INTO OrderItems (OrderId, ListingId, ProductName, UnitPrice, Quantity, TotalPrice, ProductImageUrl) 
+                                  VALUES (@OrderId, @ListingId, @ProductName, @UnitPrice, @Quantity, @TotalPrice, @ProductImageUrl)", connection, transaction))
+                            {
+                                command.Parameters.AddWithValue("@OrderId", orderId);
+                                command.Parameters.AddWithValue("@ListingId", item.ListingId);
+                                command.Parameters.AddWithValue("@ProductName", item.ProductName);
+                                command.Parameters.AddWithValue("@UnitPrice", item.UnitPrice);
+                                command.Parameters.AddWithValue("@Quantity", item.Quantity);
+                                command.Parameters.AddWithValue("@TotalPrice", item.TotalPrice);
+                                command.Parameters.AddWithValue("@ProductImageUrl", (object)item.ProductImageUrl ?? DBNull.Value);
+
+                                await command.ExecuteNonQueryAsync();
+                            }
+                        }
+
+                        transaction.Commit();
+                        return orderId;
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public async Task<Order> GetOrderByIdAsync(int orderId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                Order order = null;
+                
+                // Get order details
+                using (var command = new SqlCommand(
+                    @"SELECT OrderId, UserId, OrderDate, TotalAmount, OrderStatus, ShippingAddress, BillingAddress, 
+                             PaymentMethod, PaymentStatus, ShippedDate, DeliveredDate, TrackingNumber, Notes, CreatedAt, UpdatedAt 
+                      FROM Orders WHERE OrderId = @OrderId", connection))
+                {
+                    command.Parameters.AddWithValue("@OrderId", orderId);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            order = new Order
+                            {
+                                OrderId = reader.GetInt32(0),
+                                UserId = reader.GetInt32(1),
+                                OrderDate = reader.GetDateTime(2),
+                                TotalAmount = reader.GetDecimal(3),
+                                OrderStatus = reader.GetString(4),
+                                ShippingAddress = reader.GetString(5),
+                                BillingAddress = reader.GetString(6),
+                                PaymentMethod = reader.GetString(7),
+                                PaymentStatus = reader.GetString(8),
+                                ShippedDate = reader.IsDBNull(9) ? (DateTime?)null : reader.GetDateTime(9),
+                                DeliveredDate = reader.IsDBNull(10) ? (DateTime?)null : reader.GetDateTime(10),
+                                TrackingNumber = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Notes = reader.IsDBNull(12) ? null : reader.GetString(12)
+                            };
+                        }
+                    }
+                }
+
+                if (order != null)
+                {
+                    // Get order items
+                    using (var command = new SqlCommand(
+                        @"SELECT OrderItemId, OrderId, ListingId, ProductName, UnitPrice, Quantity, TotalPrice, ProductImageUrl 
+                          FROM OrderItems WHERE OrderId = @OrderId", connection))
+                    {
+                        command.Parameters.AddWithValue("@OrderId", orderId);
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                var orderItem = new OrderItem
+                                {
+                                    OrderItemId = reader.GetInt32(0),
+                                    OrderId = reader.GetInt32(1),
+                                    ListingId = reader.GetInt32(2),
+                                    ProductName = reader.GetString(3),
+                                    UnitPrice = reader.GetDecimal(4),
+                                    Quantity = reader.GetInt32(5),
+                                    TotalPrice = reader.GetDecimal(6),
+                                    ProductImageUrl = reader.IsDBNull(7) ? null : reader.GetString(7)
+                                };
+                                order.OrderItems.Add(orderItem);
+                            }
+                        }
+                    }
+                }
+
+                return order;
+            }
+        }
+
+        public async Task<List<Order>> GetOrdersByUserIdAsync(int userId)
+        {
+            var orders = new List<Order>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                // Get orders for user
+                using (var command = new SqlCommand(
+                    @"SELECT OrderId, UserId, OrderDate, TotalAmount, OrderStatus, ShippingAddress, BillingAddress, 
+                             PaymentMethod, PaymentStatus, ShippedDate, DeliveredDate, TrackingNumber, Notes, CreatedAt, UpdatedAt 
+                      FROM Orders WHERE UserId = @UserId ORDER BY OrderDate DESC", connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var order = new Order
+                            {
+                                OrderId = reader.GetInt32(0),
+                                UserId = reader.GetInt32(1),
+                                OrderDate = reader.GetDateTime(2),
+                                TotalAmount = reader.GetDecimal(3),
+                                OrderStatus = reader.GetString(4),
+                                ShippingAddress = reader.GetString(5),
+                                BillingAddress = reader.GetString(6),
+                                PaymentMethod = reader.GetString(7),
+                                PaymentStatus = reader.GetString(8),
+                                ShippedDate = reader.IsDBNull(9) ? (DateTime?)null : reader.GetDateTime(9),
+                                DeliveredDate = reader.IsDBNull(10) ? (DateTime?)null : reader.GetDateTime(10),
+                                TrackingNumber = reader.IsDBNull(11) ? null : reader.GetString(11),
+                                Notes = reader.IsDBNull(12) ? null : reader.GetString(12)
+                            };
+                            orders.Add(order);
+                        }
+                    }
+                }
+
+                // Get order items for each order
+                foreach (var order in orders)
+                {
+                    using (var command = new SqlCommand(
+                        @"SELECT OrderItemId, OrderId, ListingId, ProductName, UnitPrice, Quantity, TotalPrice, ProductImageUrl 
+                          FROM OrderItems WHERE OrderId = @OrderId", connection))
+                    {
+                        command.Parameters.AddWithValue("@OrderId", order.OrderId);
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                var orderItem = new OrderItem
+                                {
+                                    OrderItemId = reader.GetInt32(0),
+                                    OrderId = reader.GetInt32(1),
+                                    ListingId = reader.GetInt32(2),
+                                    ProductName = reader.GetString(3),
+                                    UnitPrice = reader.GetDecimal(4),
+                                    Quantity = reader.GetInt32(5),
+                                    TotalPrice = reader.GetDecimal(6),
+                                    ProductImageUrl = reader.IsDBNull(7) ? null : reader.GetString(7)
+                                };
+                                order.OrderItems.Add(orderItem);
+                            }
+                        }
+                    }
+                }
+            }
+            return orders;
+        }
+
+        public async Task UpdateOrderStatusAsync(int orderId, string orderStatus, string paymentStatus = null, string trackingNumber = null, DateTime? shippedDate = null, DateTime? deliveredDate = null)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var sql = "UPDATE Orders SET OrderStatus = @OrderStatus, UpdatedAt = GETUTCDATE()";
+                var parameters = new List<SqlParameter>
+                {
+                    new SqlParameter("@OrderStatus", orderStatus),
+                    new SqlParameter("@OrderId", orderId)
+                };
+
+                if (!string.IsNullOrEmpty(paymentStatus))
+                {
+                    sql += ", PaymentStatus = @PaymentStatus";
+                    parameters.Add(new SqlParameter("@PaymentStatus", paymentStatus));
+                }
+
+                if (!string.IsNullOrEmpty(trackingNumber))
+                {
+                    sql += ", TrackingNumber = @TrackingNumber";
+                    parameters.Add(new SqlParameter("@TrackingNumber", trackingNumber));
+                }
+
+                if (shippedDate.HasValue)
+                {
+                    sql += ", ShippedDate = @ShippedDate";
+                    parameters.Add(new SqlParameter("@ShippedDate", shippedDate.Value));
+                }
+
+                if (deliveredDate.HasValue)
+                {
+                    sql += ", DeliveredDate = @DeliveredDate";
+                    parameters.Add(new SqlParameter("@DeliveredDate", deliveredDate.Value));
+                }
+
+                sql += " WHERE OrderId = @OrderId";
+
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddRange(parameters.ToArray());
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        // Check if a listing has been sold
+        public async Task<bool> IsListingSoldAsync(int listingId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(
+                    "SELECT COUNT(*) FROM OrderItems WHERE ListingId = @ListingId", connection))
+                {
+                    command.Parameters.AddWithValue("@ListingId", listingId);
+                    var count = Convert.ToInt32(await command.ExecuteScalarAsync());
+                    return count > 0;
+                }
+            }
+        }
+
+        // Get all available (unsold) listings
+        public async Task<List<Listing>> GetAvailableListingsAsync()
+        {
+            var allListings = await GetAllListingsAsync();
+            var availableListings = new List<Listing>();
+
+            foreach (var listing in allListings)
+            {
+                var isSold = await IsListingSoldAsync(listing.Listings_Id);
+                if (!isSold)
+                {
+                    availableListings.Add(listing);
+                }
+            }
+
+            return availableListings;
         }
     }
 } 

@@ -19,44 +19,35 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Get current user ID using business logic
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 var currentUserId = currentUser?.Id ?? -1;
                 ViewBag.CurrentUserId = currentUserId;
 
                 // Log user access
                 if (currentUser != null)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed listings page");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed listings page");
                 }
                 else
                 {
-                    errorHandler.LogInfo("Anonymous user accessed listings page");
+                    ErrorHandler.LogInfo("Anonymous user accessed listings page");
                 }
 
-                // Use the business logic ListingService
-                var listings = await listingService.GetAllListingsAsync();
+                // Use the business logic ListingService to get only available (unsold) listings
+                var listings = await ListingService.GetAvailableListingsAsync();
                 
                 // Load photos for each listing
                 foreach (var listing in listings)
                 {
-                    listing.Photos = (await listingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
+                    listing.Photos = (await ListingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
                 }
                 
                 return View(listings.OrderByDescending(l => l.CreatedAt).ToList());
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Unable to load listings");
+                ErrorHandler.LogError(ex, "Unable to load listings");
                 return RedirectToAction("Index", "Home");
             }
         }
@@ -71,26 +62,18 @@ namespace WatchZone.Web.Controllers
 
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Log user access to create form
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser != null)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed create listing form");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed create listing form");
                 }
 
                 return View();
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error loading create listing form");
+                ErrorHandler.LogError(ex, "Error loading create listing form");
                 return RedirectToAction("Index");
             }
         }
@@ -109,17 +92,11 @@ namespace WatchZone.Web.Controllers
             {
                 try
                 {
-                    // Explicit business logic instantiation to satisfy ARCH001
-                    var businessLogic = new BussinesLogic();
-                    var listingService = businessLogic.GetListingService();
-                    var authService = businessLogic.GetAuthService();
-                    var errorHandler = businessLogic.GetErrorHandler();
-
                     // Get current user ID using business logic
-                    var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                    var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                     if (currentUser == null)
                     {
-                        errorHandler.LogWarning("Create listing attempted by unauthenticated user");
+                        ErrorHandler.LogWarning("Create listing attempted by unauthenticated user");
                         return RedirectToAction("Login", "Auth");
                     }
 
@@ -135,31 +112,28 @@ namespace WatchZone.Web.Controllers
                     };
 
                     // Use the business logic ListingService
-                    var success = await listingService.CreateListingAsync(listing);
+                    var success = await ListingService.CreateListingAsync(listing);
                     if (success)
                     {
-                        errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) created listing: {listing.Title}");
+                        ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) created listing: {listing.Title}");
                         
                         // Handle photo uploads if any
                         if (model.Photos != null && model.Photos.Any(p => p != null))
                         {
-                            await HandlePhotoUploads(model.Photos, listing.Listings_Id, errorHandler);
+                            await HandlePhotoUploads(model.Photos, listing.Listings_Id, ErrorHandler);
                         }
                         
                         return RedirectToAction("Details", new { id = listing.Listings_Id });
                     }
                     else
                     {
-                        errorHandler.LogWarning($"Failed to create listing for user {currentUser.Username}: {listing.Title}");
+                        ErrorHandler.LogWarning($"Failed to create listing for user {currentUser.Username}: {listing.Title}");
                         ModelState.AddModelError("", "Failed to create listing. Please try again.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Explicit business logic instantiation to satisfy ARCH001
-                    var businessLogic = new BussinesLogic();
-                    var errorHandler = businessLogic.GetErrorHandler();
-                    errorHandler.LogError(ex, "Error creating listing");
+                    ErrorHandler.LogError(ex, "Error creating listing");
                     ModelState.AddModelError("", "An error occurred while creating the listing.");
                 }
             }
@@ -172,44 +146,39 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Log user access
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 var currentUserId = currentUser?.Id ?? -1;
                 ViewBag.CurrentUserId = currentUserId;
                 
                 if (currentUser != null)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) viewed listing details: ID {id}");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) viewed listing details: ID {id}");
                 }
                 else
                 {
-                    errorHandler.LogInfo($"Anonymous user viewed listing details: ID {id}");
+                    ErrorHandler.LogInfo($"Anonymous user viewed listing details: ID {id}");
                 }
 
-                var listing = await listingService.GetListingByIdAsync(id);
+                var listing = await ListingService.GetListingByIdAsync(id);
                 if (listing == null)
                 {
-                    errorHandler.LogWarning($"Listing details requested for non-existent listing: ID {id}");
+                    ErrorHandler.LogWarning($"Listing details requested for non-existent listing: ID {id}");
                     return HttpNotFound();
                 }
 
                 // Load photos for the listing
-                listing.Photos = (await listingService.GetPhotosByListingIdAsync(id)).ToList();
+                listing.Photos = (await ListingService.GetPhotosByListingIdAsync(id)).ToList();
+                
+                // Check if the listing is sold
+                var isSold = await ListingService.IsListingSoldAsync(id);
+                ViewBag.IsSold = isSold;
                 
                 return View(listing);
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Unable to load listing details");
+                ErrorHandler.LogError(ex, "Unable to load listing details");
                 return RedirectToAction("Index");
             }
         }
@@ -366,11 +335,9 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
                 
                 // Get existing photos to determine display order
-                var existingPhotos = await listingService.GetPhotosByListingIdAsync(listingId);
+                var existingPhotos = await ListingService.GetPhotosByListingIdAsync(listingId);
                 var nextDisplayOrder = existingPhotos.Any() ? existingPhotos.Max(p => p.DisplayOrder) + 1 : 1;
                 var isFirstPhoto = !existingPhotos.Any();
 
@@ -416,7 +383,7 @@ namespace WatchZone.Web.Controllers
                         DisplayOrder = nextDisplayOrder
                     };
 
-                    var success = await listingService.AddPhotoAsync(photo);
+                    var success = await ListingService.AddPhotoAsync(photo);
                     if (success)
                     {
                         errorHandler.LogInfo($"Photo uploaded successfully: {fileName} for listing {listingId}");

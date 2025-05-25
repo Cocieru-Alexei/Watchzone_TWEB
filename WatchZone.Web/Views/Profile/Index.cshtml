@@ -74,26 +74,33 @@
                             {
                                 var primaryPhoto = listing.Photos?.FirstOrDefault(p => p.IsPrimary);
                                 var displayImage = primaryPhoto?.FilePath ?? listing.ImageUrl;
+                                var soldStatuses = ViewBag.SoldStatuses as Dictionary<int, bool>;
+                                var isSold = soldStatuses != null && soldStatuses.ContainsKey(listing.Listings_Id) && soldStatuses[listing.Listings_Id];
                                 
                                 <div class="col-md-6 mb-3">
-                                    <div class="card h-100">
+                                    <div class="card h-100 @(isSold ? "border-success" : "")">
                                         @if (!string.IsNullOrEmpty(displayImage))
                                         {
-                                            <img src="@displayImage" class="card-img-top" alt="@listing.Title" style="height: 150px; object-fit: cover;">
+                                            <img src="@displayImage" class="card-img-top @(isSold ? "opacity-75" : "")" alt="@listing.Title" style="height: 150px; object-fit: cover;">
                                         }
                                         else
                                         {
-                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center @(isSold ? "opacity-75" : "")" style="height: 150px;">
                                                 <i class="fas fa-image fa-2x text-muted"></i>
                                             </div>
                                         }
                                         
-                                        @if (listing.Photos != null && listing.Photos.Any())
-                                        {
-                                            <div class="position-absolute" style="top: 10px; right: 10px;">
+                                        <div class="position-absolute" style="top: 10px; right: 10px;">
+                                            @if (isSold)
+                                            {
+                                                <span class="badge bg-success mb-1">SOLD</span>
+                                                <br>
+                                            }
+                                            @if (listing.Photos != null && listing.Photos.Any())
+                                            {
                                                 <span class="badge bg-primary">@listing.Photos.Count() photos</span>
-                                            </div>
-                                        }
+                                            }
+                                        </div>
                                         
                                         <div class="card-body">
                                             <h6 class="card-title">@listing.Title</h6>
@@ -101,7 +108,11 @@
                                                 @(listing.Description.Length > 80 ? listing.Description.Substring(0, 80) + "..." : listing.Description)
                                             </p>
                                             <p class="card-text">
-                                                <strong class="text-success">$@listing.Price.ToString("N2")</strong>
+                                                <strong class="@(isSold ? "text-muted" : "text-success")">$@listing.Price.ToString("N2")</strong>
+                                                @if (isSold)
+                                                {
+                                                    <span class="badge bg-success ms-2">SOLD</span>
+                                                }
                                             </p>
                                             <p class="card-text">
                                                 <small class="text-muted">Created: @listing.CreatedAt.ToString("MMM dd, yyyy")</small>

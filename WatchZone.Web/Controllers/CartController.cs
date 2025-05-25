@@ -12,23 +12,18 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use business logic method to get current user
-                var user = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var user = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (user == null)
                 {
-                    errorHandler.LogWarning("Cart access attempted by unauthenticated user");
+                    ErrorHandler.LogWarning("Cart access attempted by unauthenticated user");
                     return null;
                 }
 
                 // Use business logic for user validation - check if user exists and is active
                 if (!IsAuthenticated())
                 {
-                    errorHandler.LogWarning($"Cart access attempted with invalid authentication for user ID: {user.Id}");
+                    ErrorHandler.LogWarning($"Cart access attempted with invalid authentication for user ID: {user.Id}");
                     return null;
                 }
 
@@ -38,16 +33,13 @@ namespace WatchZone.Web.Controllers
                 {
                     cart = new Cart();
                     Session[cartKey] = cart;
-                    errorHandler.LogInfo($"New cart created for user {user.Username} (ID: {user.Id})");
+                    ErrorHandler.LogInfo($"New cart created for user {user.Username} (ID: {user.Id})");
                 }
                 return cart;
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error getting cart");
+                ErrorHandler.LogError(ex, "Error getting cart");
                 return null;
             }
         }
@@ -56,11 +48,6 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use BaseController authentication check
                 var authResult = RedirectIfNotAuthenticated();
                 if (authResult != null)
@@ -84,12 +71,6 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var listingService = businessLogic.GetListingService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use BaseController authentication check
                 var authResult = RedirectIfNotAuthenticated();
                 if (authResult != null)
@@ -98,7 +79,7 @@ namespace WatchZone.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     // Use business logic to validate user and get user info
-                    var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                    var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                     if (currentUser == null)
                     {
                         return RedirectToAction("Login", "Auth");
@@ -107,18 +88,27 @@ namespace WatchZone.Web.Controllers
                     // Use business logic to validate product exists through ListingService
                     if (item.WatchId > 0)
                     {
-                        var listing = await listingService.GetListingByIdAsync(item.WatchId);
+                        var listing = await ListingService.GetListingByIdAsync(item.WatchId);
                         if (listing == null)
                         {
-                            errorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to add non-existent product to cart: Watch ID {item.WatchId}");
+                            ErrorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to add non-existent product to cart: Watch ID {item.WatchId}");
                             TempData["ErrorMessage"] = "The selected product no longer exists.";
                             return RedirectToAction("Index", "Home");
+                        }
+
+                        // Check if the item has already been sold
+                        var isSold = await ListingService.IsListingSoldAsync(item.WatchId);
+                        if (isSold)
+                        {
+                            ErrorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to add sold product to cart: Watch ID {item.WatchId}");
+                            TempData["ErrorMessage"] = "This item has already been sold and is no longer available.";
+                            return RedirectToAction("Details", "Listings", new { id = item.WatchId });
                         }
 
                         // Use business logic to validate product details
                         if (listing.Price != item.Price)
                         {
-                            errorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to add product with incorrect price. Expected: {listing.Price:C}, Provided: {item.Price:C}");
+                            ErrorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to add product with incorrect price. Expected: {listing.Price:C}, Provided: {item.Price:C}");
                             TempData["ErrorMessage"] = "Product price has changed. Please refresh and try again.";
                             return RedirectToAction("Index", "Home");
                         }
@@ -137,17 +127,14 @@ namespace WatchZone.Web.Controllers
                     cart.AddItem(item);
                     
                     // Use business logic for logging through ErrorHandler service
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) added item to cart: {item.WatchName} - Quantity: {item.Quantity} - Price: {item.Price:C}");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) added item to cart: {item.WatchName} - Quantity: {item.Quantity} - Price: {item.Price:C}");
                     
                     return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error adding item to cart");
+                ErrorHandler.LogError(ex, "Error adding item to cart");
                 TempData["ErrorMessage"] = "Failed to add item to cart. Please try again.";
             }
             
@@ -159,21 +146,16 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use BaseController authentication check
                 var authResult = RedirectIfNotAuthenticated();
                 if (authResult != null)
                     return authResult;
 
                 // Use business logic to validate user
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
-                    errorHandler.LogWarning("Cart item removal attempted by unauthenticated user");
+                    ErrorHandler.LogWarning("Cart item removal attempted by unauthenticated user");
                     return RedirectToAction("Login", "Auth");
                 }
 
@@ -187,7 +169,7 @@ namespace WatchZone.Web.Controllers
                 var itemToRemove = cart.Items.FirstOrDefault(i => i.WatchId == watchId);
                 if (itemToRemove == null)
                 {
-                    errorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to remove non-existent item from cart: Watch ID {watchId}");
+                    ErrorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to remove non-existent item from cart: Watch ID {watchId}");
                     TempData["ErrorMessage"] = "Item not found in cart.";
                     return RedirectToAction("Index");
                 }
@@ -195,16 +177,13 @@ namespace WatchZone.Web.Controllers
                 cart.RemoveItem(watchId);
                 
                 // Use business logic for comprehensive logging
-                errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) removed item from cart: {itemToRemove.WatchName} - Watch ID {watchId}");
+                ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) removed item from cart: {itemToRemove.WatchName} - Watch ID {watchId}");
                 
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, $"Error removing item from cart: Watch ID {watchId}");
+                ErrorHandler.LogError(ex, $"Error removing item from cart: Watch ID {watchId}");
                 TempData["ErrorMessage"] = "Failed to remove item from cart. Please try again.";
                 return RedirectToAction("Index");
             }
@@ -215,28 +194,23 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use BaseController authentication check
                 var authResult = RedirectIfNotAuthenticated();
                 if (authResult != null)
                     return authResult;
 
                 // Use business logic to validate user
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
-                    errorHandler.LogWarning("Cart quantity update attempted by unauthenticated user");
+                    ErrorHandler.LogWarning("Cart quantity update attempted by unauthenticated user");
                     return RedirectToAction("Login", "Auth");
                 }
 
                 // Use business logic to validate quantity
                 if (quantity <= 0)
                 {
-                    errorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to set invalid quantity: {quantity} for Watch ID {watchId}");
+                    ErrorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to set invalid quantity: {quantity} for Watch ID {watchId}");
                     TempData["ErrorMessage"] = "Quantity must be greater than 0.";
                     return RedirectToAction("Index");
                 }
@@ -251,7 +225,7 @@ namespace WatchZone.Web.Controllers
                 var itemToUpdate = cart.Items.FirstOrDefault(i => i.WatchId == watchId);
                 if (itemToUpdate == null)
                 {
-                    errorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to update quantity for non-existent item: Watch ID {watchId}");
+                    ErrorHandler.LogWarning($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to update quantity for non-existent item: Watch ID {watchId}");
                     TempData["ErrorMessage"] = "Item not found in cart.";
                     return RedirectToAction("Index");
                 }
@@ -260,16 +234,13 @@ namespace WatchZone.Web.Controllers
                 cart.UpdateQuantity(watchId, quantity);
                 
                 // Use business logic for comprehensive logging
-                errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) updated cart quantity: {itemToUpdate.WatchName} - Watch ID {watchId}, Old Quantity: {oldQuantity}, New Quantity: {quantity}");
+                ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) updated cart quantity: {itemToUpdate.WatchName} - Watch ID {watchId}, Old Quantity: {oldQuantity}, New Quantity: {quantity}");
                 
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, $"Error updating cart quantity: Watch ID {watchId}, Quantity {quantity}");
+                ErrorHandler.LogError(ex, $"Error updating cart quantity: Watch ID {watchId}, Quantity {quantity}");
                 TempData["ErrorMessage"] = "Failed to update cart quantity. Please try again.";
                 return RedirectToAction("Index");
             }
@@ -279,21 +250,16 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use BaseController authentication check
                 var authResult = RedirectIfNotAuthenticated();
                 if (authResult != null)
                     return authResult;
 
                 // Use business logic to validate user
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
-                    errorHandler.LogWarning("Cart clear attempted by unauthenticated user");
+                    ErrorHandler.LogWarning("Cart clear attempted by unauthenticated user");
                     return RedirectToAction("Login", "Auth");
                 }
 
@@ -309,7 +275,7 @@ namespace WatchZone.Web.Controllers
                 
                 if (itemCount == 0)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to clear already empty cart");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) attempted to clear already empty cart");
                     TempData["InfoMessage"] = "Cart is already empty.";
                     return RedirectToAction("Index");
                 }
@@ -317,17 +283,14 @@ namespace WatchZone.Web.Controllers
                 cart.Clear();
                 
                 // Use business logic for comprehensive logging
-                errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) cleared cart - {itemCount} items removed, Total value: {totalValue:C}");
+                ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) cleared cart - {itemCount} items removed, Total value: {totalValue:C}");
                 TempData["SuccessMessage"] = "Cart cleared successfully.";
                 
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error clearing cart");
+                ErrorHandler.LogError(ex, "Error clearing cart");
                 TempData["ErrorMessage"] = "Failed to clear cart. Please try again.";
                 return RedirectToAction("Index");
             }
@@ -338,28 +301,23 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use BaseController authentication check
                 var authResult = RedirectIfNotAuthenticated();
                 if (authResult != null)
                     return authResult;
 
                 // Use business logic to get current user information
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
-                    errorHandler.LogWarning("Checkout attempted by unauthenticated user");
+                    ErrorHandler.LogWarning("Checkout attempted by unauthenticated user");
                     return RedirectToAction("Login", "Auth");
                 }
 
                 var cart = GetCart();
                 if (cart == null || cart.Items.Count() == 0)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) attempted checkout with empty cart");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) attempted checkout with empty cart");
                     TempData["ErrorMessage"] = "Your cart is empty.";
                     return RedirectToAction("Index");
                 }
@@ -367,7 +325,7 @@ namespace WatchZone.Web.Controllers
                 // Use business logic for comprehensive logging
                 var itemCount = cart.Items.Count();
                 var totalAmount = cart.GetTotal();
-                errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) initiated checkout with {itemCount} items, Total: {totalAmount:C}");
+                ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) initiated checkout with {itemCount} items, Total: {totalAmount:C}");
 
                 // TODO: Implement checkout logic using injected services
                 // This would involve:
@@ -380,17 +338,14 @@ namespace WatchZone.Web.Controllers
                 cart.Clear();
                 
                 // Use business logic for success logging
-                errorHandler.LogInfo($"Checkout completed successfully for user {currentUser.Username} (ID: {currentUser.Id})");
+                ErrorHandler.LogInfo($"Checkout completed successfully for user {currentUser.Username} (ID: {currentUser.Id})");
                 TempData["SuccessMessage"] = "Checkout completed successfully!";
                 
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error during checkout");
+                ErrorHandler.LogError(ex, "Error during checkout");
                 TempData["ErrorMessage"] = "Checkout failed. Please try again.";
                 return RedirectToAction("Index");
             }

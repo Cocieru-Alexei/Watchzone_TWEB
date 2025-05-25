@@ -5,6 +5,7 @@
     var isLoggedIn = Request.Cookies["X-KEY"] != null;
     var currentUserId = ViewBag.CurrentUserId as int? ?? -1;
     var canEdit = currentUserId == Model.UserId;
+    var isSold = ViewBag.IsSold as bool? ?? false;
     var primaryPhoto = Model.Photos?.FirstOrDefault(p => p.IsPrimary);
     var hasPhotos = Model.Photos != null && Model.Photos.Any();
 }
@@ -78,8 +79,18 @@
 
         <!-- Listing Details Section -->
         <div class="col-md-6">
-            <h2>@Model.Title</h2>
-            <p class="lead text-success">$@Model.Price</p>
+            <h2>@Model.Title 
+                @if (isSold)
+                {
+                    <span class="badge bg-success ms-2">SOLD</span>
+                }
+            </h2>
+            <p class="lead @(isSold ? "text-muted" : "text-success")">$@Model.Price
+                @if (isSold)
+                {
+                    <small class="text-muted ms-2">(No longer available)</small>
+                }
+            </p>
             <p><strong>Listed on:</strong> @Model.CreatedAt.ToString("MMMM dd, yyyy")</p>
             
             @if (canEdit)
@@ -96,7 +107,13 @@
 
             <!-- Add to Cart Section -->
             <div class="mt-4">
-                @if (isLoggedIn && !canEdit)
+                @if (isSold)
+                {
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i> This item has been sold and is no longer available for purchase.
+                    </div>
+                }
+                else if (isLoggedIn && !canEdit)
                 {
                     using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
                     {

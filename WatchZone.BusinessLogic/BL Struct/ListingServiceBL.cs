@@ -31,6 +31,34 @@ namespace WatchZone.BusinessLogic.BL_Struct
             }
         }
 
+        public async Task<IEnumerable<Listing>> GetAvailableListingsAsync()
+        {
+            try
+            {
+                var context = new DatabaseContext();
+                return await context.GetAvailableListingsAsync();
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, "Error getting available listings");
+                return Enumerable.Empty<Listing>();
+            }
+        }
+
+        public async Task<bool> IsListingSoldAsync(int listingId)
+        {
+            try
+            {
+                var context = new DatabaseContext();
+                return await context.IsListingSoldAsync(listingId);
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error checking if listing {listingId} is sold");
+                return false;
+            }
+        }
+
         public async Task<Listing> GetListingByIdAsync(int id)
         {
             try

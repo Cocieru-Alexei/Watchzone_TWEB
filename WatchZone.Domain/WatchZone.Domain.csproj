@@ -55,6 +55,8 @@
     <Compile Include="Model\Product\ProductDTO.cs" />
     <Compile Include="Model\Listing.cs" />
     <Compile Include="Model\ListingPhoto.cs" />
+    <Compile Include="Model\Order.cs" />
+    <Compile Include="Model\OrderItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Database\DatabaseContext.cs" />
   </ItemGroup>

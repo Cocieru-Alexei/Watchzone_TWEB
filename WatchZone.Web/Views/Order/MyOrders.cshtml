@@ -1,0 +1,176 @@
+@model List<WatchZone.Web.Models.OrderViewModel>
+
+@{
+    ViewBag.Title = "My Orders";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Orders</h2>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+            <i class="fas fa-shopping-bag"></i> Continue Shopping
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-shopping-cart text-muted" style="font-size: 4rem;"></i>
+            <h4 class="mt-3 text-muted">No Orders Yet</h4>
+            <p class="text-muted">You haven't placed any orders yet. Start shopping to see your orders here!</p>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                <i class="fas fa-shopping-bag"></i> Start Shopping
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>#@order.OrderId</strong>
+                                    </td>
+                                    <td>
+                                        @order.OrderDate.ToString("MMM dd, yyyy")
+                                        <br>
+                                        <small class="text-muted">@order.OrderDate.ToString("hh:mm tt")</small>
+                                    </td>
+                                    <td>
+                                        @{
+                                            if (order.OrderItems.Any())
+                                            {
+                                                foreach (var item in order.OrderItems.Take(2))
+                                                {
+                                                    <div class="mb-1">
+                                                        <small>@item.ProductName</small>
+                                                        @if (item.Quantity > 1)
+                                                        {
+                                                            <span class="badge badge-light">x@item.Quantity</span>
+                                                        }
+                                                    </div>
+                                                }
+                                                if (order.OrderItems.Count > 2)
+                                                {
+                                                    <small class="text-muted">+@(order.OrderItems.Count - 2) more...</small>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <small class="text-muted">No items</small>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        <strong>@order.TotalAmount.ToString("C")</strong>
+                                    </td>
+                                    <td>
+                                        @{
+                                            var statusClass = "badge-secondary";
+                                            switch (order.OrderStatus?.ToLower())
+                                            {
+                                                case "pending":
+                                                    statusClass = "badge-warning text-dark";
+                                                    break;
+                                                case "ordered":
+                                                    statusClass = "badge-info text-dark";
+                                                    break;
+                                                case "confirmed":
+                                                    statusClass = "badge-info text-white";
+                                                    break;
+                                                case "shipped":
+                                                    statusClass = "badge-primary text-white";
+                                                    break;
+                                                case "delivered":
+                                                    statusClass = "badge-success text-white";
+                                                    break;
+                                                case "cancelled":
+                                                    statusClass = "badge-danger text-white";
+                                                    break;
+                                            }
+                                        }
+                                        <span class="badge @statusClass">@order.OrderStatus</span>
+                                    </td>
+                                    <td>
+                                        @{
+                                            var paymentClass = "badge-secondary text-white";
+                                            switch (order.PaymentStatus?.ToLower())
+                                            {
+                                                case "pending":
+                                                    paymentClass = "badge-warning text-dark";
+                                                    break;
+                                                case "paid":
+                                                    paymentClass = "badge-success text-dark";
+                                                    break;
+                                                case "failed":
+                                                    paymentClass = "badge-danger text-white";
+                                                    break;
+                                                case "refunded":
+                                                    paymentClass = "badge-info text-white";
+                                                    break;
+                                            }
+                                        }
+                                        <span class="badge @paymentClass">@order.PaymentStatus</span>
+                                        <br>
+                                        <small class="text-muted">@order.PaymentMethod</small>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("OrderDetails", "Order", new { orderId = order.OrderId })" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Orders</h5>
+                            <h3 class="text-primary">@Model.Count</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Spent</h5>
+                            <h3 class="text-success">@Model.Sum(o => o.TotalAmount).ToString("C")</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent Orders</h5>
+                            <h3 class="text-info">@Model.Count(o => o.OrderStatus == "Ordered")</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div> 

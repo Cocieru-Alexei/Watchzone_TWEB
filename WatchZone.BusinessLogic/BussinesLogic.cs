@@ -2,6 +2,7 @@
 using WatchZone.BusinessLogic.Interface.Repositories;
 using WatchZone.BusinessLogic.BL_Struct;
 using WatchZone.BusinessLogic.BL_Struct.Basket;
+using WatchZone.BusinessLogic.Services;
 
 namespace WatchZone.BusinessLogic
 {
@@ -13,6 +14,7 @@ namespace WatchZone.BusinessLogic
         private readonly IListingService _listingService;
         private readonly IUserService _userService;
         private readonly IBasketService _basketService;
+        private readonly OrderService _orderService;
 
         public BussinesLogic()
         {
@@ -22,6 +24,7 @@ namespace WatchZone.BusinessLogic
             _sessionService = new SessionBL();
             _listingService = new ListingServiceBL(_errorHandler);
             _userService = new UserServiceBL(_errorHandler);
+            _orderService = new OrderService();
             // _basketService would be initialized here when repositories are implemented
         }
 
@@ -53,6 +56,11 @@ namespace WatchZone.BusinessLogic
         public IBasketService GetBasketService()
         {
             return _basketService;
+        }
+
+        public OrderService GetOrderService()
+        {
+            return _orderService;
         }
     }
 }

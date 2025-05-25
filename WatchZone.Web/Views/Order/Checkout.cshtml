@@ -1,0 +1,128 @@
+@model WatchZone.Web.Models.CheckoutViewModel
+
+@{
+    ViewBag.Title = "Checkout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Checkout</h2>
+            
+            @using (Html.BeginForm("ProcessCheckout", "Order", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Shipping Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ShippingAddress, new { @class = "form-label" })
+                            @Html.TextAreaFor(m => m.ShippingAddress, new { @class = "form-control", rows = "3", placeholder = "Enter your shipping address" })
+                            @Html.ValidationMessageFor(m => m.ShippingAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Billing Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BillingAddress, new { @class = "form-label" })
+                            @Html.TextAreaFor(m => m.BillingAddress, new { @class = "form-control", rows = "3", placeholder = "Enter your billing address" })
+                            @Html.ValidationMessageFor(m => m.BillingAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Payment Method</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PaymentMethod, new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.PaymentMethod, 
+                                new SelectList(Model.PaymentMethods), 
+                                "Select payment method", 
+                                new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.PaymentMethod, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Additional Notes</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Notes, new { @class = "form-label" })
+                            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", rows = "2", placeholder = "Any special instructions or notes (optional)" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Index", "Cart")" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Cart
+                    </a>
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fas fa-credit-card"></i> Place Order (@Model.TotalAmount.ToString("C"))
+                    </button>
+                </div>
+            }
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Cart != null && Model.Cart.Items.Any())
+                    {
+                        foreach (var item in Model.Cart.Items)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                    {
+                                        <img src="@item.ImageUrl" alt="@item.WatchName" style="width: 40px; height: 40px; object-fit: cover; margin-right: 10px;" />
+                                    }
+                                    <div>
+                                        <small class="text-muted">@item.WatchName</small><br>
+                                        <small>Qty: @item.Quantity</small>
+                                    </div>
+                                </div>
+                                <span>@((item.Price * item.Quantity).ToString("C"))</span>
+                            </div>
+                        }
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <strong>Total:</strong>
+                            <strong>@Model.TotalAmount.ToString("C")</strong>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Copy shipping address to billing address
+    function copyShippingToBilling() {
+        document.getElementById('BillingAddress').value = document.getElementById('ShippingAddress').value;
+    }
+    
+    // Add a checkbox to copy shipping to billing
+    $(document).ready(function() {
+        var checkbox = '<div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="sameAsBilling" onchange="if(this.checked) copyShippingToBilling();"><label class="form-check-label" for="sameAsBilling">Billing address same as shipping</label></div>';
+        $('#BillingAddress').before(checkbox);
+    });
+</script> 

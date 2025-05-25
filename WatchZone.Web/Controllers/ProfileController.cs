@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -18,26 +19,28 @@ namespace WatchZone.Web.Controllers
 
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var listingService = businessLogic.GetListingService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
                     return RedirectToAction("Login", "Auth");
                 }
 
                 // Get user listings
-                var userListings = await listingService.GetListingsByUserIdAsync(currentUser.Id);
+                var userListings = await ListingService.GetListingsByUserIdAsync(currentUser.Id);
                 
-                // Load photos for each listing
+                // Load photos for each listing and check sold status
                 foreach (var listing in userListings)
                 {
-                    listing.Photos = (await listingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
+                    listing.Photos = (await ListingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
                 }
+                
+                // Pass sold status information to the view
+                var soldStatuses = new Dictionary<int, bool>();
+                foreach (var listing in userListings)
+                {
+                    soldStatuses[listing.Listings_Id] = await ListingService.IsListingSoldAsync(listing.Listings_Id);
+                }
+                ViewBag.SoldStatuses = soldStatuses;
 
                 var model = new ProfileViewModel
                 {
@@ -45,15 +48,12 @@ namespace WatchZone.Web.Controllers
                     UserListings = userListings.OrderByDescending(l => l.CreatedAt).ToList()
                 };
 
-                errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed profile page");
+                ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed profile page");
                 return View(model);
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error loading profile page");
+                ErrorHandler.LogError(ex, "Error loading profile page");
                 return RedirectToAction("Index", "Home");
             }
         }

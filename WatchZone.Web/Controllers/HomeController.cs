@@ -17,35 +17,29 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var listingService = businessLogic.GetListingService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use business logic to log user visit and get user context
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser != null)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited home page");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited home page");
                     ViewBag.IsAuthenticated = true;
                     ViewBag.UserName = currentUser.Username;
                     ViewBag.UserRole = currentUser.Level.ToString();
                 }
                 else
                 {
-                    errorHandler.LogInfo("Anonymous user visited home page");
+                    ErrorHandler.LogInfo("Anonymous user visited home page");
                     ViewBag.IsAuthenticated = false;
                 }
 
-                // Use business logic to get featured listings for the home page
-                var allListings = await listingService.GetAllListingsAsync();
-                var featuredListings = allListings.Take(3).ToList();
+                // Use business logic to get featured listings for the home page (only available ones)
+                var availableListings = await ListingService.GetAvailableListingsAsync();
+                var featuredListings = availableListings.Take(3).ToList();
                 
                 // Load photos for each featured listing
                 foreach (var listing in featuredListings)
                 {
-                    listing.Photos = (await listingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
+                    listing.Photos = (await ListingService.GetPhotosByListingIdAsync(listing.Listings_Id)).ToList();
                 }
                 
                 ViewBag.FeaturedListings = featuredListings;
@@ -62,25 +56,19 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var listingService = businessLogic.GetListingService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use business logic to log user visit and get user context
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser != null)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Smart Watch category");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Smart Watch category");
                 }
                 else
                 {
-                    errorHandler.LogInfo("Anonymous user visited Smart Watch category");
+                    ErrorHandler.LogInfo("Anonymous user visited Smart Watch category");
                 }
 
                 // Use business logic to get smart watch listings
-                var allListings = await listingService.GetAllListingsAsync();
+                var allListings = await ListingService.GetAllListingsAsync();
                 var smartWatchListings = allListings
                     .Where(l => l.Title.ToLower().Contains("smart") || l.Description.ToLower().Contains("smart"))
                     .ToList();
@@ -99,25 +87,19 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var listingService = businessLogic.GetListingService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use business logic to log user visit and get user context
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser != null)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Sport Watch category");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Sport Watch category");
                 }
                 else
                 {
-                    errorHandler.LogInfo("Anonymous user visited Sport Watch category");
+                    ErrorHandler.LogInfo("Anonymous user visited Sport Watch category");
                 }
 
                 // Use business logic to get sport watch listings
-                var allListings = await listingService.GetAllListingsAsync();
+                var allListings = await ListingService.GetAllListingsAsync();
                 var sportWatchListings = allListings
                     .Where(l => l.Title.ToLower().Contains("sport") || l.Description.ToLower().Contains("sport") || 
                                l.Title.ToLower().Contains("casio") || l.Title.ToLower().Contains("g-shock"))
@@ -137,25 +119,19 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var listingService = businessLogic.GetListingService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use business logic to log user visit and get user context
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser != null)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Luxury Watch category");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) visited Luxury Watch category");
                 }
                 else
                 {
-                    errorHandler.LogInfo("Anonymous user visited Luxury Watch category");
+                    ErrorHandler.LogInfo("Anonymous user visited Luxury Watch category");
                 }
 
                 // Use business logic to get luxury watch listings
-                var allListings = await listingService.GetAllListingsAsync();
+                var allListings = await ListingService.GetAllListingsAsync();
                 var luxuryWatchListings = allListings
                     .Where(l => l.Title.ToLower().Contains("luxury") || l.Description.ToLower().Contains("luxury") ||
                                l.Title.ToLower().Contains("cartier") || l.Price > 1000)
@@ -182,12 +158,8 @@ namespace WatchZone.Web.Controllers
 
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var userService = businessLogic.GetUserService();
-
                 // Use the UserService from dependency injection
-                var users = await userService.GetAllUsersAsync();
+                var users = await UserService.GetAllUsersAsync();
                 ViewBag.Users = users.ToList();
                 
                 return View();
@@ -202,41 +174,35 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var listingService = businessLogic.GetListingService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use business logic to validate input parameters
                 if (string.IsNullOrEmpty(id))
                 {
-                    errorHandler.LogWarning("WatchDetail accessed with null or empty id parameter");
+                    ErrorHandler.LogWarning("WatchDetail accessed with null or empty id parameter");
                     return RedirectToAction("Index");
                 }
 
                 if (!int.TryParse(id, out int watchId))
                 {
-                    errorHandler.LogWarning($"WatchDetail accessed with invalid id parameter: {id}");
+                    ErrorHandler.LogWarning($"WatchDetail accessed with invalid id parameter: {id}");
                     return RedirectToAction("Index");
                 }
 
                 // Use business logic to log user visit
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser != null)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) viewed watch detail: ID {watchId}, Type {type}");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) viewed watch detail: ID {watchId}, Type {type}");
                 }
                 else
                 {
-                    errorHandler.LogInfo($"Anonymous user viewed watch detail: ID {watchId}, Type {type}");
+                    ErrorHandler.LogInfo($"Anonymous user viewed watch detail: ID {watchId}, Type {type}");
                 }
 
                 // Use business logic to get actual listing data
-                var listing = await listingService.GetListingByIdAsync(watchId);
+                var listing = await ListingService.GetListingByIdAsync(watchId);
                 if (listing == null)
                 {
-                    errorHandler.LogWarning($"Watch detail requested for non-existent listing: ID {watchId}");
+                    ErrorHandler.LogWarning($"Watch detail requested for non-existent listing: ID {watchId}");
                     TempData["ErrorMessage"] = "The requested watch could not be found.";
                     return RedirectToAction("Index");
                 }
@@ -247,7 +213,7 @@ namespace WatchZone.Web.Controllers
                     var expectedType = GetWatchTypeFromTitle(listing.Title);
                     if (!string.Equals(type, expectedType, StringComparison.OrdinalIgnoreCase))
                     {
-                        errorHandler.LogWarning($"Watch detail accessed with mismatched type. Expected: {expectedType}, Provided: {type}, Listing ID: {watchId}");
+                        ErrorHandler.LogWarning($"Watch detail accessed with mismatched type. Expected: {expectedType}, Provided: {type}, Listing ID: {watchId}");
                     }
                 }
 
@@ -257,7 +223,7 @@ namespace WatchZone.Web.Controllers
                 ViewBag.Listing = listing;
 
                 // Use business logic to log successful access
-                errorHandler.LogInfo($"Successfully loaded watch detail: {listing.Title} (ID: {watchId}) - Price: {listing.Price:C}");
+                ErrorHandler.LogInfo($"Successfully loaded watch detail: {listing.Title} (ID: {watchId}) - Price: {listing.Price:C}");
 
                 return View(listing);
             }
