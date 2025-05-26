@@ -17,6 +17,14 @@ namespace WatchZone.BusinessLogic.Interface
         Task<IEnumerable<Listing>> GetListingsByUserIdAsync(int userId);
         Task<bool> UserCanEditListing(int listingId, int userId, bool isAdmin);
         
+        // Category filtering methods
+        Task<IEnumerable<Listing>> GetSmartWatchListingsAsync();
+        Task<IEnumerable<Listing>> GetSportWatchListingsAsync();
+        Task<IEnumerable<Listing>> GetLuxuryWatchListingsAsync();
+        
+        // Watch type classification method
+        string GetWatchType(string title);
+        
         // Photo management methods
         Task<IEnumerable<ListingPhoto>> GetPhotosByListingIdAsync(int listingId);
         Task<ListingPhoto> GetPhotoByIdAsync(int photoId);

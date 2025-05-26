@@ -212,9 +212,16 @@ namespace WatchZone.Web.Controllers
 
                 // Use business logic to check edit permissions
                 var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
-                if (currentUser == null || !CanEditListing(id))
+                if (currentUser == null)
                 {
-                    ErrorHandler.LogWarning($"Unauthorized edit attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
+                    ErrorHandler.LogWarning($"Unauthenticated edit attempt for listing {id}");
+                    return new HttpStatusCodeResult(401); // Unauthorized
+                }
+
+                var canEdit = await ListingService.UserCanEditListing(id, currentUser.Id, IsAdmin());
+                if (!canEdit)
+                {
+                    ErrorHandler.LogWarning($"Unauthorized edit attempt for listing {id} by user {currentUser.Username} (ID: {currentUser.Id})");
                     return new HttpStatusCodeResult(403); // Forbidden
                 }
 
@@ -262,9 +269,16 @@ namespace WatchZone.Web.Controllers
 
                 // Use business logic to check edit permissions
                 var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
-                if (currentUser == null || !CanEditListing(id))
+                if (currentUser == null)
                 {
-                    ErrorHandler.LogWarning($"Unauthorized edit update attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
+                    ErrorHandler.LogWarning($"Unauthenticated edit update attempt for listing {id}");
+                    return new HttpStatusCodeResult(401); // Unauthorized
+                }
+
+                var canEdit = await ListingService.UserCanEditListing(id, currentUser.Id, IsAdmin());
+                if (!canEdit)
+                {
+                    ErrorHandler.LogWarning($"Unauthorized edit update attempt for listing {id} by user {currentUser.Username} (ID: {currentUser.Id})");
                     return new HttpStatusCodeResult(403); // Forbidden
                 }
 
@@ -416,9 +430,16 @@ namespace WatchZone.Web.Controllers
 
                 // Use business logic to check edit permissions
                 var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
-                if (currentUser == null || !CanEditListing(id))
+                if (currentUser == null)
                 {
-                    ErrorHandler.LogWarning($"Unauthorized delete attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
+                    ErrorHandler.LogWarning($"Unauthenticated delete attempt for listing {id}");
+                    return new HttpStatusCodeResult(401); // Unauthorized
+                }
+
+                var canEdit = await ListingService.UserCanEditListing(id, currentUser.Id, IsAdmin());
+                if (!canEdit)
+                {
+                    ErrorHandler.LogWarning($"Unauthorized delete attempt for listing {id} by user {currentUser.Username} (ID: {currentUser.Id})");
                     return new HttpStatusCodeResult(403); // Forbidden
                 }
 
@@ -446,9 +467,16 @@ namespace WatchZone.Web.Controllers
             {
                 // Use business logic to check edit permissions
                 var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
-                if (currentUser == null || !CanEditListing(id))
+                if (currentUser == null)
                 {
-                    ErrorHandler.LogWarning($"Unauthorized delete confirmation for listing {id} by user {currentUser?.Username ?? "anonymous"}");
+                    ErrorHandler.LogWarning($"Unauthenticated delete confirmation for listing {id}");
+                    return new HttpStatusCodeResult(401); // Unauthorized
+                }
+
+                var canEdit = await ListingService.UserCanEditListing(id, currentUser.Id, IsAdmin());
+                if (!canEdit)
+                {
+                    ErrorHandler.LogWarning($"Unauthorized delete confirmation for listing {id} by user {currentUser.Username} (ID: {currentUser.Id})");
                     return new HttpStatusCodeResult(403); // Forbidden
                 }
 

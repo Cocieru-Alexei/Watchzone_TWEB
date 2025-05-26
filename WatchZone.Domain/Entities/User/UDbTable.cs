@@ -18,7 +18,7 @@ namespace WatchZone.Domain.Entities.User
 
         [Required]
         [Display(Name = "Password")]
-        [StringLength(50, MinimumLength = 8, ErrorMessage = "Password cannot be shorter than 8 characters.")]
+        [StringLength(64, MinimumLength = 8, ErrorMessage = "Password cannot be shorter than 8 characters.")]
         public string Password { get; set; }
 
         [Required]

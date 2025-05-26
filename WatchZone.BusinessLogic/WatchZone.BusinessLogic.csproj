@@ -61,28 +61,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BussinesLogic.cs" />
+    <Compile Include="ServiceLocator.cs" />
     <Compile Include="Database\SessionContext.cs" />
     <Compile Include="Database\UserContext.cs" />
     <Compile Include="Interface\IAuth.cs" />
     <Compile Include="Interface\IBasketService.cs" />
-    <Compile Include="Interface\ISession.cs" />
+    <Compile Include="Interface\ICartService.cs" />
     <Compile Include="Interface\IErrorHandler.cs" />
     <Compile Include="Interface\IListingService.cs" />
     <Compile Include="Interface\IReviewService.cs" />
     <Compile Include="Interface\IUserService.cs" />
+    <Compile Include="Interface\IUserRepository.cs" />
+    <Compile Include="Interface\ISessionRepository.cs" />
     <Compile Include="Interface\Repositories\IBasketRepository.cs" />
     <Compile Include="Interface\Repositories\IProductRepository.cs" />
     <Compile Include="Core\UserApi.cs" />
     <Compile Include="BL Struct\AuthBL.cs" />
+    <Compile Include="BL Struct\CartServiceBL.cs" />
     <Compile Include="BL Struct\ErrorHandlerBL.cs" />
     <Compile Include="BL Struct\ListingServiceBL.cs" />
     <Compile Include="BL Struct\ReviewServiceBL.cs" />
     <Compile Include="BL Struct\UserServiceBL.cs" />
     <Compile Include="BL Struct\Basket\BasketService.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="Repository\SessionRepository.cs" />
     <Compile Include="Services\OrderService.cs" />
 
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SessionBL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WatchZone.Domain\WatchZone.Domain.csproj">

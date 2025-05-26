@@ -1,6 +1,7 @@
 ﻿@using System.Web.Optimization
 @using WatchZone.Web.Models
 @using WatchZone.BusinessLogic
+@using WatchZone.Domain.Model.Cart
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,15 +40,35 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    @if (Request.Cookies["X-KEY"] != null)
-                    {
-                        var bl = new BussinesLogic();
-                        var authService = bl.GetAuthService();
-                        var user = authService.GetUserByCookie(Request.Cookies["X-KEY"].Value);
-                        if (user != null)
+                    @{
+                        WatchZone.Domain.Entities.User.UserMinimal currentUser = null;
+                        bool hasValidSession = false;
+                        
+                        if (Request.Cookies["X-KEY"] != null)
                         {
-                            var cartKey = $"Cart_{user.Id}";
-                            var cart = Session[cartKey] as Cart;
+                            try
+                            {
+                                var bl = new BussinesLogic();
+                                var authService = bl.GetAuthService();
+                                currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"].Value);
+                                hasValidSession = currentUser != null;
+                            }
+                            catch
+                            {
+                                // Authentication failed, treat as no valid session
+                                hasValidSession = false;
+                                currentUser = null;
+                            }
+                        }
+                    }
+                    
+                    @if (hasValidSession && currentUser != null)
+                    {
+                        try
+                        {
+                            var bl = new BussinesLogic();
+                            var cartService = bl.GetCartService();
+                            var cart = cartService.GetCart(currentUser, Session);
                             var itemCount = cart?.Items.Sum(i => i.Quantity) ?? 0;
                             
                             <li class="nav-item">
@@ -60,34 +81,30 @@
                                 </a>
                             </li>
                         }
-                    }
-                    @if (Request.Cookies["X-KEY"] == null)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Login" ? "active" : "")" href="@Url.Action("Login", "Auth")">Login</a>
+                        catch
+                        {
+                            // Ignore cart errors
+                        }
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> @currentUser.Username (@currentUser.Level)
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="@Url.Action("Index", "Profile")"><i class="fas fa-user-circle"></i> My Profile</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("MyOrders", "Order")"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("MyReviews", "Review")"><i class="fas fa-star"></i> My Reviews</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("ChangePassword", "Profile")"><i class="fas fa-key"></i> Change Password</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Logout", "Auth")"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
                         </li>
                     }
                     else
                     {
-                        var bl = new WatchZone.BusinessLogic.BussinesLogic();
-                        var authService = bl.GetAuthService();
-                        var user = authService.GetUserByCookie(Request.Cookies["X-KEY"].Value);
-                        if (user != null)
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user"></i> @user.Username (@user.Level)
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Profile")"><i class="fas fa-user-circle"></i> My Profile</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("MyOrders", "Order")"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("MyReviews", "Review")"><i class="fas fa-star"></i> My Reviews</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("ChangePassword", "Profile")"><i class="fas fa-key"></i> Change Password</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Auth")"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                                </ul>
-                            </li>
-                        }
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Login" ? "active" : "")" href="@Url.Action("Login", "Auth")">Login</a>
+                        </li>
                     }
                 </ul>
             </div>

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WatchZone.Web.Models
+namespace WatchZone.Domain.Model.Cart
 {
     public class Cart
     {

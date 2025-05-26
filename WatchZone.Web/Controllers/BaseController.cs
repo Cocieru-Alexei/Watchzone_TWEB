@@ -2,7 +2,7 @@ using System.Web;
 using System.Web.Mvc;
 using WatchZone.BusinessLogic;
 using WatchZone.BusinessLogic.Interface;
-using WatchZone.BusinessLogic.Interface.Repositories;
+using WatchZone.BusinessLogic.Services;
 using WatchZone.Domain.Entities.User;
 using WatchZone.Domain.Enums;
 
@@ -10,21 +10,26 @@ namespace WatchZone.Web.Controllers
 {
     public class BaseController : Controller
     {
-        protected readonly BussinesLogic BusinessLogic;
         protected readonly IAuth AuthService;
-        protected readonly ISession SessionService;
         protected readonly IListingService ListingService;
         protected readonly IUserService UserService;
+        protected readonly ICartService CartService;
         protected readonly IErrorHandler ErrorHandler;
+        protected readonly OrderService OrderService;
+        protected readonly IReviewService ReviewService;
 
         public BaseController()
         {
-            BusinessLogic = new BussinesLogic();
-            AuthService = BusinessLogic.GetAuthService();
-            SessionService = BusinessLogic.GetSessionBL();
-            ListingService = BusinessLogic.GetListingService();
-            UserService = BusinessLogic.GetUserService();
-            ErrorHandler = BusinessLogic.GetErrorHandler();
+            // Use ServiceLocator pattern for centralized service resolution
+            // This is better than manual instantiation and maintains compatibility
+            // with legacy .NET Framework MVC while being more testable
+            AuthService = ServiceLocator.GetAuthService();
+            ListingService = ServiceLocator.GetListingService();
+            UserService = ServiceLocator.GetUserService();
+            CartService = ServiceLocator.GetCartService();
+            ErrorHandler = ServiceLocator.GetErrorHandler();
+            OrderService = ServiceLocator.GetOrderService();
+            ReviewService = ServiceLocator.GetReviewService();
         }
 
         /// <summary>
@@ -123,17 +128,7 @@ namespace WatchZone.Web.Controllers
             return RedirectIfNoAccess(URole.Admin);
         }
 
-        /// <summary>
-        /// Checks if the current user can edit a specific listing
-        /// </summary>
-        protected bool CanEditListing(int listingId)
-        {
-            var userId = GetCurrentUserId();
-            if (!userId.HasValue)
-                return false;
 
-            return ListingService.UserCanEditListing(listingId, userId.Value, IsAdmin()).Result;
-        }
 
         /// <summary>
         /// Handles errors in a consistent way across controllers

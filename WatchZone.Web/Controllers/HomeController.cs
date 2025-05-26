@@ -67,11 +67,8 @@ namespace WatchZone.Web.Controllers
                     ErrorHandler.LogInfo("Anonymous user visited Smart Watch category");
                 }
 
-                // Use business logic to get smart watch listings
-                var allListings = await ListingService.GetAllListingsAsync();
-                var smartWatchListings = allListings
-                    .Where(l => l.Title.ToLower().Contains("smart") || l.Description.ToLower().Contains("smart"))
-                    .ToList();
+                // Use business logic to get smart watch listings - moved filtering logic to ListingService
+                var smartWatchListings = await ListingService.GetSmartWatchListingsAsync();
                 ViewBag.CategoryListings = smartWatchListings;
                 ViewBag.CategoryName = "Smart Watches";
                 
@@ -98,12 +95,8 @@ namespace WatchZone.Web.Controllers
                     ErrorHandler.LogInfo("Anonymous user visited Sport Watch category");
                 }
 
-                // Use business logic to get sport watch listings
-                var allListings = await ListingService.GetAllListingsAsync();
-                var sportWatchListings = allListings
-                    .Where(l => l.Title.ToLower().Contains("sport") || l.Description.ToLower().Contains("sport") || 
-                               l.Title.ToLower().Contains("casio") || l.Title.ToLower().Contains("g-shock"))
-                    .ToList();
+                // Use business logic to get sport watch listings - moved filtering logic to ListingService
+                var sportWatchListings = await ListingService.GetSportWatchListingsAsync();
                 ViewBag.CategoryListings = sportWatchListings;
                 ViewBag.CategoryName = "Sport Watches";
                 
@@ -130,12 +123,8 @@ namespace WatchZone.Web.Controllers
                     ErrorHandler.LogInfo("Anonymous user visited Luxury Watch category");
                 }
 
-                // Use business logic to get luxury watch listings
-                var allListings = await ListingService.GetAllListingsAsync();
-                var luxuryWatchListings = allListings
-                    .Where(l => l.Title.ToLower().Contains("luxury") || l.Description.ToLower().Contains("luxury") ||
-                               l.Title.ToLower().Contains("cartier") || l.Price > 1000)
-                    .ToList();
+                // Use business logic to get luxury watch listings - moved filtering logic to ListingService
+                var luxuryWatchListings = await ListingService.GetLuxuryWatchListingsAsync();
                 ViewBag.CategoryListings = luxuryWatchListings;
                 ViewBag.CategoryName = "Luxury Watches";
                 
@@ -210,7 +199,7 @@ namespace WatchZone.Web.Controllers
                 // Use business logic to validate type parameter against actual data
                 if (!string.IsNullOrEmpty(type))
                 {
-                    var expectedType = GetWatchTypeFromTitle(listing.Title);
+                    var expectedType = ListingService.GetWatchType(listing.Title);
                     if (!string.Equals(type, expectedType, StringComparison.OrdinalIgnoreCase))
                     {
                         ErrorHandler.LogWarning($"Watch detail accessed with mismatched type. Expected: {expectedType}, Provided: {type}, Listing ID: {watchId}");
@@ -269,21 +258,6 @@ namespace WatchZone.Web.Controllers
             return View();
         }
 
-        // Helper method using business logic principles
-        private string GetWatchTypeFromTitle(string title)
-        {
-            if (string.IsNullOrEmpty(title))
-                return "unknown";
 
-            title = title.ToLower();
-            if (title.Contains("smart") || title.Contains("apple"))
-                return "smart";
-            if (title.Contains("sport") || title.Contains("casio") || title.Contains("g-shock"))
-                return "sport";
-            if (title.Contains("luxury") || title.Contains("cartier"))
-                return "luxury";
-
-            return "general";
-        }
     }
 }

@@ -12,23 +12,61 @@ namespace WatchZone.BusinessLogic.Database
 {
     public class UserContext : DbContext
     {
+        static UserContext()
+        {
+            // Set database initialization strategy to create if not exists (handles existing databases)
+            System.Data.Entity.Database.SetInitializer(new CreateDatabaseIfNotExists<UserContext>());
+        }
+
         public UserContext() : 
             base("name=WatchZone")
         {
-            // Seed admin user if none exists
-            if (!Users.Any())
+            try
             {
-                var adminUser = new UDbTable
+                // Force database creation/initialization
+                Database.Initialize(force: false);
+                
+                // Seed admin user if none exists
+                if (!Users.Any())
                 {
-                    Username = "admin",
-                    Password = LoginUtility.GenHash("admin123"),
-                    Email = "admin@watchzone.com",
-                    Level = URole.Admin,
-                    LastLogin = DateTime.UtcNow,
-                    LasIp = "127.0.0.1"
-                };
-                Users.Add(adminUser);
-                SaveChanges();
+                    var adminUser = new UDbTable
+                    {
+                        Username = "admin",
+                        Password = LoginUtility.GenHash("admin123"),
+                        Email = "admin@watchzone.com",
+                        Level = URole.Admin,
+                        LastLogin = DateTime.UtcNow,
+                        LasIp = "127.0.0.1"
+                    };
+                    Users.Add(adminUser);
+                    SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                // If there's a schema issue, try to recreate the database
+                if (ex.Message.Contains("model compatibility") || ex.Message.Contains("Invalid column"))
+                {
+                    Database.Delete();
+                    Database.Create();
+                    
+                    // Re-seed admin user
+                    var adminUser = new UDbTable
+                    {
+                        Username = "admin",
+                        Password = LoginUtility.GenHash("admin123"),
+                        Email = "admin@watchzone.com",
+                        Level = URole.Admin,
+                        LastLogin = DateTime.UtcNow,
+                        LasIp = "127.0.0.1"
+                    };
+                    Users.Add(adminUser);
+                    SaveChanges();
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
@@ -38,21 +76,16 @@ namespace WatchZone.BusinessLogic.Database
         {
             try
             {
-                // Test if we can connect to the database
                 if (!Database.Exists())
                 {
-                    System.Diagnostics.Debug.WriteLine("Database does not exist!");
                     return false;
                 }
 
-                // Test if we can query the Users table
                 var userCount = Users.Count();
-                System.Diagnostics.Debug.WriteLine($"Successfully connected to database. User count: {userCount}");
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine($"Database connection test failed: {ex.Message}");
                 return false;
             }
         }
@@ -64,9 +97,8 @@ namespace WatchZone.BusinessLogic.Database
                 var user = Users.FirstOrDefault(u => u.Username == username);
                 return user != null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine($"Error verifying user: {ex.Message}");
                 return false;
             }
         }
@@ -79,37 +111,15 @@ namespace WatchZone.BusinessLogic.Database
                 var result = SaveChanges();
                 return result > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                System.Diagnostics.Debug.WriteLine($"Error adding user: {ex.Message}");
                 return false;
             }
         }
 
         public override int SaveChanges()
         {
-            try
-            {
-                // Force the changes to be saved
-                var result = base.SaveChanges();
-                
-                // Verify the save was successful
-                if (result > 0)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Successfully saved {result} changes to the database.");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("No changes were saved to the database.");
-                }
-                
-                return result;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error saving changes: {ex.Message}");
-                throw;
-            }
+            return base.SaveChanges();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

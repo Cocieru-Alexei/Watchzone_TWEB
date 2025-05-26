@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using WatchZone.Web.Models;
 using WatchZone.Domain.Model;
+using WatchZone.Domain.Model.Cart;
 
 namespace WatchZone.Web.Controllers
 {
@@ -14,37 +15,27 @@ namespace WatchZone.Web.Controllers
         {
             try
             {
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
-                var user = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                // Use business logic method to get current user
+                var user = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (user == null)
                 {
-                    errorHandler.LogWarning("Cart access attempted by unauthenticated user");
+                    ErrorHandler.LogWarning("Cart access attempted by unauthenticated user");
                     return null;
                 }
 
+                // Use business logic for user validation - check if user exists and is active
                 if (!IsAuthenticated())
                 {
-                    errorHandler.LogWarning($"Cart access attempted with invalid authentication for user ID: {user.Id}");
+                    ErrorHandler.LogWarning($"Cart access attempted with invalid authentication for user ID: {user.Id}");
                     return null;
                 }
 
-                string cartKey = $"Cart_{user.Id}";
-                Cart cart = Session[cartKey] as Cart;
-                if (cart == null)
-                {
-                    cart = new Cart();
-                    Session[cartKey] = cart;
-                }
-                return cart;
+                // Use CartService to get cart - proper separation of concerns
+                return CartService.GetCart(user, Session);
             }
             catch (Exception ex)
             {
-                var businessLogic = new WatchZone.BusinessLogic.BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error getting cart");
+                ErrorHandler.LogError(ex, "Error getting cart");
                 return null;
             }
         }
@@ -148,8 +139,8 @@ namespace WatchZone.Web.Controllers
                 var orderService = businessLogic.GetOrderService();
                 var orderId = await orderService.CreateOrderAsync(order);
                 
-                // Clear cart after successful order
-                cart.Clear();
+                // Clear cart after successful order using CartService
+                CartService.ClearCart(currentUser, Session);
 
                 errorHandler.LogInfo($"Order {orderId} created successfully for user {currentUser.Username} (ID: {currentUser.Id}), Total: {order.TotalAmount:C}");
                 

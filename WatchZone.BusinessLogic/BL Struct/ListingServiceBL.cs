@@ -273,5 +273,104 @@ namespace WatchZone.BusinessLogic.BL_Struct
                 return false;
             }
         }
+
+        // Category filtering methods - moved from HomeController
+        public async Task<IEnumerable<Listing>> GetSmartWatchListingsAsync()
+        {
+            try
+            {
+                var allListings = await GetAllListingsAsync();
+                var smartWatchListings = allListings
+                    .Where(l => l.Title.ToLower().Contains("smart") || l.Description.ToLower().Contains("smart"))
+                    .ToList();
+                
+                _errorHandler.LogInfo($"Retrieved {smartWatchListings.Count()} smart watch listings");
+                return smartWatchListings;
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, "Error getting smart watch listings");
+                return Enumerable.Empty<Listing>();
+            }
+        }
+
+        public async Task<IEnumerable<Listing>> GetSportWatchListingsAsync()
+        {
+            try
+            {
+                var allListings = await GetAllListingsAsync();
+                var sportWatchListings = allListings
+                    .Where(l => l.Title.ToLower().Contains("sport") || l.Description.ToLower().Contains("sport") || 
+                               l.Title.ToLower().Contains("casio") || l.Title.ToLower().Contains("g-shock"))
+                    .ToList();
+                
+                _errorHandler.LogInfo($"Retrieved {sportWatchListings.Count()} sport watch listings");
+                return sportWatchListings;
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, "Error getting sport watch listings");
+                return Enumerable.Empty<Listing>();
+            }
+        }
+
+        public async Task<IEnumerable<Listing>> GetLuxuryWatchListingsAsync()
+        {
+            try
+            {
+                var allListings = await GetAllListingsAsync();
+                var luxuryWatchListings = allListings
+                    .Where(l => l.Title.ToLower().Contains("luxury") || l.Description.ToLower().Contains("luxury") ||
+                               l.Title.ToLower().Contains("cartier") || l.Price > 1000)
+                    .ToList();
+                
+                _errorHandler.LogInfo($"Retrieved {luxuryWatchListings.Count()} luxury watch listings");
+                return luxuryWatchListings;
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, "Error getting luxury watch listings");
+                return Enumerable.Empty<Listing>();
+            }
+        }
+
+        // Watch type classification method - moved from HomeController
+        public string GetWatchType(string title)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(title))
+                {
+                    _errorHandler.LogWarning("GetWatchType called with null or empty title");
+                    return "unknown";
+                }
+
+                title = title.ToLower();
+                
+                if (title.Contains("smart") || title.Contains("apple"))
+                {
+                    _errorHandler.LogInfo($"Classified watch as 'smart': {title}");
+                    return "smart";
+                }
+                if (title.Contains("sport") || title.Contains("casio") || title.Contains("g-shock"))
+                {
+                    _errorHandler.LogInfo($"Classified watch as 'sport': {title}");
+                    return "sport";
+                }
+                if (title.Contains("luxury") || title.Contains("cartier"))
+                {
+                    _errorHandler.LogInfo($"Classified watch as 'luxury': {title}");
+                    return "luxury";
+                }
+
+                _errorHandler.LogInfo($"Classified watch as 'general': {title}");
+                return "general";
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error classifying watch type for title: {title}");
+                return "unknown";
+            }
+        }
     }
 } 

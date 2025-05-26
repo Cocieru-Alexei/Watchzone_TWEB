@@ -1,6 +1,7 @@
 using System.Web;
 using System.Web.Mvc;
 using WatchZone.BusinessLogic;
+using WatchZone.Helper;
 
 namespace WatchZone.Web.Filters
 {
@@ -12,10 +13,17 @@ namespace WatchZone.Web.Filters
             if (cookie == null || string.IsNullOrEmpty(cookie.Value))
                 return false;
 
-            var bl = new BussinesLogic();
-            var authService = bl.GetAuthService();
-            var user = authService.GetUserByCookie(cookie.Value);
-            return user != null;
+            // Use static utility method to avoid instantiating business logic in attribute
+            // This is a compromise for attributes which can't use dependency injection
+            try
+            {
+                var username = CookieUtility.Validate(cookie.Value);
+                return !string.IsNullOrEmpty(username);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

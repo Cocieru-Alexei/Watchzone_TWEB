@@ -19,98 +19,64 @@ namespace WatchZone.BusinessLogic.Core
 		internal ULoginResp UserLoginAction(ULoginData data)
 		{
 			UDbTable result;
-			var validate = new EmailAddressAttribute();
-			if (validate.IsValid(data.Credential))
+			// All passwords are now consistently hashed with SHA256
+			var hashedPassword = LoginUtility.GenHash(data.Password);
+			
+			using (var db = new UserContext())
 			{
-				// pass = LoginUtility.GenHash(data.Password);
-				using (var db = new UserContext())
-				{
-					result = db.Users.FirstOrDefault(u => u.Email == data.Credential && u.Password == data.Password);
-				}
-
-				if (result == null)
-				{
-					return new ULoginResp { Status = false, StatusMsg = "The Username or Password is Incorrect" };
-				}
-
-				using (var todo = new UserContext())
-				{
-					result.LasIp = data.LoginIp;
-					result.LastLogin = data.LoginDateTime;
-					todo.Entry(result).State = EntityState.Modified;
-					todo.SaveChanges();
-				}
-
-				return new ULoginResp { Status = true };
+				result = db.Users.FirstOrDefault(u => 
+					(u.Username == data.Credential || u.Email == data.Credential) && 
+					u.Password == hashedPassword);
 			}
-			else
+
+			if (result == null)
 			{
-				var pass = LoginUtility.GenHash(data.Password);
-				using (var db = new UserContext())
-				{
-					result = db.Users.FirstOrDefault(u => u.Username == data.Credential && u.Password == pass);
-				}
-
-				if (result == null)
-				{
-					return new ULoginResp { Status = false, StatusMsg = "The Username or Password is Incorrect" };
-				}
-
-				using (var todo = new UserContext())
-				{
-					result.LasIp = data.LoginIp;
-					result.LastLogin = data.LoginDateTime;
-					todo.Entry(result).State = EntityState.Modified;
-					todo.SaveChanges();
-				}
-
-				return new ULoginResp { Status = true };
+				return new ULoginResp { Status = false, StatusMsg = "The Username or Password is Incorrect" };
 			}
+
+			using (var todo = new UserContext())
+			{
+				result.LasIp = data.LoginIp;
+				result.LastLogin = data.LoginDateTime;
+				todo.Entry(result).State = EntityState.Modified;
+				todo.SaveChanges();
+			}
+
+			return new ULoginResp { Status = true };
 		}
 		internal URegisterResp UserRegisterAction(URegisterData data)
 		{
 			UDbTable result = new UDbTable();
-			var validate = new EmailAddressAttribute();
-			if (validate.IsValid(data.Credential))
+			// All passwords are now consistently hashed with SHA256
+			var hashedPassword = LoginUtility.GenHash(data.Password);
+			
+			using (var db = new UserContext())
 			{
-				var pass = LoginUtility.GenHash(data.Password);
-				using (var db = new UserContext())
+				result.Username = data.Credential;
+				result.Password = hashedPassword;
+				result.Email = data.Credential;
+				result.LasIp = data.RegisterIp;
+				result.LastLogin = data.RegisterDateTime;
+				result = db.Users.Add(result);
+				
+				try
 				{
-					result.Username = data.Credential;
-					result.Password = data.Password;
-					result.Email = data.Credential;
-					result = db.Users.Add(result);
 					db.SaveChanges();
 				}
-
-				using (var todo = new UserContext())
+				catch(DbEntityValidationException e)
 				{
-                    result.Username = data.Credential;
-                    result.Password = data.Password;
-                    result.LasIp = data.RegisterIp;
-					result.LastLogin = data.RegisterDateTime;
-					todo.Entry(result).State = EntityState.Modified;
-					try
+					foreach (var validationErrors in e.EntityValidationErrors)
 					{
-						int state = todo.SaveChanges();
+						foreach (var validationError in validationErrors.ValidationErrors)
+						{
+							Console.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+						}
 					}
-					catch(DbEntityValidationException e)
-                    {
-                        foreach (var validationErrors in e.EntityValidationErrors)
-                        {
-                            foreach (var validationError in validationErrors.ValidationErrors)
-                            {
-                                Console.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
-                            }
-                        }
-						throw;
-                    }
-
-                }
-
-				return new URegisterResp { Status = true };
+					throw;
+				}
 			}
-			return new URegisterResp { Status = false, StatusMsg = "Something went wrong." };
+
+			return new URegisterResp { Status = true };
 		}
 		internal HttpCookie Cookie(string loginCredential)
 		{
@@ -217,15 +183,28 @@ namespace WatchZone.BusinessLogic.Core
 			return userminimal;
 		}
 
+		public string UserAuthLogic(UserLoginDTO data)
+		{
+			return UserAuthLogicAction(data, null);
+		}
+
+		public string UserAuthLogic(UserLoginDTO data, IErrorHandler errorHandler)
+		{
+			return UserAuthLogicAction(data, errorHandler);
+		}
+
 		internal string UserAuthLogicAction(UserLoginDTO data, IErrorHandler errorHandler = null)
 		{
 			try
 			{
 				using (var context = new UserContext())
 				{
+					// All passwords are now consistently hashed with SHA256
+					var hashedPassword = LoginUtility.GenHash(data.Password);
+					
 					var user = context.Users.FirstOrDefault(u => 
 						(u.Username == data.UserName || u.Email == data.UserName) &&
-						u.Password == data.Password);
+						u.Password == hashedPassword);
 
 					if (user != null)
 					{

@@ -1,6 +1,6 @@
 using System;
 
-namespace WatchZone.Web.Models
+namespace WatchZone.Domain.Model.Cart
 {
     public class CartItem
     {

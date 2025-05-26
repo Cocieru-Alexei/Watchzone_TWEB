@@ -3,26 +3,33 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WatchZone.Domain.Database;
 using WatchZone.Domain.Model;
+using WatchZone.BusinessLogic.Interface;
 
 namespace WatchZone.BusinessLogic.Services
 {
     public class OrderService
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly IErrorHandler _errorHandler;
 
-        public OrderService()
+        public OrderService(IErrorHandler errorHandler)
         {
-            _databaseContext = new DatabaseContext();
+            _errorHandler = errorHandler;
         }
 
         public async Task<int> CreateOrderAsync(Order order)
         {
             try
             {
-                return await _databaseContext.CreateOrderAsync(order);
+                using (var context = new DatabaseContext())
+                {
+                    var orderId = await context.CreateOrderAsync(order);
+                    _errorHandler.LogInfo($"Created order with ID: {orderId}");
+                    return orderId;
+                }
             }
             catch (Exception ex)
             {
+                _errorHandler.LogError(ex, "Error creating order");
                 throw new Exception($"Error creating order: {ex.Message}", ex);
             }
         }
@@ -31,10 +38,14 @@ namespace WatchZone.BusinessLogic.Services
         {
             try
             {
-                return await _databaseContext.GetOrderByIdAsync(orderId);
+                using (var context = new DatabaseContext())
+                {
+                    return await context.GetOrderByIdAsync(orderId);
+                }
             }
             catch (Exception ex)
             {
+                _errorHandler.LogError(ex, $"Error retrieving order {orderId}");
                 throw new Exception($"Error retrieving order {orderId}: {ex.Message}", ex);
             }
         }
@@ -43,10 +54,14 @@ namespace WatchZone.BusinessLogic.Services
         {
             try
             {
-                return await _databaseContext.GetOrdersByUserIdAsync(userId);
+                using (var context = new DatabaseContext())
+                {
+                    return await context.GetOrdersByUserIdAsync(userId);
+                }
             }
             catch (Exception ex)
             {
+                _errorHandler.LogError(ex, $"Error retrieving orders for user {userId}");
                 throw new Exception($"Error retrieving orders for user {userId}: {ex.Message}", ex);
             }
         }
@@ -55,10 +70,15 @@ namespace WatchZone.BusinessLogic.Services
         {
             try
             {
-                await _databaseContext.UpdateOrderStatusAsync(orderId, orderStatus, paymentStatus, trackingNumber, shippedDate, deliveredDate);
+                using (var context = new DatabaseContext())
+                {
+                    await context.UpdateOrderStatusAsync(orderId, orderStatus, paymentStatus, trackingNumber, shippedDate, deliveredDate);
+                    _errorHandler.LogInfo($"Updated order {orderId} status to {orderStatus}");
+                }
             }
             catch (Exception ex)
             {
+                _errorHandler.LogError(ex, $"Error updating order {orderId} status");
                 throw new Exception($"Error updating order {orderId} status: {ex.Message}", ex);
             }
         }
@@ -67,11 +87,15 @@ namespace WatchZone.BusinessLogic.Services
         {
             try
             {
-                var order = await _databaseContext.GetOrderByIdAsync(orderId);
-                return order != null;
+                using (var context = new DatabaseContext())
+                {
+                    var order = await context.GetOrderByIdAsync(orderId);
+                    return order != null;
+                }
             }
             catch (Exception ex)
             {
+                _errorHandler.LogError(ex, $"Error checking if order {orderId} exists");
                 throw new Exception($"Error checking if order {orderId} exists: {ex.Message}", ex);
             }
         }
@@ -80,11 +104,15 @@ namespace WatchZone.BusinessLogic.Services
         {
             try
             {
-                var order = await _databaseContext.GetOrderByIdAsync(orderId);
-                return order != null && order.UserId == userId;
+                using (var context = new DatabaseContext())
+                {
+                    var order = await context.GetOrderByIdAsync(orderId);
+                    return order != null && order.UserId == userId;
+                }
             }
             catch (Exception ex)
             {
+                _errorHandler.LogError(ex, $"Error checking order {orderId} ownership for user {userId}");
                 throw new Exception($"Error checking order {orderId} ownership for user {userId}: {ex.Message}", ex);
             }
         }

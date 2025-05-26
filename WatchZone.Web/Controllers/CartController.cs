@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using WatchZone.Web.Models;
+using WatchZone.Domain.Model.Cart;
 using System.Threading.Tasks;
 
 namespace WatchZone.Web.Controllers
@@ -27,15 +27,8 @@ namespace WatchZone.Web.Controllers
                     return null;
                 }
 
-                string cartKey = $"Cart_{user.Id}";
-                Cart cart = Session[cartKey] as Cart;
-                if (cart == null)
-                {
-                    cart = new Cart();
-                    Session[cartKey] = cart;
-                    ErrorHandler.LogInfo($"New cart created for user {user.Username} (ID: {user.Id})");
-                }
-                return cart;
+                // Use CartService to handle session logic - proper separation of concerns
+                return CartService.GetCart(user, Session);
             }
             catch (Exception ex)
             {
@@ -280,7 +273,8 @@ namespace WatchZone.Web.Controllers
                     return RedirectToAction("Index");
                 }
                 
-                cart.Clear();
+                // Use CartService to clear the cart - proper separation of concerns
+                CartService.ClearCart(currentUser, Session);
                 
                 // Use business logic for comprehensive logging
                 ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) cleared cart - {itemCount} items removed, Total value: {totalValue:C}");
@@ -334,8 +328,8 @@ namespace WatchZone.Web.Controllers
                 // 3. OrderService for order creation (when implemented)
                 // 4. PaymentService for payment processing (when implemented)
                 
-                // For now, just log the action and clear the cart
-                cart.Clear();
+                // For now, just log the action and clear the cart using CartService
+                CartService.ClearCart(currentUser, Session);
                 
                 // Use business logic for success logging
                 ErrorHandler.LogInfo($"Checkout completed successfully for user {currentUser.Username} (ID: {currentUser.Id})");

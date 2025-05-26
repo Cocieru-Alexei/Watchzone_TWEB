@@ -8,7 +8,7 @@ using WatchZone.Domain.Model;
 
 namespace WatchZone.Domain.Database
 {
-    public class DatabaseContext
+    public class DatabaseContext : IDisposable
     {
         private readonly string _connectionString = "Server=localhost;Database=WatchZone;Trusted_Connection=True;";
 
@@ -977,6 +977,13 @@ namespace WatchZone.Domain.Database
                 CreatedAt = reader.GetDateTime(7),
                 UpdatedAt = reader.IsDBNull(8) ? (DateTime?)null : reader.GetDateTime(8)
             };
+        }
+
+        public void Dispose()
+        {
+            // DatabaseContext doesn't hold any unmanaged resources
+            // All connections are properly disposed in using statements
+            // This implementation satisfies the IDisposable interface requirement
         }
     }
 } 

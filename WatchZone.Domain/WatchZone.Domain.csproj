@@ -52,6 +52,8 @@
     <Compile Include="Entities\User\UserMinimal.cs" />
     <Compile Include="Model\User\UserLoginDTO.cs" />
     <Compile Include="Model\Basket\BasketItemDTO.cs" />
+    <Compile Include="Model\Cart\Cart.cs" />
+    <Compile Include="Model\Cart\CartItem.cs" />
     <Compile Include="Model\Product\ProductDTO.cs" />
     <Compile Include="Model\Listing.cs" />
     <Compile Include="Model\ListingPhoto.cs" />

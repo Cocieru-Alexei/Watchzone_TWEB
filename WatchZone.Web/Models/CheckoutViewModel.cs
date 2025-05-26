@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WatchZone.Domain.Model.Cart;
 
 namespace WatchZone.Web.Models
 {

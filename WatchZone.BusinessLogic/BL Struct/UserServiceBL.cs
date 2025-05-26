@@ -11,28 +11,19 @@ namespace WatchZone.BusinessLogic.BL_Struct
     public class UserServiceBL : IUserService
     {
         private readonly IErrorHandler _errorHandler;
+        private readonly IUserRepository _userRepository;
 
-        public UserServiceBL(IErrorHandler errorHandler)
+        public UserServiceBL(IErrorHandler errorHandler, IUserRepository userRepository)
         {
             _errorHandler = errorHandler;
+            _userRepository = userRepository;
         }
 
         public async Task<IEnumerable<UserMinimal>> GetAllUsersAsync()
         {
             try
             {
-                using (var context = new UserContext())
-                {
-                    return await Task.FromResult(context.Users.Select(u => new UserMinimal
-                    {
-                        Id = u.Id,
-                        Username = u.Username,
-                        Email = u.Email,
-                        LastLogin = u.LastLogin,
-                        LasIp = u.LasIp,
-                        Level = u.Level
-                    }).ToList());
-                }
+                return await _userRepository.GetAllUsersAsync();
             }
             catch (Exception ex)
             {
@@ -45,23 +36,7 @@ namespace WatchZone.BusinessLogic.BL_Struct
         {
             try
             {
-                using (var context = new UserContext())
-                {
-                    var user = await Task.FromResult(context.Users.FirstOrDefault(u => u.Id == id));
-                    if (user != null)
-                    {
-                        return new UserMinimal
-                        {
-                            Id = user.Id,
-                            Username = user.Username,
-                            Email = user.Email,
-                            LastLogin = user.LastLogin,
-                            LasIp = user.LasIp,
-                            Level = user.Level
-                        };
-                    }
-                    return null;
-                }
+                return await _userRepository.GetUserByIdAsync(id);
             }
             catch (Exception ex)
             {
@@ -74,23 +49,7 @@ namespace WatchZone.BusinessLogic.BL_Struct
         {
             try
             {
-                using (var context = new UserContext())
-                {
-                    var user = await Task.FromResult(context.Users.FirstOrDefault(u => u.Username == username || u.Email == username));
-                    if (user != null)
-                    {
-                        return new UserMinimal
-                        {
-                            Id = user.Id,
-                            Username = user.Username,
-                            Email = user.Email,
-                            LastLogin = user.LastLogin,
-                            LasIp = user.LasIp,
-                            Level = user.Level
-                        };
-                    }
-                    return null;
-                }
+                return await _userRepository.GetUserByUsernameAsync(username);
             }
             catch (Exception ex)
             {
@@ -109,25 +68,16 @@ namespace WatchZone.BusinessLogic.BL_Struct
                     return false;
                 }
 
-                using (var context = new UserContext())
+                var result = await _userRepository.UpdateUserAsync(user);
+                if (result)
                 {
-                    var existingUser = context.Users.FirstOrDefault(u => u.Id == user.Id);
-                    if (existingUser != null)
-                    {
-                        existingUser.Username = user.Username;
-                        existingUser.Email = user.Email;
-                        existingUser.Level = user.Level;
-                        existingUser.LastLogin = user.LastLogin;
-                        existingUser.LasIp = user.LasIp;
-
-                        await Task.FromResult(context.SaveChanges());
-                        _errorHandler.LogInfo($"Updated user: {user.Username} (ID: {user.Id})");
-                        return true;
-                    }
-                    
-                    _errorHandler.LogWarning($"User not found for update: ID {user.Id}");
-                    return false;
+                    _errorHandler.LogInfo($"Updated user: {user.Username} (ID: {user.Id})");
                 }
+                else
+                {
+                    _errorHandler.LogWarning($"User not found for update: ID {user.Id}");
+                }
+                return result;
             }
             catch (Exception ex)
             {
@@ -140,20 +90,16 @@ namespace WatchZone.BusinessLogic.BL_Struct
         {
             try
             {
-                using (var context = new UserContext())
+                var result = await _userRepository.DeleteUserAsync(id);
+                if (result)
                 {
-                    var user = context.Users.FirstOrDefault(u => u.Id == id);
-                    if (user != null)
-                    {
-                        context.Users.Remove(user);
-                        await Task.FromResult(context.SaveChanges());
-                        _errorHandler.LogInfo($"Deleted user with ID: {id}");
-                        return true;
-                    }
-                    
-                    _errorHandler.LogWarning($"User not found for deletion: ID {id}");
-                    return false;
+                    _errorHandler.LogInfo($"Deleted user with ID: {id}");
                 }
+                else
+                {
+                    _errorHandler.LogWarning($"User not found for deletion: ID {id}");
+                }
+                return result;
             }
             catch (Exception ex)
             {
@@ -166,10 +112,7 @@ namespace WatchZone.BusinessLogic.BL_Struct
         {
             try
             {
-                using (var context = new UserContext())
-                {
-                    return await Task.FromResult(context.Users.Any(u => u.Username == username || u.Email == email));
-                }
+                return await _userRepository.UserExistsAsync(username, email);
             }
             catch (Exception ex)
             {
@@ -182,28 +125,16 @@ namespace WatchZone.BusinessLogic.BL_Struct
         {
             try
             {
-                using (var context = new UserContext())
+                // All passwords are now consistently hashed with SHA256
+                var hashedPassword = WatchZone.Helper.LoginUtility.GenHash(plainPassword);
+                var result = _userRepository.VerifyUserPasswordAsync(userId, hashedPassword).Result;
+                
+                if (!result)
                 {
-                    var user = context.Users.FirstOrDefault(u => u.Id == userId);
-                    if (user != null)
-                    {
-                        // Check if the user credential is an email (stored as plain text) or username (stored as hashed)
-                        var validate = new System.ComponentModel.DataAnnotations.EmailAddressAttribute();
-                        if (validate.IsValid(user.Email) && user.Username == user.Email)
-                        {
-                            // Email login - password stored as plain text
-                            return user.Password == plainPassword;
-                        }
-                        else
-                        {
-                            // Username login - password stored as hashed
-                            var hashedPassword = WatchZone.Helper.LoginUtility.GenHash(plainPassword);
-                            return user.Password == hashedPassword;
-                        }
-                    }
-                    _errorHandler.LogWarning($"User not found for password verification: ID {userId}");
-                    return false;
+                    _errorHandler.LogWarning($"Password verification failed for user ID: {userId}");
                 }
+                
+                return result;
             }
             catch (Exception ex)
             {
@@ -216,32 +147,20 @@ namespace WatchZone.BusinessLogic.BL_Struct
         {
             try
             {
-                using (var context = new UserContext())
+                // All passwords are now consistently hashed with SHA256
+                var hashedPassword = WatchZone.Helper.LoginUtility.GenHash(newPlainPassword);
+                var result = _userRepository.UpdateUserPasswordAsync(userId, hashedPassword).Result;
+                
+                if (result)
                 {
-                    var user = context.Users.FirstOrDefault(u => u.Id == userId);
-                    if (user != null)
-                    {
-                        // Check if the user credential is an email (stored as plain text) or username (stored as hashed)
-                        var validate = new System.ComponentModel.DataAnnotations.EmailAddressAttribute();
-                        if (validate.IsValid(user.Email) && user.Username == user.Email)
-                        {
-                            // Email login - store password as plain text
-                            user.Password = newPlainPassword;
-                        }
-                        else
-                        {
-                            // Username login - store password as hashed
-                            user.Password = WatchZone.Helper.LoginUtility.GenHash(newPlainPassword);
-                        }
-                        
-                        var result = context.SaveChanges();
-                        _errorHandler.LogInfo($"Password updated for user ID: {userId}");
-                        return result > 0;
-                    }
-                    
-                    _errorHandler.LogWarning($"User not found for password update: ID {userId}");
-                    return false;
+                    _errorHandler.LogInfo($"Password updated for user ID: {userId}");
                 }
+                else
+                {
+                    _errorHandler.LogWarning($"User not found for password update: ID {userId}");
+                }
+                
+                return result;
             }
             catch (Exception ex)
             {
