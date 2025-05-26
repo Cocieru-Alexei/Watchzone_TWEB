@@ -15,7 +15,7 @@ namespace WatchZone.Web.Controllers
     public class ListingsController : BaseController
     {
         // GET: Listings
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string query)
         {
             try
             {
@@ -27,15 +27,25 @@ namespace WatchZone.Web.Controllers
                 // Log user access
                 if (currentUser != null)
                 {
-                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed listings page");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed listings page with query: '{query ?? "none"}'");
                 }
                 else
                 {
-                    ErrorHandler.LogInfo("Anonymous user accessed listings page");
+                    ErrorHandler.LogInfo($"Anonymous user accessed listings page with query: '{query ?? "none"}'");
                 }
 
-                // Use the business logic ListingService to get only available (unsold) listings
-                var listings = await ListingService.GetAvailableListingsAsync();
+                // Use the business logic ListingService for search or get all available listings
+                IEnumerable<Listing> listings;
+                if (!string.IsNullOrWhiteSpace(query))
+                {
+                    listings = await ListingService.SearchListingsAsync(query);
+                    ViewBag.SearchQuery = query;
+                    ViewBag.SearchResultsCount = listings.Count();
+                }
+                else
+                {
+                    listings = await ListingService.GetAvailableListingsAsync();
+                }
                 
                 // Load photos for each listing
                 foreach (var listing in listings)
@@ -193,31 +203,25 @@ namespace WatchZone.Web.Controllers
 
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
-                var listing = await listingService.GetListingByIdAsync(id);
+                var listing = await ListingService.GetListingByIdAsync(id);
                 if (listing == null)
                 {
-                    errorHandler.LogWarning($"Edit requested for non-existent listing: ID {id}");
+                    ErrorHandler.LogWarning($"Edit requested for non-existent listing: ID {id}");
                     return HttpNotFound();
                 }
 
                 // Use business logic to check edit permissions
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null || !CanEditListing(id))
                 {
-                    errorHandler.LogWarning($"Unauthorized edit attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
+                    ErrorHandler.LogWarning($"Unauthorized edit attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
                     return new HttpStatusCodeResult(403); // Forbidden
                 }
 
-                errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed edit form for listing: {listing.Title} (ID: {id})");
+                ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed edit form for listing: {listing.Title} (ID: {id})");
 
                 // Load existing photos
-                var existingPhotos = await listingService.GetPhotosByListingIdAsync(id);
+                var existingPhotos = await ListingService.GetPhotosByListingIdAsync(id);
                 ViewBag.ExistingPhotos = existingPhotos.ToList();
                 ViewBag.ListingId = id;
 
@@ -232,10 +236,7 @@ namespace WatchZone.Web.Controllers
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Unable to load listing for editing");
+                ErrorHandler.LogError(ex, "Unable to load listing for editing");
                 return RedirectToAction("Index");
             }
         }
@@ -252,24 +253,18 @@ namespace WatchZone.Web.Controllers
 
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
-                var listing = await listingService.GetListingByIdAsync(id);
+                var listing = await ListingService.GetListingByIdAsync(id);
                 if (listing == null)
                 {
-                    errorHandler.LogWarning($"Edit update attempted for non-existent listing: ID {id}");
+                    ErrorHandler.LogWarning($"Edit update attempted for non-existent listing: ID {id}");
                     return HttpNotFound();
                 }
 
                 // Use business logic to check edit permissions
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null || !CanEditListing(id))
                 {
-                    errorHandler.LogWarning($"Unauthorized edit update attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
+                    ErrorHandler.LogWarning($"Unauthorized edit update attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
                     return new HttpStatusCodeResult(403); // Forbidden
                 }
 
@@ -281,41 +276,36 @@ namespace WatchZone.Web.Controllers
                     listing.Price = model.Price;
                     listing.ImageUrl = model.ImageUrl;
 
-                    var success = await listingService.UpdateListingAsync(listing);
+                    var success = await ListingService.UpdateListingAsync(listing);
                     if (success)
                     {
-                        errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) updated listing: {listing.Title} (ID: {id})");
+                        ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) updated listing: {listing.Title} (ID: {id})");
                         
                         // Handle photo uploads if any
                         if (model.Photos != null && model.Photos.Any(p => p != null))
                         {
-                            await HandlePhotoUploads(model.Photos, id, errorHandler);
+                            await HandlePhotoUploads(model.Photos, id, ErrorHandler);
                         }
                         
                         return RedirectToAction("Details", new { id = id });
                     }
                     else
                     {
-                        errorHandler.LogWarning($"Failed to update listing {id} for user {currentUser.Username}");
+                        ErrorHandler.LogWarning($"Failed to update listing {id} for user {currentUser.Username}");
                         ModelState.AddModelError("", "Failed to update listing. Please try again.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error updating listing");
+                ErrorHandler.LogError(ex, "Error updating listing");
                 ModelState.AddModelError("", "An error occurred while updating the listing.");
             }
 
             // Load existing photos for the view in case of validation errors
             try
             {
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var existingPhotos = await listingService.GetPhotosByListingIdAsync(id);
+                var existingPhotos = await ListingService.GetPhotosByListingIdAsync(id);
                 ViewBag.ExistingPhotos = existingPhotos.ToList();
                 ViewBag.ListingId = id;
             }
@@ -417,36 +407,27 @@ namespace WatchZone.Web.Controllers
 
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
-                var listing = await listingService.GetListingByIdAsync(id);
+                var listing = await ListingService.GetListingByIdAsync(id);
                 if (listing == null)
                 {
-                    errorHandler.LogWarning($"Delete requested for non-existent listing: ID {id}");
+                    ErrorHandler.LogWarning($"Delete requested for non-existent listing: ID {id}");
                     return HttpNotFound();
                 }
 
                 // Use business logic to check edit permissions
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null || !CanEditListing(id))
                 {
-                    errorHandler.LogWarning($"Unauthorized delete attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
+                    ErrorHandler.LogWarning($"Unauthorized delete attempt for listing {id} by user {currentUser?.Username ?? "anonymous"}");
                     return new HttpStatusCodeResult(403); // Forbidden
                 }
 
-                errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed delete confirmation for listing: {listing.Title} (ID: {id})");
+                ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) accessed delete confirmation for listing: {listing.Title} (ID: {id})");
                 return View(listing);
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Unable to load listing for deletion");
+                ErrorHandler.LogError(ex, "Unable to load listing for deletion");
                 return RedirectToAction("Index");
             }
         }
@@ -463,43 +444,34 @@ namespace WatchZone.Web.Controllers
 
             try
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Use business logic to check edit permissions
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null || !CanEditListing(id))
                 {
-                    errorHandler.LogWarning($"Unauthorized delete confirmation for listing {id} by user {currentUser?.Username ?? "anonymous"}");
+                    ErrorHandler.LogWarning($"Unauthorized delete confirmation for listing {id} by user {currentUser?.Username ?? "anonymous"}");
                     return new HttpStatusCodeResult(403); // Forbidden
                 }
 
                 // Get listing details for logging before deletion
-                var listing = await listingService.GetListingByIdAsync(id);
+                var listing = await ListingService.GetListingByIdAsync(id);
                 var listingTitle = listing?.Title ?? $"Unknown (ID: {id})";
 
-                var success = await listingService.DeleteListingAsync(id);
+                var success = await ListingService.DeleteListingAsync(id);
                 if (success)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) deleted listing: {listingTitle} (ID: {id})");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} (ID: {currentUser.Id}) deleted listing: {listingTitle} (ID: {id})");
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    errorHandler.LogWarning($"Failed to delete listing {id} ({listingTitle}) for user {currentUser.Username}");
+                    ErrorHandler.LogWarning($"Failed to delete listing {id} ({listingTitle}) for user {currentUser.Username}");
                     TempData["ErrorMessage"] = "Failed to delete listing. Please try again.";
                     return RedirectToAction("Delete", new { id = id });
                 }
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error deleting listing");
+                ErrorHandler.LogError(ex, "Error deleting listing");
                 return RedirectToAction("Index");
             }
         }

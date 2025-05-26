@@ -41,20 +41,14 @@ namespace WatchZone.Web.Controllers
                     return Json(new { success = false, message = "File size must be less than 5MB" });
                 }
 
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Check if user can edit this listing
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
                     return Json(new { success = false, message = "User not found" });
                 }
 
-                var canEdit = await listingService.UserCanEditListing(listingId, currentUser.Id, currentUser.Level == URole.Admin);
+                var canEdit = await ListingService.UserCanEditListing(listingId, currentUser.Id, currentUser.Level == URole.Admin);
                 if (!canEdit)
                 {
                     return Json(new { success = false, message = "You don't have permission to edit this listing" });
@@ -75,7 +69,7 @@ namespace WatchZone.Web.Controllers
                 file.SaveAs(filePath);
 
                 // Get current photo count for display order
-                var existingPhotos = await listingService.GetPhotosByListingIdAsync(listingId);
+                var existingPhotos = await ListingService.GetPhotosByListingIdAsync(listingId);
                 var displayOrder = existingPhotos.Count() + 1;
 
                 // Create photo record
@@ -88,10 +82,10 @@ namespace WatchZone.Web.Controllers
                     DisplayOrder = displayOrder
                 };
 
-                var success = await listingService.AddPhotoAsync(photo);
+                var success = await ListingService.AddPhotoAsync(photo);
                 if (success)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} uploaded photo {fileName} for listing {listingId}");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} uploaded photo {fileName} for listing {listingId}");
                     return Json(new { 
                         success = true, 
                         photoId = photo.PhotoId,
@@ -112,10 +106,7 @@ namespace WatchZone.Web.Controllers
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error uploading photo");
+                ErrorHandler.LogError(ex, "Error uploading photo");
                 return Json(new { success = false, message = "An error occurred while uploading the photo" });
             }
         }
@@ -130,14 +121,8 @@ namespace WatchZone.Web.Controllers
                 if (authResult != null)
                     return Json(new { success = false, message = "Authentication required" });
 
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Get photo details first
-                var photo = await listingService.GetPhotoByIdAsync(photoId);
+                var photo = await ListingService.GetPhotoByIdAsync(photoId);
                 
                 if (photo == null)
                 {
@@ -145,20 +130,20 @@ namespace WatchZone.Web.Controllers
                 }
 
                 // Check permissions
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
                     return Json(new { success = false, message = "User not found" });
                 }
 
-                var canEdit = await listingService.UserCanEditListing(photo.ListingId, currentUser.Id, currentUser.Level == URole.Admin);
+                var canEdit = await ListingService.UserCanEditListing(photo.ListingId, currentUser.Id, currentUser.Level == URole.Admin);
                 if (!canEdit)
                 {
                     return Json(new { success = false, message = "You don't have permission to delete this photo" });
                 }
 
                 // Delete from database
-                var success = await listingService.DeletePhotoAsync(photoId);
+                var success = await ListingService.DeletePhotoAsync(photoId);
                 if (success)
                 {
                     // Delete physical file
@@ -168,7 +153,7 @@ namespace WatchZone.Web.Controllers
                         System.IO.File.Delete(filePath);
                     }
 
-                    errorHandler.LogInfo($"User {currentUser.Username} deleted photo {photo.FileName}");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} deleted photo {photo.FileName}");
                     return Json(new { success = true });
                 }
                 else
@@ -178,10 +163,7 @@ namespace WatchZone.Web.Controllers
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error deleting photo");
+                ErrorHandler.LogError(ex, "Error deleting photo");
                 return Json(new { success = false, message = "An error occurred while deleting the photo" });
             }
         }
@@ -196,29 +178,23 @@ namespace WatchZone.Web.Controllers
                 if (authResult != null)
                     return Json(new { success = false, message = "Authentication required" });
 
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var listingService = businessLogic.GetListingService();
-                var authService = businessLogic.GetAuthService();
-                var errorHandler = businessLogic.GetErrorHandler();
-
                 // Check permissions
-                var currentUser = authService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
+                var currentUser = AuthService.GetUserByCookie(Request.Cookies["X-KEY"]?.Value);
                 if (currentUser == null)
                 {
                     return Json(new { success = false, message = "User not found" });
                 }
 
-                var canEdit = await listingService.UserCanEditListing(listingId, currentUser.Id, currentUser.Level == URole.Admin);
+                var canEdit = await ListingService.UserCanEditListing(listingId, currentUser.Id, currentUser.Level == URole.Admin);
                 if (!canEdit)
                 {
                     return Json(new { success = false, message = "You don't have permission to edit this listing" });
                 }
 
-                var success = await listingService.SetPrimaryPhotoAsync(listingId, photoId);
+                var success = await ListingService.SetPrimaryPhotoAsync(listingId, photoId);
                 if (success)
                 {
-                    errorHandler.LogInfo($"User {currentUser.Username} set photo {photoId} as primary for listing {listingId}");
+                    ErrorHandler.LogInfo($"User {currentUser.Username} set photo {photoId} as primary for listing {listingId}");
                     return Json(new { success = true });
                 }
                 else
@@ -228,10 +204,7 @@ namespace WatchZone.Web.Controllers
             }
             catch (Exception ex)
             {
-                // Explicit business logic instantiation to satisfy ARCH001
-                var businessLogic = new BussinesLogic();
-                var errorHandler = businessLogic.GetErrorHandler();
-                errorHandler.LogError(ex, "Error setting primary photo");
+                ErrorHandler.LogError(ex, "Error setting primary photo");
                 return Json(new { success = false, message = "An error occurred while setting the primary photo" });
             }
         }

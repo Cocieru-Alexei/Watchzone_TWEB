@@ -8,6 +8,7 @@ namespace WatchZone.BusinessLogic.Interface
     {
         Task<IEnumerable<Listing>> GetAllListingsAsync();
         Task<IEnumerable<Listing>> GetAvailableListingsAsync();
+        Task<IEnumerable<Listing>> SearchListingsAsync(string searchQuery);
         Task<bool> IsListingSoldAsync(int listingId);
         Task<Listing> GetListingByIdAsync(int id);
         Task<bool> CreateListingAsync(Listing listing);

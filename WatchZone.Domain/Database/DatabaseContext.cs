@@ -560,6 +560,48 @@ namespace WatchZone.Domain.Database
             return availableListings;
         }
 
+        // Search listings by title or description (only available/unsold listings)
+        public async Task<List<Listing>> SearchListingsAsync(string searchQuery)
+        {
+            var listings = new List<Listing>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                
+                var query = @"
+                    SELECT l.* 
+                    FROM Listings l
+                    WHERE (l.Title LIKE @SearchQuery OR l.Description LIKE @SearchQuery)
+                    AND NOT EXISTS (
+                        SELECT 1 FROM OrderItems oi WHERE oi.ListingId = l.Listings_Id
+                    )
+                    ORDER BY l.CreatedAt DESC";
+                
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@SearchQuery", $"%{searchQuery}%");
+                    
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            listings.Add(new Listing
+                            {
+                                Listings_Id = reader.GetInt32(0),
+                                Title = reader.GetString(1),
+                                Description = reader.GetString(2),
+                                Price = reader.GetDecimal(3),
+                                CreatedAt = reader.GetDateTime(4),
+                                UserId = reader.GetInt32(5),
+                                ImageUrl = reader.IsDBNull(6) ? null : reader.GetString(6)
+                            });
+                        }
+                    }
+                }
+            }
+            return listings;
+        }
+
         // Review-related methods
         public async Task<bool> CanUserReviewOrderItemAsync(int userId, int orderItemId)
         {

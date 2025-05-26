@@ -4,18 +4,46 @@
     ViewBag.Title = "Watch Listings";
     var currentUserId = ViewBag.CurrentUserId as int? ?? -1;
     var isLoggedIn = Request.Cookies["X-KEY"] != null;
+    var searchQuery = ViewBag.SearchQuery as string;
+    var searchResultsCount = ViewBag.SearchResultsCount as int?;
 }
 
 <div class="container">
-    <h2>Watch Listings</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Watch Listings</h2>
+            @if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                <p class="text-muted mb-0">
+                    Search results for "<strong>@searchQuery</strong>" - @(searchResultsCount ?? 0) listing(s) found
+                    <a href="@Url.Action("Index")" class="ms-2 btn btn-sm btn-outline-secondary">Clear Search</a>
+                </p>
+            }
+        </div>
+        <div>
+            @Html.ActionLink("Create New Listing", "Create", null, new { @class = "btn btn-primary" })
+        </div>
+    </div>
 
-    <p>
-        @Html.ActionLink("Create New Listing", "Create", null, new { @class = "btn btn-primary" })
-    </p>
+    <!-- Search Bar -->
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <form method="get" action="@Url.Action("Index")">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control" placeholder="Search for watches by name or description..." value="@searchQuery" />
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="row">
-        @foreach (var item in Model)
+        @if (Model.Any())
         {
+            foreach (var item in Model)
+            {
             var primaryPhoto = item.Photos?.FirstOrDefault(p => p.IsPrimary);
             var displayImage = primaryPhoto?.FilePath ?? item.ImageUrl;
             
@@ -80,6 +108,30 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                @if (!string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-search fa-2x mb-3"></i>
+                        <h4>No watches found</h4>
+                        <p>No watches match your search for "<strong>@searchQuery</strong>".</p>
+                        <p>Try searching with different keywords or <a href="@Url.Action("Index")">browse all listings</a>.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-watch fa-2x mb-3"></i>
+                        <h4>No listings available</h4>
+                        <p>There are currently no watch listings available.</p>
+                        <p><a href="@Url.Action("Create")" class="btn btn-primary">Create the first listing</a></p>
+                    </div>
+                }
             </div>
         }
     </div>

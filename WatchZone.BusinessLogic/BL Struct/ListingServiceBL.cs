@@ -45,6 +45,26 @@ namespace WatchZone.BusinessLogic.BL_Struct
             }
         }
 
+        public async Task<IEnumerable<Listing>> SearchListingsAsync(string searchQuery)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    // If no search query, return available listings
+                    return await GetAvailableListingsAsync();
+                }
+
+                var context = new DatabaseContext();
+                return await context.SearchListingsAsync(searchQuery);
+            }
+            catch (Exception ex)
+            {
+                _errorHandler.LogError(ex, $"Error searching listings with query: {searchQuery}");
+                return Enumerable.Empty<Listing>();
+            }
+        }
+
         public async Task<bool> IsListingSoldAsync(int listingId)
         {
             try

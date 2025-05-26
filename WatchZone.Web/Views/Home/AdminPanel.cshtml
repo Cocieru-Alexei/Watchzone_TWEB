@@ -18,81 +18,20 @@
                 <!-- Navigation Tabs -->
                 <ul class="nav nav-tabs" id="adminTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
-                            <i class="fas fa-chart-line"></i> Dashboard
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="false">
+                        <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">
                             <i class="fas fa-users"></i> Users
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="false">
-                            <i class="fas fa-watch"></i> Products
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">
-                            <i class="fas fa-shopping-cart"></i> Orders
                         </button>
                     </li>
                 </ul>
 
                 <!-- Tab Content -->
                 <div class="tab-content" id="adminTabsContent">
-                    <!-- Dashboard Tab -->
-                    <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                        <div class="card mt-4">
-                            <div class="card-body">
-                                <h3 class="card-title">Store Statistics</h3>
-                                <div class="row mt-4">
-                                    <div class="col-md-3">
-                                        <div class="card bg-primary text-white">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Total Users</h5>
-                                                <h2 class="card-text">@ViewBag.TotalUsers</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card bg-success text-white">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Total Products</h5>
-                                                <h2 class="card-text">@ViewBag.TotalProducts</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card bg-info text-white">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Total Orders</h5>
-                                                <h2 class="card-text">@ViewBag.TotalOrders</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card bg-warning text-white">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Revenue</h5>
-                                                <h2 class="card-text">$@ViewBag.TotalRevenue</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Users Tab -->
-                    <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+                    <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
                         <div class="card mt-4">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="mb-4">
                                     <h3 class="card-title">User Management</h3>
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                        <i class="fas fa-plus"></i> Add User
-                                    </button>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-striped">
@@ -103,7 +42,6 @@
                                                 <th>Email</th>
                                                 <th>Role</th>
                                                 <th>Last Login</th>
-                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -115,14 +53,6 @@
                                                     <td>@user.Email</td>
                                                     <td>@user.Level</td>
                                                     <td>@user.LastLogin</td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-info" onclick="editUser(@user.Id)">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(@user.Id)">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </td>
                                                 </tr>
                                             }
                                         </tbody>
@@ -132,299 +62,24 @@
                         </div>
                     </div>
 
-                    <!-- Products Tab -->
-                    <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
-                        <div class="card mt-4">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h3 class="card-title">Product Management</h3>
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
-                                        <i class="fas fa-plus"></i> Add Product
-                                    </button>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Stock</th>
-                                                <th>Category</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var product in ViewBag.Products ?? new List<dynamic>())
-                                            {
-                                                <tr>
-                                                    <td>@product.Id</td>
-                                                    <td>@product.Name</td>
-                                                    <td>$@product.Price</td>
-                                                    <td>@product.Stock</td>
-                                                    <td>@product.Category</td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-info" onclick="editProduct(@product.Id)">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-danger" onclick="deleteProduct(@product.Id)">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Orders Tab -->
-                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                        <div class="card mt-4">
-                            <div class="card-body">
-                                <h3 class="card-title">Order Management</h3>
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Order ID</th>
-                                                <th>Customer</th>
-                                                <th>Date</th>
-                                                <th>Total</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var order in ViewBag.Orders ?? new List<dynamic>())
-                                            {
-                                                <tr>
-                                                    <td>@order.Id</td>
-                                                    <td>@order.CustomerName</td>
-                                                    <td>@order.OrderDate</td>
-                                                    <td>$@order.Total</td>
-                                                    <td>
-                                                        <span class="badge bg-@(order.Status == "Completed" ? "success" : "warning")">
-                                                            @order.Status
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-info" onclick="viewOrder(@order.Id)">
-                                                            <i class="fas fa-eye"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-success" onclick="updateOrderStatus(@order.Id)">
-                                                            <i class="fas fa-check"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Add User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addUserForm">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select class="form-select" id="role" required>
-                            <option value="User">User</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Moderator">Moderator</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveUser()">Save User</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Add Product Modal -->
-<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addProductForm">
-                    <div class="mb-3">
-                        <label for="productName" class="form-label">Product Name</label>
-                        <input type="text" class="form-control" id="productName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="price" class="form-label">Price</label>
-                        <input type="number" class="form-control" id="price" step="0.01" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="stock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="category" class="form-label">Category</label>
-                        <select class="form-select" id="category" required>
-                            <option value="Luxury">Luxury</option>
-                            <option value="Sports">Sports</option>
-                            <option value="Smart">Smart</option>
-                            <option value="Classic">Classic</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveProduct()">Save Product</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 
 @section Scripts {
     <script>
-        // User Management Functions
-        function editUser(userId) {
-            // Get user data and populate modal
-            $.get('/Admin/GetUser/' + userId, function(user) {
-                $('#username').val(user.Username);
-                $('#email').val(user.Email);
-                $('#role').val(user.Level);
-                $('#addUserModal').modal('show');
-            });
-        }
 
-        function deleteUser(userId) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                $.post('/Admin/DeleteUser', { userId: userId }, function(response) {
-                    if (response.success) {
-                        location.reload();
-                    } else {
-                        alert(response.message);
-                    }
-                });
-            }
-        }
 
-        function saveUser() {
-            const userData = {
-                username: $('#username').val(),
-                email: $('#email').val(),
-                password: $('#password').val(),
-                role: $('#role').val()
-            };
 
-            $.post('/Admin/AddUser', userData, function(response) {
-                if (response.success) {
-                    $('#addUserModal').modal('hide');
-                    location.reload();
-                } else {
-                    alert(response.message);
-                }
-            });
-        }
-
-        // Product Management Functions
-        function editProduct(productId) {
-            // Get product data and populate modal
-            $.get('/Admin/GetProduct/' + productId, function(product) {
-                $('#productName').val(product.Name);
-                $('#price').val(product.Price);
-                $('#stock').val(product.Stock);
-                $('#category').val(product.Category);
-                $('#description').val(product.Description);
-                $('#addProductModal').modal('show');
-            });
-        }
-
-        function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                $.post('/Admin/DeleteProduct', { productId: productId }, function(response) {
-                    if (response.success) {
-                        location.reload();
-                    } else {
-                        alert(response.message);
-                    }
-                });
-            }
-        }
-
-        function saveProduct() {
-            const productData = {
-                name: $('#productName').val(),
-                price: $('#price').val(),
-                stock: $('#stock').val(),
-                category: $('#category').val(),
-                description: $('#description').val()
-            };
-
-            $.post('/Admin/AddProduct', productData, function(response) {
-                if (response.success) {
-                    $('#addProductModal').modal('hide');
-                    location.reload();
-                } else {
-                    alert(response.message);
-                }
-            });
-        }
-
-        // Order Management Functions
-        function viewOrder(orderId) {
-            // Implement view order details in a modal
-            $.get('/Admin/GetOrder/' + orderId, function(order) {
-                // Populate and show order details modal
-                console.log('View order:', order);
-            });
-        }
-
-        function updateOrderStatus(orderId) {
-            const status = prompt('Enter new status (Pending/Processing/Completed/Cancelled):');
-            if (status) {
-                $.post('/Admin/UpdateOrderStatus', { orderId: orderId, status: status }, function(response) {
-                    if (response.success) {
-                        location.reload();
-                    } else {
-                        alert(response.message);
-                    }
-                });
-            }
-        }
 
         // Initialize tooltips and other Bootstrap components
         $(document).ready(function() {
